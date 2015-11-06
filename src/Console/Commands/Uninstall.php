@@ -6,8 +6,8 @@ use Illuminate\Console\Command;
 use Dias\Modules\Copria\ColorSort\Sequence;
 use Schema;
 
-class Uninstall extends Command
-{
+class Uninstall extends Command {
+
     /**
      * The console command name.
      *

@@ -8,8 +8,7 @@ use Dias\Modules\Copria\ColorSort\Console\Commands\Clear as ClearCommand;
 use Dias\Modules\Copria\ColorSort\Console\Commands\Uninstall as UninstallCommand;
 use Dias\Services\Modules;
 
-class CopriaColorSortServiceProvider extends ServiceProvider
-{
+class CopriaColorSortServiceProvider extends ServiceProvider {
     /**
      * Bootstrap the application events.
      *

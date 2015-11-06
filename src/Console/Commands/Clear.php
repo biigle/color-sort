@@ -7,8 +7,8 @@ use Dias\Modules\Copria\ColorSort\Sequence;
 use Schema;
 use DB;
 
-class Clear extends Command
-{
+class Clear extends Command {
+
     /**
      * The console command name.
      *

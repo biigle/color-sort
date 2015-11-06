@@ -7,8 +7,8 @@ use Dias\Modules\Copria\ColorSort\Sequence;
 use Schema;
 use Illuminate\Database\Schema\Blueprint;
 
-class Install extends Command
-{
+class Install extends Command {
+
     /**
      * The console command name.
      *
