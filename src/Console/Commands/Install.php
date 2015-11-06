@@ -49,6 +49,7 @@ class Install extends Command {
                 $table->json('sequence')->nullable();
 
                 $table->index(['transect_id', 'color']);
+                $table->unique(['transect_id', 'color']);
             });
 
             $this->info('Created '.Sequence::DB_TABLE_NAME.' DB table');

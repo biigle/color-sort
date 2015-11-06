@@ -110,5 +110,11 @@ class CopriaColorSortModuleHttpControllersApiTransectColorSortSequenceController
         ])->assertResponseOk();
         $this->assertEquals(1, $transect->colorSortSequences()->count());
         $this->assertEquals('bada55', $transect->colorSortSequences()->first()->color);
+
+        // requesting the same color twice is not allowed
+        $this->post("/api/v1/transects/{$id}/color-sort-sequence", [
+            '_token' => Session::token(),
+            'color' => 'bada55',
+        ])->assertResponseStatus(405);
     }
 }

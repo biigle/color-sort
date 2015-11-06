@@ -91,6 +91,11 @@ class TransectColorSortSequenceController extends Controller
         $s = new Sequence;
         $s->transect_id = $id;
         $s->color = $this->request->input('color');
-        $s->save();
+        try {
+            $s->save();
+        } catch (\Illuminate\Database\QueryException $e) {
+            // color sequence already exists for this transect
+            abort(405, 'The color sort sequence already exists for this transect');
+        }
     }
 }

@@ -15,6 +15,9 @@ class CopriaColorSortModuleSequenceTest extends TestCase {
 
     public static function create($params = [])
     {
+        // don't submit an actual Copria job here
+        Sequence::flushEventListeners();
+
         $s = static::make($params);
         $s->save();
 
