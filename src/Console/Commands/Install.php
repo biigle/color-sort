@@ -3,7 +3,7 @@
 namespace Dias\Modules\Copria\ColorSort\Console\Commands;
 
 use Illuminate\Console\Command;
-use Dias\Modules\Copria\ColorSort\CopriaColorSortServiceProvider as ServiceProvider;
+use Dias\Modules\Copria\ColorSort\Sequence;
 use Schema;
 use Illuminate\Database\Schema\Blueprint;
 
@@ -30,8 +30,8 @@ class Install extends Command
      */
     public function handle()
     {
-        if (!Schema::hasTable(ServiceProvider::DB_TABLE_NAME)) {
-            Schema::create(ServiceProvider::DB_TABLE_NAME, function (Blueprint $table) {
+        if (!Schema::hasTable(Sequence::DB_TABLE_NAME)) {
+            Schema::create(Sequence::DB_TABLE_NAME, function (Blueprint $table) {
                 $table->increments('id');
 
                 $table->integer('transect_id')->unsigned();
@@ -51,9 +51,9 @@ class Install extends Command
                 $table->index(['transect_id', 'color']);
             });
 
-            $this->info('Created '.ServiceProvider::DB_TABLE_NAME.' DB table');
+            $this->info('Created '.Sequence::DB_TABLE_NAME.' DB table');
         } else {
-            $this->comment('The '.ServiceProvider::DB_TABLE_NAME.' DB table already exists');
+            $this->comment('The '.Sequence::DB_TABLE_NAME.' DB table already exists');
             $this->info('Nothing was changed.');
         }
     }

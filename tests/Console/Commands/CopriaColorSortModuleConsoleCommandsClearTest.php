@@ -17,7 +17,7 @@ class CopriaColorSortModuleConsoleCommandsClearTest extends TestCase {
         $transect = TransectTest::create();
         $id = DB::table('copria_color_sort_sequence')->insertGetId([
             'transect_id' => $transect->id,
-            'color' => 'C0FEE'
+            'color' => 'C0FFEE'
         ]);
         Artisan::call('copria-color-sort:clear');
         $this->assertNull(DB::table('copria_color_sort_sequence')->find($id));

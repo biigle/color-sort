@@ -3,7 +3,7 @@
 namespace Dias\Modules\Copria\ColorSort\Console\Commands;
 
 use Illuminate\Console\Command;
-use Dias\Modules\Copria\ColorSort\CopriaColorSortServiceProvider as ServiceProvider;
+use Dias\Modules\Copria\ColorSort\Sequence;
 use Schema;
 use DB;
 
@@ -30,11 +30,11 @@ class Clear extends Command
      */
     public function handle()
     {
-        if (Schema::hasTable(ServiceProvider::DB_TABLE_NAME)) {
-            DB::table(ServiceProvider::DB_TABLE_NAME)->truncate();
-            $this->info('Successfully cleared the '.ServiceProvider::DB_TABLE_NAME.' table');
+        if (Schema::hasTable(Sequence::DB_TABLE_NAME)) {
+            DB::table(Sequence::DB_TABLE_NAME)->truncate();
+            $this->info('Successfully cleared the '.Sequence::DB_TABLE_NAME.' table');
         } else {
-            $this->comment('The '.ServiceProvider::DB_TABLE_NAME.' table does not exist. Can\'t clear anything.');
+            $this->comment('The '.Sequence::DB_TABLE_NAME.' table does not exist. Can\'t clear anything.');
         }
     }
 }

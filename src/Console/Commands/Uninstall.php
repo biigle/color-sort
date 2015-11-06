@@ -3,7 +3,7 @@
 namespace Dias\Modules\Copria\ColorSort\Console\Commands;
 
 use Illuminate\Console\Command;
-use Dias\Modules\Copria\ColorSort\CopriaColorSortServiceProvider as ServiceProvider;
+use Dias\Modules\Copria\ColorSort\Sequence;
 use Schema;
 
 class Uninstall extends Command
@@ -29,7 +29,7 @@ class Uninstall extends Command
      */
     public function handle()
     {
-        Schema::dropIfExists(ServiceProvider::DB_TABLE_NAME);
+        Schema::dropIfExists(Sequence::DB_TABLE_NAME);
         $this->info('Done');
     }
 }

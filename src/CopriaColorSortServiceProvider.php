@@ -11,13 +11,6 @@ use Dias\Services\Modules;
 class CopriaColorSortServiceProvider extends ServiceProvider
 {
     /**
-     * Name of the database table that is created by this package.
-     *
-     * @var String
-     */
-    const DB_TABLE_NAME = 'copria_color_sort_sequence';
-
-    /**
      * Bootstrap the application events.
      *
      * @return void
