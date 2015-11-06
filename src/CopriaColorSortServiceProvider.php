@@ -22,7 +22,7 @@ class CopriaColorSortServiceProvider extends ServiceProvider {
         //     __DIR__.'/public/assets' => public_path('vendor/transects'),
         // ], 'public');
 
-        // include __DIR__.'/Http/routes.php';
+        include __DIR__.'/Http/routes.php';
 
         // $modules->addMixin('transects', 'dashboard.projects');
         // $modules->addMixin('transects', 'dashboardStyles');

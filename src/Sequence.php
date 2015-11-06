@@ -37,7 +37,6 @@ class Sequence extends Model {
      */
     protected $visible = [
         'color',
-        'transect',
         'sequence',
     ];
 
