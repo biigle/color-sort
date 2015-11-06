@@ -7,7 +7,7 @@ class CopriaColorSortModuleSequenceTest extends TestCase {
     public static function make($params = [])
     {
         $s = new Sequence;
-        $s->transect_id = (isset($params['transect_id'])) ? $params['transect_id'] : TransectTest::create()->id;
+        $s->transect_id = isset($params['transect_id']) ? $params['transect_id'] : TransectTest::create()->id;
         $s->color = str_random(6);
 
         return $s;
