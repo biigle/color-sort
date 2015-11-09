@@ -5,9 +5,22 @@ namespace Dias\Modules\Copria\ColorSort\Http\Controllers\Api;
 use Dias\Modules\Copria\ColorSort\Transect;
 use Dias\Modules\Copria\ColorSort\Sequence;
 use Dias\Http\Controllers\Api\Controller;
+use Illuminate\Http\Request;
 
 class TransectColorSortSequenceController extends Controller
 {
+    /**
+     * Creates a new TransectColorSortSequenceController instance.
+     *
+     * @param Request $request
+     */
+    public function __construct(Request $request)
+    {
+        parent::__construct($request);
+        // the user has to have their Copria key configured to request a new color sort sequence
+        $this->middleware('copria.key', ['only' => 'store']);
+    }
+
     /**
      * List all color sort sequence colors of the specified transect.
      *
@@ -94,7 +107,6 @@ class TransectColorSortSequenceController extends Controller
         try {
             $s->save();
         } catch (\Illuminate\Database\QueryException $e) {
-            // color sequence already exists for this transect
             abort(405, 'The color sort sequence already exists for this transect');
         }
     }

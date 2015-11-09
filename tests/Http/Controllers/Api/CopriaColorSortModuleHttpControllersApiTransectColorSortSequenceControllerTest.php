@@ -69,6 +69,7 @@ class CopriaColorSortModuleHttpControllersApiTransectColorSortSequenceController
     {
         // don't submit an actual Copria job here
         Sequence::flushEventListeners();
+        AttributeTest::create(['name' => 'copria_api_key', 'type' => 'string']);
 
         $transect = Transect::find(TransectTest::create()->id);
         $id = $transect->id;
@@ -78,6 +79,7 @@ class CopriaColorSortModuleHttpControllersApiTransectColorSortSequenceController
 
         // guests cannot request new color sort sequences
         $this->be($this->guest);
+        $this->guest->attachDiasAttribute('copria_api_key', 'abcd');
         $this->callAjax('POST', "/api/v1/transects/{$id}/color-sort-sequence", [
             '_token' => Session::token(),
             'color' => 'abcdef',
@@ -85,6 +87,15 @@ class CopriaColorSortModuleHttpControllersApiTransectColorSortSequenceController
         $this->assertResponseStatus(401);
 
         $this->be($this->editor);
+
+        $this->callAjax('POST', "/api/v1/transects/{$id}/color-sort-sequence", [
+            '_token' => Session::token(),
+            'color' => 'c0ffee',
+        ]);
+        // user has no Copria account connected
+        $this->assertResponseStatus(401);
+        $this->editor->attachDiasAttribute('copria_api_key', 'abcd');
+
         // missing color
         $this->callAjax('POST', "/api/v1/transects/{$id}/color-sort-sequence", [
             '_token' => Session::token(),
