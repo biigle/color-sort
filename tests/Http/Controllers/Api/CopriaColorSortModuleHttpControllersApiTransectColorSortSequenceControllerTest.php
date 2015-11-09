@@ -129,4 +129,35 @@ class CopriaColorSortModuleHttpControllersApiTransectColorSortSequenceController
             'color' => 'bada55',
         ])->assertResponseStatus(405);
     }
+
+    public function testResult()
+    {
+        // if the token does not exist, authentication failed
+        // note that we shouldn't have to provide a CRSF token here!
+        $this->post('api/v1/copria-color-sort-result/nonexistant')
+            ->assertResponseStatus(401);
+
+        $sequence = CopriaColorSortModuleSequenceTest::make();
+        $sequence->generateToken();
+        $sequence->save();
+
+        // image ids are missing
+        $this->post("api/v1/copria-color-sort-result/{$sequence->token}")
+            ->assertResponseStatus(422);
+
+        // job failed, delete color sort sequence
+        $this->post("api/v1/copria-color-sort-result/{$sequence->token}", ['state' => []])
+            ->assertResponseOk();
+        $this->assertNull($sequence->fresh());
+
+        $sequence = CopriaColorSortModuleSequenceTest::make();
+        $sequence->generateToken();
+        $sequence->save();
+
+        // job succeeded, set sorting order
+        $this->post("api/v1/copria-color-sort-result/{$sequence->token}", ['pin1' => '1,3,2'])
+            ->assertResponseOk();
+        $this->assertEquals([1, 3, 2], $sequence->fresh()->sequence);
+        $this->assertNull($sequence->fresh()->token);
+    }
 }

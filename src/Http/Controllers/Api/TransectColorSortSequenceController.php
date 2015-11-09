@@ -115,4 +115,45 @@ class TransectColorSortSequenceController extends Controller
 
         $this->dispatch(new ExecuteNewSequencePipeline($s, $this->user));
     }
+
+    /**
+     * Return a computation result for a new color sort sequence
+     *
+     * @api {post} copria-color-sort-result/:token Return a color sort sequence result
+     * @apiGroup ColorSort
+     * @apiName StoreColorSortResult
+     * @apiDescription This endpoint expects the result of the Copria color sort pipeline
+     *
+     * @apiParam {String} token The token belonging to the color sort sequence, to which the result belongs to
+     * @apiParam (Required attributes) {String} pin1 Image IDs, imploded with a ',', when the images are sorted by the color of the color sort sequence. If this attribute is not present, `state` must be.
+     * @apiParam (Required attributes) {String} state Json object. If this attribute is not present, `pin1` must be.
+     *
+     * @param  string  $token
+     * @return \Illuminate\Http\Response
+     */
+    public function result($token)
+    {
+        $sequence = Sequence::whereToken($token)->first();
+        if ($sequence === null) {
+            return response('Unauthorized.', 401);
+        }
+
+        $request = $this->request;
+
+        if ($request->has(config('copria_color_sort.result_request_param'))) {
+            // job was successfully computed
+            $sequence->sequence = array_map('intval',
+                explode(',', $request->input(config('copria_color_sort.result_request_param')))
+            );
+            $sequence->token = null;
+            $sequence->save();
+        } else if ($request->has('state')) {
+            // route was called with the Copria SubmittedJob object
+            // we can assume that the job failed
+            $sequence->delete();
+        } else {
+            // request doesn't have the required data
+            return response('Invalid request parameters. You must either provide "'.config('copria_color_sort.result_request_param').'" or "state".', 422);
+        }
+    }
 }

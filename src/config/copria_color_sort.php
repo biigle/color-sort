@@ -32,4 +32,9 @@ return [
     */
     'target_url_selector' => '7.0.value',
 
+    /*
+    | Name of the HTTP POST parameter that contains the results of the Copria pipeline.
+    */
+    'result_request_param' => 'pin1',
+
 ];
