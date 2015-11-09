@@ -6,6 +6,7 @@ use Dias\Modules\Copria\ColorSort\Transect;
 use Dias\Modules\Copria\ColorSort\Sequence;
 use Dias\Http\Controllers\Api\Controller;
 use Illuminate\Http\Request;
+use Dias\Modules\Copria\ColorSort\Jobs\ExecuteNewSequencePipeline;
 
 class TransectColorSortSequenceController extends Controller
 {
@@ -104,10 +105,14 @@ class TransectColorSortSequenceController extends Controller
         $s = new Sequence;
         $s->transect_id = $id;
         $s->color = $this->request->input('color');
+        $s->generateToken();
+
         try {
             $s->save();
         } catch (\Illuminate\Database\QueryException $e) {
             abort(405, 'The color sort sequence already exists for this transect');
         }
+
+        $this->dispatch(new ExecuteNewSequencePipeline($s, $this->user));
     }
 }

@@ -9,3 +9,8 @@ Route::group([
         'only' => ['index', 'show', 'store']
     ]);
 });
+
+Route::post('api/v1/copria-color-sort-result/{token}', [
+    'as' => 'copria-color-sort-result',
+    'uses' => 'TransectColorSortSequenceController@result'
+]);

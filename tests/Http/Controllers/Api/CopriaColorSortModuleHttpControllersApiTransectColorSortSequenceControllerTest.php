@@ -67,8 +67,6 @@ class CopriaColorSortModuleHttpControllersApiTransectColorSortSequenceController
 
     public function testStore()
     {
-        // don't submit an actual Copria job here
-        Sequence::flushEventListeners();
         AttributeTest::create(['name' => 'copria_api_key', 'type' => 'string']);
 
         $transect = Transect::find(TransectTest::create()->id);
@@ -114,6 +112,8 @@ class CopriaColorSortModuleHttpControllersApiTransectColorSortSequenceController
         ]);
         $this->assertResponseStatus(422);
 
+        $this->expectsJobs(\Dias\Modules\Copria\ColorSort\Jobs\ExecuteNewSequencePipeline::class);
+
         $this->assertEquals(0, $transect->colorSortSequences()->count());
         $this->post("/api/v1/transects/{$id}/color-sort-sequence", [
             '_token' => Session::token(),
@@ -121,6 +121,7 @@ class CopriaColorSortModuleHttpControllersApiTransectColorSortSequenceController
         ])->assertResponseOk();
         $this->assertEquals(1, $transect->colorSortSequences()->count());
         $this->assertEquals('bada55', $transect->colorSortSequences()->first()->color);
+        $this->assertNotNull($transect->colorSortSequences()->first()->token);
 
         // requesting the same color twice is not allowed
         $this->post("/api/v1/transects/{$id}/color-sort-sequence", [
