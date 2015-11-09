@@ -19,6 +19,14 @@ class CopriaColorSortModuleJobsExecuteNewSequencePipelineTest extends TestCase
         }
     }
 
+    public function tearDown()
+    {
+        if (!(DB::connection() instanceof Illuminate\Database\SQLiteConnection)) {
+            Artisan::call('copria-color-sort:uninstall');
+        }
+        parent::tearDown();
+    }
+
     public function testHandle()
     {
         $transect = TransectTest::create(['url' => '/vol/images']);
