@@ -16,7 +16,7 @@ To activate the module, add `'Dias\Modules\Copria\ColorSort\CopriaColorSortServi
 
 Use `php artisan copria-color-sort:clear` to remove the color sort data for all transects.
 
-If you want to edit any config values, run `php artisan vendor:publish --provider="Dias\Modules\Copria\ColorSort\CopriaColorSortServiceProvider" --tag="config"` and edit `config/copria-color-sort.php`.
+If you want to edit any config values, run `php artisan vendor:publish --provider="Dias\Modules\Copria\ColorSort\CopriaColorSortServiceProvider" --tag="config"` and edit `config/copria_color_sort.php`.
 
 # Removing
 
