@@ -11,7 +11,10 @@ class CopriaColorSortModuleHttpControllersApiTransectColorSortSequenceController
         $id = $transect->id;
         $this->project->addTransectId($id);
 
-        $s = CopriaColorSortModuleSequenceTest::create(['transect_id' => $transect->id]);
+        $s1 = CopriaColorSortModuleSequenceTest::make(['transect_id' => $transect->id]);
+        $s1->sequence = [1, 2];
+        $s1->save();
+        $s2 = CopriaColorSortModuleSequenceTest::create(['transect_id' => $transect->id]);
 
         $this->doTestApiRoute('GET', "/api/v1/transects/{$id}/color-sort-sequence");
 
@@ -21,7 +24,8 @@ class CopriaColorSortModuleHttpControllersApiTransectColorSortSequenceController
 
         $this->be($this->guest);
         $this->get("/api/v1/transects/{$id}/color-sort-sequence")
-            ->seeJsonEquals([$s->color]);
+            // show only sequences with actual sorting data
+            ->seeJsonEquals([$s1->color]);
     }
 
     public function testShow()

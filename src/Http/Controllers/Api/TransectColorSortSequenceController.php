@@ -29,7 +29,7 @@ class TransectColorSortSequenceController extends Controller
      * @apiGroup Transects
      * @apiName IndexTransectColorSortSequences
      * @apiPermission projectMember
-     * @apiDescription Returns a list of all colors of color sort sequences of the transect.
+     * @apiDescription Returns a list of all colors of color sort sequences of the transect. Note that this list does _not_ contain the sequences still computing (i.e. having no sorting data yet).
      *
      * @apiParam {Number} id The transect ID.
      *
@@ -47,7 +47,7 @@ class TransectColorSortSequenceController extends Controller
         $transect = $this->requireNotNull(Transect::find($id));
         $this->requireCanSee($transect);
 
-        return $transect->colorSortSequences()->lists('color');
+        return $transect->colorSortSequences()->whereNotNull('sequence')->lists('color');
     }
 
     /**
