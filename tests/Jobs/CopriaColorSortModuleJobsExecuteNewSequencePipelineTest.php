@@ -30,7 +30,10 @@ class CopriaColorSortModuleJobsExecuteNewSequencePipelineTest extends TestCase
 
         User::convert($transect->creator)->copria_api_key = 'abcd';
 
-        $url = "http://localhost:8000/api/v1/copria-color-sort-result/{$sequence->token}";
+        $url = "http://localhost:8000/sub/api/v1/copria-color-sort-result/{$sequence->token}";
+
+        // this should work even if the application is located in a subdiectory!
+        config(['app.url' => 'http://localhost:8000/sub']);
 
         Copria::shouldReceive('userExecutePipeline')->once()
             ->with(config('copria_color_sort.pipeline_id'), 'abcd', $url, [

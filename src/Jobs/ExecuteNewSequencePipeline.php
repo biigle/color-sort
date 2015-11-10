@@ -52,7 +52,7 @@ class ExecuteNewSequencePipeline extends Job implements SelfHandling, ShouldQueu
     {
         // ensure a fresh DB connection because this job is run with the daemon queue worker
         DB::reconnect();
-        $resultUrl = route('copria-color-sort-result', $this->sequence->token);
+        $resultUrl = config('app.url').route('copria-color-sort-result', $this->sequence->token, false);
         $transect = $this->sequence->transect()->with('images')->first();
 
         CopriaUser::convert($this->user)
