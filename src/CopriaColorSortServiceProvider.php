@@ -32,6 +32,8 @@ class CopriaColorSortServiceProvider extends ServiceProvider {
 
         include __DIR__.'/Http/routes.php';
 
+        \Dias\Image::observe(new \Dias\Modules\Copria\ColorSort\Observers\ImageObserver);
+
         // $modules->addMixin('transects', 'dashboard.projects');
         // $modules->addMixin('transects', 'dashboardStyles');
         // $modules->addMixin('transects', 'projects');
