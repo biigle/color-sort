@@ -15,13 +15,12 @@ class CopriaColorSortServiceProvider extends ServiceProvider {
      */
     public function boot(Modules $modules)
     {
-        // $this->loadViewsFrom(__DIR__.'/resources/views', 'transects');
+        $this->loadViewsFrom(__DIR__.'/resources/views', 'copria-color-sort');
 
-        // $this->publishes([
-        //     __DIR__.'/public/assets' => public_path('vendor/transects'),
-        // ], 'public');
+        $this->publishes([
+            __DIR__.'/public/assets' => public_path('vendor/copria-color-sort'),
+        ], 'public');
 
-        // publish the config file with the config tag
         $this->publishes([
             __DIR__.'/config/copria_color_sort.php' => config_path('copria_color_sort.php'),
         ], 'config');
@@ -34,11 +33,7 @@ class CopriaColorSortServiceProvider extends ServiceProvider {
 
         \Dias\Image::observe(new \Dias\Modules\Copria\ColorSort\Observers\ImageObserver);
 
-        // $modules->addMixin('transects', 'dashboard.projects');
-        // $modules->addMixin('transects', 'dashboardStyles');
-        // $modules->addMixin('transects', 'projects');
-        // $modules->addMixin('transects', 'adminMenu');
-        // $modules->addMixin('transects', 'adminIndex');
+        $modules->addMixin('copria-color-sort', 'transectsMenubar');
     }
 
     /**

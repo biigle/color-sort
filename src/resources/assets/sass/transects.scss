@@ -1,0 +1,26 @@
+.color-sort-popup {
+    .color-picker {
+        height: 34px;
+    }
+}
+
+.available-colors-item {
+    $size: 30px;
+    display: inline-block;
+    height: $size;
+    width: $size;
+    border-radius: 50%;
+    margin: 0 0.5em 0.5em 0;
+    cursor: pointer;
+
+    &.active {
+        border: 1px solid #777;
+        padding: 3px;
+        background-clip: content-box;
+    }
+}
+
+.available-colors-list {
+    max-height: 150px;
+    overflow-y: auto;
+}
