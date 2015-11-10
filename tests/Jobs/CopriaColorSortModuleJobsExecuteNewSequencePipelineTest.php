@@ -9,7 +9,6 @@ class CopriaColorSortModuleJobsExecuteNewSequencePipelineTest extends TestCase
     {
         parent::setUp();
         AttributeTest::create(['name' => 'copria_api_key', 'type' => 'string']);
-        Artisan::call('copria-color-sort:install');
 
         if (DB::connection() instanceof Illuminate\Database\SQLiteConnection) {
             // ignore reconnect because sqlite DB would be dumped
@@ -17,14 +16,6 @@ class CopriaColorSortModuleJobsExecuteNewSequencePipelineTest extends TestCase
             // add this, otherwise disconnect of TestCase would fail
             DB::shouldReceive('disconnect')->once();
         }
-    }
-
-    public function tearDown()
-    {
-        if (!(DB::connection() instanceof Illuminate\Database\SQLiteConnection)) {
-            Artisan::call('copria-color-sort:uninstall');
-        }
-        parent::tearDown();
     }
 
     public function testHandle()

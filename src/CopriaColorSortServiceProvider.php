@@ -4,8 +4,6 @@ namespace Dias\Modules\Copria\ColorSort;
 
 use Illuminate\Support\ServiceProvider;
 use Dias\Modules\Copria\ColorSort\Console\Commands\Install as InstallCommand;
-use Dias\Modules\Copria\ColorSort\Console\Commands\Clear as ClearCommand;
-use Dias\Modules\Copria\ColorSort\Console\Commands\Uninstall as UninstallCommand;
 use Dias\Services\Modules;
 
 class CopriaColorSortServiceProvider extends ServiceProvider {
@@ -27,6 +25,10 @@ class CopriaColorSortServiceProvider extends ServiceProvider {
         $this->publishes([
             __DIR__.'/config/copria_color_sort.php' => config_path('copria_color_sort.php'),
         ], 'config');
+
+        $this->publishes([
+            __DIR__.'/database/migrations/' => database_path('migrations')
+        ], 'migrations');
 
         include __DIR__.'/Http/routes.php';
 
@@ -52,16 +54,6 @@ class CopriaColorSortServiceProvider extends ServiceProvider {
             return new InstallCommand();
         });
         $this->commands('command.copria-color-sort.install');
-
-        $this->app->singleton('command.copria-color-sort.clear', function ($app) {
-            return new ClearCommand();
-        });
-        $this->commands('command.copria-color-sort.clear');
-
-        $this->app->singleton('command.copria-color-sort.uninstall', function ($app) {
-            return new UninstallCommand();
-        });
-        $this->commands('command.copria-color-sort.uninstall');
     }
 
     /**
@@ -73,8 +65,6 @@ class CopriaColorSortServiceProvider extends ServiceProvider {
     {
         return [
             'command.copria-color-sort.install',
-            'command.copria-color-sort.clear',
-            'command.copria-color-sort.uninstall',
         ];
     }
 }

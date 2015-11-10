@@ -3,9 +3,7 @@
 namespace Dias\Modules\Copria\ColorSort\Console\Commands;
 
 use Illuminate\Console\Command;
-use Dias\Modules\Copria\ColorSort\Sequence;
-use Schema;
-use Illuminate\Database\Schema\Blueprint;
+use Dias\Modules\Copria\ColorSort\CopriaColorSortServiceProvider as ServiceProvider;
 
 class Install extends Command {
 
@@ -21,7 +19,7 @@ class Install extends Command {
      *
      * @var string
      */
-    protected $description = 'Set up the database with the required tables of the Copria color sort package.';
+    protected $description = 'Publish the mogration of this package and run it';
 
     /**
      * Execute the command.
@@ -30,32 +28,13 @@ class Install extends Command {
      */
     public function handle()
     {
-        if (!Schema::hasTable(Sequence::DB_TABLE_NAME)) {
-            Schema::create(Sequence::DB_TABLE_NAME, function (Blueprint $table) {
-                $table->increments('id');
+        $this->call('vendor:publish', [
+            '--provider' => ServiceProvider::class,
+            '--tag' => ['migrations']
+        ]);
 
-                $table->integer('transect_id')->unsigned();
-                $table->foreign('transect_id')
-                  ->references('id')
-                  ->on('transects')
-                  // if the transect is deleted, the color sort information should be deleted, too
-                  ->onDelete('cascade');
-
-                // hex color like BADA55
-                $table->string('color', 6);
-                // token used to authenticate the response from Copria
-                $table->string('token')->nullable()->index();
-                // the sequence of image IDs when sorted by this color
-                $table->json('sequence')->nullable();
-
-                $table->index(['transect_id', 'color']);
-                $table->unique(['transect_id', 'color']);
-            });
-
-            $this->info('Created '.Sequence::DB_TABLE_NAME.' DB table');
-        } else {
-            $this->comment('The '.Sequence::DB_TABLE_NAME.' DB table already exists');
-            $this->info('Nothing was changed.');
+        if ($this->confirm('Do you want to run the migration right away?')) {
+            $this->call('migrate');
         }
     }
 }

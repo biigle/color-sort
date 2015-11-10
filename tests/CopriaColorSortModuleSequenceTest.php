@@ -21,18 +21,6 @@ class CopriaColorSortModuleSequenceTest extends TestCase {
         return $s;
     }
 
-    public function setUp()
-    {
-        parent::setUp();
-        Artisan::call('copria-color-sort:install');
-    }
-
-    public function tearDown()
-    {
-        Artisan::call('copria-color-sort:uninstall');
-        parent::tearDown();
-    }
-
     public function testTransectOnDeleteCascade()
     {
         $s = static::create();

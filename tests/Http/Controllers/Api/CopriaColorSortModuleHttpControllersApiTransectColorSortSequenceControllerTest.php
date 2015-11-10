@@ -5,18 +5,6 @@ use Dias\Modules\Copria\ColorSort\Sequence;
 
 class CopriaColorSortModuleHttpControllersApiTransectColorSortSequenceControllerTest extends ApiTestCase {
 
-    public function setUp()
-    {
-        parent::setUp();
-        Artisan::call('copria-color-sort:install');
-    }
-
-    public function tearDown()
-    {
-        Artisan::call('copria-color-sort:uninstall');
-        parent::tearDown();
-    }
-
     public function testIndex()
     {
         $transect = TransectTest::create();

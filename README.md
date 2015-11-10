@@ -10,16 +10,14 @@ Add this to your `composer.json` repositories array:
 
 Run `php composer.phar require dias/copria-color-sort:dev-master`.
 
-To activate the module, add `'Dias\Modules\Copria\ColorSort\CopriaColorSortServiceProvider'` to the providers array of `config/app.php`. Then run `php artisan copria-color-sort:install`.
+To activate the module, add `'Dias\Modules\Copria\ColorSort\CopriaColorSortServiceProvider'` to the providers array of `config/app.php`. Then run `php artisan copria-color-sort:install` to publish and run the migration.
 
 Finally add `'api/v1/copria-color-sort-result/*'` to the `$except` array of your `Dias\Http\Middleware\VerifyCsrfToken` middleware (see [Excluding URIs From CSRF Protection](http://laravel.com/docs/5.1/routing#csrf-protection)). This will except the single route from CRSF protection since the route authenticates using a token in the URL.
 
 # Configuration
 
-Use `php artisan copria-color-sort:clear` to remove the color sort data for all transects.
-
 If you want to edit any config values, run `php artisan vendor:publish --provider="Dias\Modules\Copria\ColorSort\CopriaColorSortServiceProvider" --tag="config"` and edit `config/copria_color_sort.php`.
 
 # Removing
 
-To remove the module, run `php artisan copria-color-sort:uninstall` and `php composer.phar remove dias/copria-color-sort`. Then remove `'Dias\Modules\Copria\ColorSort\CopriaColorSortServiceProvider'` from the providers array of `config/app.php`
+To remove the module, roll back the migration and run and `php composer.phar remove dias/copria-color-sort`. Then remove `'Dias\Modules\Copria\ColorSort\CopriaColorSortServiceProvider'` from the providers array of `config/app.php`
