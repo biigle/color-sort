@@ -16,4 +16,14 @@ class CopriaColorSortModuleObserversImageObserverTest extends TestCase
         $image1->delete();
         $this->assertNotContains($image1->id, $sequence->fresh()->sequence);
     }
+
+    public function testDeletedSpecialSequences()
+    {
+        $transect = TransectTest::create();
+        $image = ImageTest::create(['transect_id' => $transect->id, 'filename' => 'a.jpg']);
+        // $sequence->sequence is still null!
+        $sequence = CopriaColorSortModuleSequenceTest::create(['transect_id' => $transect->id]);
+        // shouldn't fail
+        $image->delete();
+    }
 }

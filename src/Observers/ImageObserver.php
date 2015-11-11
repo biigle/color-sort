@@ -16,6 +16,7 @@ class ImageObserver
     {
         $sequences = Transect::find($image->transect_id)->colorSortSequences()
             ->select('id', 'sequence')
+            ->whereNotNull('sequence')
             ->get();
         $id = $image->id;
         foreach ($sequences as $sequence) {
