@@ -13,6 +13,10 @@ angular.module('dias.transects').controller('ColorSortController', function ($sc
         // stores all sorting sequence arrays with the related colors as keys
         var sequencesCache = {};
 
+        $scope.show = {
+            help: false
+        };
+
         // array of all available colors
         $scope.colors = [];
 
@@ -81,7 +85,7 @@ angular.module('dias.transects').controller('ColorSortController', function ($sc
 
             var error = function (response) {
                 if (response.status === 405) {
-                    msg.warning('This color is already available (or computing).');
+                    msg.warning('This color is already available (or still computing).');
                 } else {
                     msg.responseError(response);
                 }
