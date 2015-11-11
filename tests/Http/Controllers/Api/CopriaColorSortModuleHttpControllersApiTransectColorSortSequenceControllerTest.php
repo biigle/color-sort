@@ -145,11 +145,15 @@ class CopriaColorSortModuleHttpControllersApiTransectColorSortSequenceController
         $sequence = CopriaColorSortModuleSequenceTest::make();
         $sequence->generateToken();
         $sequence->save();
+        $image1 = ImageTest::create(['transect_id' => $sequence->transect->id, 'filename' => 'a']);
+        $image2 = ImageTest::create(['transect_id' => $sequence->transect->id, 'filename' => 'b']);
 
         // job succeeded, set sorting order
-        $this->post("api/v1/copria-color-sort-result/{$sequence->token}", ['pin1' => '1,3,2'])
+        $this->post("api/v1/copria-color-sort-result/{$sequence->token}", ['pin1' => $image2->id.',300,200,'.$image1->id])
             ->assertResponseOk();
-        $this->assertEquals([1, 3, 2], $sequence->fresh()->sequence);
+        // the sequence should only contain image IDs that actually belong to the transect
+        // the ordering must be kept, though
+        $this->assertEquals([$image2->id, $image1->id], $sequence->fresh()->sequence);
         $this->assertNull($sequence->fresh()->token);
     }
 }

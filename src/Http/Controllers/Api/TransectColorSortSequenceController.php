@@ -7,6 +7,7 @@ use Dias\Modules\Copria\ColorSort\Sequence;
 use Dias\Http\Controllers\Api\Controller;
 use Illuminate\Http\Request;
 use Dias\Modules\Copria\ColorSort\Jobs\ExecuteNewSequencePipeline;
+use Dias\Image;
 
 class TransectColorSortSequenceController extends Controller
 {
@@ -142,9 +143,13 @@ class TransectColorSortSequenceController extends Controller
 
         if ($request->has(config('copria_color_sort.result_request_param'))) {
             // job was successfully computed
-            $sequence->sequence = array_map('intval',
+            $returnedIds = array_map('intval',
                 explode(',', $request->input(config('copria_color_sort.result_request_param')))
             );
+            $transectIds = Image::where('transect_id', $sequence->transect_id)->lists('id')->toArray();
+            // take only those of the returned IDs that actually belong to the transect
+            // (e.g. images could have been deleted while the color sort sequence was computing)
+            $sequence->sequence = array_values(array_intersect($returnedIds, $transectIds));
             $sequence->token = null;
             $sequence->save();
         } else if ($request->has('state')) {
