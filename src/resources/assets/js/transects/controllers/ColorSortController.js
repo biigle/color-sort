@@ -10,6 +10,8 @@ angular.module('dias.transects').controller('ColorSortController', function ($sc
 
         var popoverOpen = false;
 
+        var localStorageActiveColorKey = 'dias.transects.' + $scope.transectId + '.color-sort.active-color';
+
         // stores all sorting sequence arrays with the related colors as keys
         var sequencesCache = {};
 
@@ -94,6 +96,12 @@ angular.module('dias.transects').controller('ColorSortController', function ($sc
             ColorSortSequence.request({transect_id: $scope.transectId}, {color: color}, success, error);
         };
 
+        var activateCachedColor = function (color) {
+            // call transect controller function
+            $scope.setImagesSequence(sequencesCache[color]);
+            $scope.activeColor = color;
+        };
+
         $scope.sortBy = function (color) {
             if (color === $scope.activeColor) {
                 // if color was clicked twice, reset/unselect
@@ -103,18 +111,26 @@ angular.module('dias.transects').controller('ColorSortController', function ($sc
             }
 
             if (sequencesCache[color] !== undefined) {
-                // call transect controller function
-                $scope.setImagesSequence(sequencesCache[color]);
-                $scope.activeColor = color;
+                activateCachedColor(color);
             } else {
                 var success = function (sequence) {
                     sequencesCache[color] = sequence;
-                    $scope.setImagesSequence(sequence);
-                    $scope.activeColor = color;
+                    activateCachedColor(color);
                 };
 
                 ColorSortSequence.get({transect_id: $scope.transectId, color: color}, success, msg.responseError);
             }
         };
+
+        $scope.$watch('activeColor', function (color) {
+            window.localStorage[localStorageActiveColorKey] = color;
+        });
+
+        // initially set the stored color as active.
+        // we don't need to fetch the actual images sequence here because that is stored by
+        // the transect controller.
+        if (window.localStorage[localStorageActiveColorKey]) {
+            $scope.activeColor = window.localStorage[localStorageActiveColorKey];
+        }
     }
 );

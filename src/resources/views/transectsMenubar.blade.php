@@ -7,7 +7,7 @@
 @append
 
 <div data-ng-controller="ColorSortController">
-    <button class="btn btn-regular transect-menubar__item" data-popover-placement="right" data-uib-popover-template="'colorSortPopover.html'" type="button" title="Sort images by color" data-ng-click="openPopover()">
+    <button class="btn btn-default transect-menubar__item" data-popover-placement="right" data-uib-popover-template="'colorSortPopover.html'" type="button" title="Sort images by color" data-ng-click="openPopover()" data-ng-class="{'btn-info':activeColor!==''}">
         <span class="glyphicon glyphicon-tint" aria-hidden="true"></span>
     </button>
     <script type="text/ng-template" id="colorSortPopover.html">
