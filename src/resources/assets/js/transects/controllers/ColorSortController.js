@@ -32,6 +32,7 @@ angular.module('dias.transects').controller('ColorSortController', function ($sc
         // currently active color for sorting
         $scope.activeColor = '';
 
+        // regularly check if a requested color is now available
         var poll = function (color) {
             var promise;
             var success = function (sequence) {
@@ -73,6 +74,7 @@ angular.module('dias.transects').controller('ColorSortController', function ($sc
             }
         };
 
+        // submit a new request to compute a color sort sequence
         $scope.requestNewColor = function () {
             // don't accept new request while the old one is still computing
             if ($scope.isComputing) return;
@@ -102,6 +104,7 @@ angular.module('dias.transects').controller('ColorSortController', function ($sc
             $scope.activeColor = color;
         };
 
+        // sort the images using an available color sort sequence
         $scope.sortBy = function (color) {
             if (color === $scope.activeColor) {
                 // if color was clicked twice, reset/unselect
@@ -122,6 +125,7 @@ angular.module('dias.transects').controller('ColorSortController', function ($sc
             }
         };
 
+        // store the currently active color persistently
         $scope.$watch('activeColor', function (color) {
             window.localStorage[localStorageActiveColorKey] = color;
         });

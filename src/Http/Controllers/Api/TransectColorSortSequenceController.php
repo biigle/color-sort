@@ -136,6 +136,7 @@ class TransectColorSortSequenceController extends Controller
     {
         $sequence = Sequence::whereToken($token)->first();
         if ($sequence === null) {
+            // token didn't match any sequence
             return response('Unauthorized.', 401);
         }
 
@@ -143,17 +144,17 @@ class TransectColorSortSequenceController extends Controller
 
         if ($request->has(config('copria_color_sort.result_request_param'))) {
             // job was successfully computed
-            $returnedIds = array_map('intval',
-                explode(',', $request->input(config('copria_color_sort.result_request_param')))
-            );
+            $returnedIds = array_map('intval',explode(',', $request->input(config('copria_color_sort.result_request_param'))));
             $transectIds = Image::where('transect_id', $sequence->transect_id)->lists('id')->toArray();
+
             // take only those of the returned IDs that actually belong to the transect
             // (e.g. images could have been deleted while the color sort sequence was computing)
             $sequence->sequence = array_values(array_intersect($returnedIds, $transectIds));
+            // invalidate token so the sequence can't be altered with future requests
             $sequence->token = null;
             $sequence->save();
         } else if ($request->has('state')) {
-            // route was called with the Copria SubmittedJob object
+            // route was called with the Copria SubmittedJob object instead of the result.
             // we can assume that the job failed
             $sequence->delete();
         } else {
