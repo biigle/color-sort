@@ -20,7 +20,7 @@ If you want to edit any config values, run `php artisan vendor:publish --provide
 
 # Updating
 
-Run `php artisan copria-color-sort:update` to refresh the public assets of this package.
+Run `php artisan copria-color-sort:publish` to refresh the public assets of this package.
 
 # Removing
 

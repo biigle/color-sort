@@ -5,14 +5,14 @@ namespace Dias\Modules\Copria\ColorSort\Console\Commands;
 use Illuminate\Console\Command;
 use Dias\Modules\Copria\ColorSort\CopriaColorSortServiceProvider as ServiceProvider;
 
-class Update extends Command {
+class Publish extends Command {
 
     /**
      * The console command name.
      *
      * @var string
      */
-    protected $name = 'copria-color-sort:update';
+    protected $name = 'copria-color-sort:publish';
 
     /**
      * The console command description.

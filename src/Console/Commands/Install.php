@@ -38,6 +38,6 @@ class Install extends Command {
         }
 
         // publish the public assets
-        $this->call('copria-color-sort:update');
+        $this->call('copria-color-sort:publish');
     }
 }
