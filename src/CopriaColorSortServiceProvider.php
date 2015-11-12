@@ -3,8 +3,6 @@
 namespace Dias\Modules\Copria\ColorSort;
 
 use Illuminate\Support\ServiceProvider;
-use Dias\Modules\Copria\ColorSort\Console\Commands\Install as InstallCommand;
-use Dias\Modules\Copria\ColorSort\Console\Commands\Publish as PublishCommand;
 use Dias\Services\Modules;
 
 class CopriaColorSortServiceProvider extends ServiceProvider {
@@ -49,11 +47,11 @@ class CopriaColorSortServiceProvider extends ServiceProvider {
 
         // set up the console commands
         $this->app->singleton('command.copria-color-sort.install', function ($app) {
-            return new InstallCommand();
+            return new \Dias\Modules\Copria\ColorSort\Console\Commands\Install();
         });
         $this->commands('command.copria-color-sort.install');
         $this->app->singleton('command.copria-color-sort.publish', function ($app) {
-            return new PublishCommand();
+            return new \Dias\Modules\Copria\ColorSort\Console\Commands\Publish();
         });
         $this->commands('command.copria-color-sort.publish');
     }
