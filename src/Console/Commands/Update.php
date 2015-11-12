@@ -5,21 +5,21 @@ namespace Dias\Modules\Copria\ColorSort\Console\Commands;
 use Illuminate\Console\Command;
 use Dias\Modules\Copria\ColorSort\CopriaColorSortServiceProvider as ServiceProvider;
 
-class Install extends Command {
+class Update extends Command {
 
     /**
      * The console command name.
      *
      * @var string
      */
-    protected $name = 'copria-color-sort:install';
+    protected $name = 'copria-color-sort:update';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Publish the migration of this package and run it';
+    protected $description = 'Publish or refresh the public assets of this package';
 
     /**
      * Execute the command.
@@ -30,14 +30,8 @@ class Install extends Command {
     {
         $this->call('vendor:publish', [
             '--provider' => ServiceProvider::class,
-            '--tag' => ['migrations'],
+            '--tag' => ['public'],
+            '--force' => true,
         ]);
-
-        if ($this->confirm('Do you want to run the migration right away?')) {
-            $this->call('migrate');
-        }
-
-        // publish the public assets
-        $this->call('copria-color-sort:update');
     }
 }

@@ -18,6 +18,10 @@ Finally add `'api/v1/copria-color-sort-result/*'` to the `$except` array of your
 
 If you want to edit any config values, run `php artisan vendor:publish --provider="Dias\Modules\Copria\ColorSort\CopriaColorSortServiceProvider" --tag="config"` and edit `config/copria_color_sort.php`.
 
+# Updating
+
+Run `php artisan copria-color-sort:update` to refresh the public assets of this package.
+
 # Removing
 
 To remove the module, roll back the migration and run and `php composer.phar remove dias/copria-color-sort`. Then remove `'Dias\Modules\Copria\ColorSort\CopriaColorSortServiceProvider'` from the providers array of `config/app.php`
