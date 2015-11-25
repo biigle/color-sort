@@ -24,4 +24,6 @@ Update the package using Composer. Then run `php artisan copria-color-sort:publi
 
 # Removing
 
-To remove the module, roll back the migration and run and `php composer.phar remove dias/copria-color-sort`. Then remove `'Dias\Modules\Copria\ColorSort\CopriaColorSortServiceProvider'` from the providers array of `config/app.php`
+To remove the module, roll back the migration and run and `php composer.phar remove dias/copria-color-sort`. Then remove `'Dias\Modules\Copria\ColorSort\CopriaColorSortServiceProvider'` from the providers array of `config/app.php`.
+
+See [here](http://stackoverflow.com/a/30288058/1796523) for how to roll back a single migration (tl;dr: Find the migration in the `migrations` DB table, set it's batch number to the next highest number of all batch numbers, then run `php artisan migrate:rollback`).
