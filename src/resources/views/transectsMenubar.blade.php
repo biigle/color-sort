@@ -18,7 +18,7 @@
             <p data-ng-if="colors.length===0">
                 There are no colors available for sorting yet.
             </p>
-            {{-- @if (auth()->user()->canEditInOneOfProjects($transect->projectIds())) --}}
+            @if (auth()->user()->canEditInOneOfProjects($transect->projectIds()))
                 @if (Copria::userHasKey())
                     <form class="form new-color-form" data-ng-submit="requestNewColor()" data-ng-if="!isComputing">
                         <input type="color" class="btn btn-default color-picker" id="color-sort-color" title="Choose a color" data-ng-model="new.color">
@@ -30,13 +30,13 @@
                 @else
                     <a href="{{route('settings-tokens')}}">Connect your COPRIA account</a> to make own requests for sorting colors.
                 @endif
-            {{-- @endif --}}
+            @endif
             <button type="button" class="btn btn-default" title="What is this?" data-ng-click="show.help=true" data-ng-if="!isComputing"><i class="glyphicon glyphicon-question-sign"></i></button>
             <div class="color-sort-popup-help" data-ng-if="show.help">
                 <p>
                     Here you can sort the images according to color. Choose a color from the palette at the top and the most similar images will be shown first.
                 </p>
-                @if (Copria::userHasKey())
+                @if (auth()->user()->canEditInOneOfProjects($transect->projectIds()))
                     <p>
                         To compute the sorting order for a new color, choose the color with the color picker at the bottom and click "Request new". If you stay on this page, you will be notified when the new color is available, otherwise it will appear on a later visit. Computing a new color can take several minutes depending on the size of the transect and load of the computing cluster.
                     </p>
