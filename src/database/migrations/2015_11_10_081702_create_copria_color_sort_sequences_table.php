@@ -16,11 +16,7 @@ class CreateCopriaColorSortSequencesTable extends Migration
         /*
         | This table stores all sequences of image IDs, when the images should be sorted according
         | to a certain color. The attributes are the transect ID, the images belong to, the color
-        | as hex value, the sequence of image IDs as JSON array and a token.
-        | The token is used to authenticate the Copria response with the computed data since
-        | the route accepting these responses must be publicly accessible. If a request to this
-        | route does not use a correct token, it is rejected. Also, the token is used to identify
-        | the color sort sequence, the data from the response belongs to.
+        | as hex value and the sequence of image IDs as JSON array.
         */
         Schema::create(Sequence::DB_TABLE_NAME, function (Blueprint $table) {
             $table->increments('id');
@@ -34,8 +30,6 @@ class CreateCopriaColorSortSequencesTable extends Migration
 
             // hex color like BADA55
             $table->string('color', 6);
-            // token used to authenticate the response from Copria
-            $table->string('token')->nullable()->index();
             // the sequence of image IDs when sorted by this color
             $table->json('sequence')->nullable();
 

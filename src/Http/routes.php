@@ -10,11 +10,4 @@ Route::group([
             'only' => ['index', 'show', 'store']
         ]);
     });
-
-    // this route is public so no secret API acces keys of users are exposed to Copria pipelines
-    // the authentication is done using the token of the color sort sequences
-    $router->post('copria-color-sort-result/{token}', [
-        'as' => 'copria-color-sort-result',
-        'uses' => 'TransectColorSortSequenceController@result'
-    ]);
 });

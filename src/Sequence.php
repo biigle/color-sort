@@ -67,10 +67,4 @@ class Sequence extends Model {
     {
         return $this->belongsTo('Dias\Transect');
     }
-
-    public function generateToken()
-    {
-        // do this like the password reset tokens, see: https://github.com/laravel/framework/blob/67226679df52894f41f3bf1a53a9537ed33e7fa9/src/Illuminate/Auth/Passwords/DatabaseTokenRepository.php#L171
-        $this->token = hash_hmac('sha256', str_random(40), config('app.key'));
-    }
 }

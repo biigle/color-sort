@@ -106,7 +106,6 @@ class TransectColorSortSequenceController extends Controller
         $s = new Sequence;
         $s->transect_id = $id;
         $s->color = $this->request->input('color');
-        $s->generateToken();
 
         try {
             $s->save();
@@ -120,38 +119,26 @@ class TransectColorSortSequenceController extends Controller
     /**
      * Return a computation result for a new color sort sequence
      *
-     * @api {post} copria-color-sort-result/:token Return a color sort sequence result
-     * @apiGroup ColorSort
-     * @apiName StoreColorSortResult
-     * @apiDescription This endpoint expects the result of the Copria color sort pipeline
-     *
-     * @apiParam {String} token The token belonging to the color sort sequence, to which the result belongs to
      * @apiParam (Required attributes) {String} pin1 Image IDs, imploded with a ',', when the images are sorted by the color of the color sort sequence. If this attribute is not present, `state` must be.
      * @apiParam (Required attributes) {String} state Json object. If this attribute is not present, `pin1` must be.
      *
-     * @param  string  $token
+     * @param  array  $payload Payload of the PipelineCallback that was called with the result of the pipeline
      * @return \Illuminate\Http\Response
      */
-    public function result($token)
+    public function result($payload)
     {
-        $sequence = Sequence::whereToken($token)->first();
-        if ($sequence === null) {
-            // token didn't match any sequence
-            return response('Unauthorized.', 401);
-        }
+        $sequence = Sequence::findOrFail($payload['id']);
 
         $request = $this->request;
 
         if ($request->has(config('copria_color_sort.result_request_param'))) {
             // job was successfully computed
-            $returnedIds = array_map('intval',explode(',', $request->input(config('copria_color_sort.result_request_param'))));
-            $transectIds = Image::where('transect_id', $sequence->transect_id)->lists('id')->toArray();
+            $returnedIds = array_map('intval', explode(',', $request->input(config('copria_color_sort.result_request_param'))));
+            $imagesIds = Image::where('transect_id', $sequence->transect_id)->lists('id')->toArray();
 
             // take only those of the returned IDs that actually belong to the transect
             // (e.g. images could have been deleted while the color sort sequence was computing)
-            $sequence->sequence = array_values(array_intersect($returnedIds, $transectIds));
-            // invalidate token so the sequence can't be altered with future requests
-            $sequence->token = null;
+            $sequence->sequence = array_values(array_intersect($returnedIds, $imagesIds));
             $sequence->save();
         } else if ($request->has('state')) {
             // route was called with the Copria SubmittedJob object instead of the result.

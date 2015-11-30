@@ -2,6 +2,7 @@
 
 use Dias\Modules\Copria\ColorSort\Transect;
 use Dias\Modules\Copria\ColorSort\Sequence;
+use Dias\Modules\Copria\PipelineCallback;
 
 class CopriaColorSortModuleHttpControllersApiTransectColorSortSequenceControllerTest extends ApiTestCase {
 
@@ -113,7 +114,6 @@ class CopriaColorSortModuleHttpControllersApiTransectColorSortSequenceController
         ])->assertResponseOk();
         $this->assertEquals(1, $transect->colorSortSequences()->count());
         $this->assertEquals('bada55', $transect->colorSortSequences()->first()->color);
-        $this->assertNotNull($transect->colorSortSequences()->first()->token);
 
         // requesting the same color twice is not allowed
         $this->post("/api/v1/transects/{$id}/color-sort-sequence", [
@@ -122,38 +122,57 @@ class CopriaColorSortModuleHttpControllersApiTransectColorSortSequenceController
         ])->assertResponseStatus(405);
     }
 
-    public function testResult()
+    public function testResultMalformed()
     {
-        // if the token does not exist, authentication failed
-        // note that we shouldn't have to provide a CRSF token here!
-        $this->post('api/v1/copria-color-sort-result/nonexistant')
-            ->assertResponseStatus(401);
 
-        $sequence = CopriaColorSortModuleSequenceTest::make();
-        $sequence->generateToken();
-        $sequence->save();
+        $sequence = CopriaColorSortModuleSequenceTest::create();
+
+        $callback = new PipelineCallback;
+        $callback->generateToken();
+        $callback->function = 'Dias\Modules\Copria\ColorSort\Http\Controllers\Api\TransectColorSortSequenceController@result';
+        $callback->payload = ['id' => $sequence->id];
+        $callback->save();
 
         // image ids are missing
-        $this->post("api/v1/copria-color-sort-result/{$sequence->token}")
+        $this->post("api/v1/copria-pipeline-callback/{$callback->token}")
             ->assertResponseStatus(422);
+    }
+
+    public function testResultFailed()
+    {
+
+        $sequence = CopriaColorSortModuleSequenceTest::create();
+
+        $callback = new PipelineCallback;
+        $callback->generateToken();
+        $callback->function = 'Dias\Modules\Copria\ColorSort\Http\Controllers\Api\TransectColorSortSequenceController@result';
+        $callback->payload = ['id' => $sequence->id];
+        $callback->save();
 
         // job failed, delete color sort sequence
-        $this->post("api/v1/copria-color-sort-result/{$sequence->token}", ['state' => []])
+        $this->post("api/v1/copria-pipeline-callback/{$callback->token}", ['state' => []])
             ->assertResponseOk();
         $this->assertNull($sequence->fresh());
+    }
 
-        $sequence = CopriaColorSortModuleSequenceTest::make();
-        $sequence->generateToken();
-        $sequence->save();
+    public function testResultSuccess()
+    {
+        $sequence = CopriaColorSortModuleSequenceTest::create();
+
+        $callback = new PipelineCallback;
+        $callback->generateToken();
+        $callback->function = 'Dias\Modules\Copria\ColorSort\Http\Controllers\Api\TransectColorSortSequenceController@result';
+        $callback->payload = ['id' => $sequence->id];
+        $callback->save();
+
         $image1 = ImageTest::create(['transect_id' => $sequence->transect->id, 'filename' => 'a']);
         $image2 = ImageTest::create(['transect_id' => $sequence->transect->id, 'filename' => 'b']);
 
         // job succeeded, set sorting order
-        $this->post("api/v1/copria-color-sort-result/{$sequence->token}", ['pin1' => $image2->id.',300,200,'.$image1->id])
+        $this->post("api/v1/copria-pipeline-callback/{$callback->token}", ['pin1' => $image2->id.',300,200,'.$image1->id])
             ->assertResponseOk();
         // the sequence should only contain image IDs that actually belong to the transect
         // the ordering must be kept, though
         $this->assertEquals([$image2->id, $image1->id], $sequence->fresh()->sequence);
-        $this->assertNull($sequence->fresh()->token);
     }
 }

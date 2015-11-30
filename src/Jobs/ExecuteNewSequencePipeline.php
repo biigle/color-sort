@@ -11,6 +11,8 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Dias\Modules\Copria\PipelineCallback;
+use Dias\Modules\Copria\ColorSort\Http\Controllers\Api\TransectColorSortSequenceController;
 
 class ExecuteNewSequencePipeline extends Job implements SelfHandling, ShouldQueue
 {
@@ -52,16 +54,24 @@ class ExecuteNewSequencePipeline extends Job implements SelfHandling, ShouldQueu
     {
         // ensure a fresh DB connection because this job is run with the daemon queue worker
         DB::reconnect();
-        $resultUrl = config('app.url').route('copria-color-sort-result', $this->sequence->token, false);
+
+        $callback = new PipelineCallback;
+        $callback->generateToken();
+        $callback->function = TransectColorSortSequenceController::class.'@result';
+        $callback->payload = ['id' => $this->sequence->id];
+
         $transect = $this->sequence->transect()->with('images')->first();
 
         CopriaUser::convert($this->user)
-            ->executeCopriaPipeline(config('copria_color_sort.pipeline_id'), $resultUrl, [
+            ->executeCopriaPipeline(config('copria_color_sort.pipeline_id'), $callback->url, [
                 config('copria_color_sort.hex_color_selector') => $this->sequence->color,
                 config('copria_color_sort.images_directory_selector') => $transect->url,
                 config('copria_color_sort.images_filenames_selector') => $transect->images->pluck('filename')->implode(','),
                 config('copria_color_sort.images_ids_selector') => $transect->images->pluck('id')->implode(','),
-                config('copria_color_sort.target_url_selector') => $resultUrl,
+                config('copria_color_sort.target_url_selector') => $callback->url,
             ]);
+
+        // only save callback if everything went right
+        $callback->save();
     }
 }

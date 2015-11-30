@@ -28,14 +28,6 @@ class CopriaColorSortModuleSequenceTest extends TestCase {
         $this->assertNull($s->fresh());
     }
 
-    public function testGenerateToken()
-    {
-        $s = static::make();
-        $this->assertNull($s->token);
-        $s->generateToken();
-        $this->assertNotNull($s->token);
-    }
-
     public function testCastSequence()
     {
         $s = static::make();
