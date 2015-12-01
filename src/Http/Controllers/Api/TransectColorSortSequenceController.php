@@ -89,7 +89,7 @@ class TransectColorSortSequenceController extends Controller
      * @apiGroup Transects
      * @apiName StoreTransectColorSortSequence
      * @apiPermission projectEditor
-     * @apiDescription Initiates computing of a new color sort sequence. Poll the "sow" endpoint to see when computing has finished.
+     * @apiDescription Initiates computing of a new color sort sequence. Poll the "show" endpoint to see when computing has finished.
      *
      * @apiParam {Number} id The transect ID.
      * @apiParam (Required attributes) {String} color The color of the new color sort sequence.
