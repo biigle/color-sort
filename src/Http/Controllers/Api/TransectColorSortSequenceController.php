@@ -77,13 +77,13 @@ class TransectColorSortSequenceController extends Controller
         // which sequences exist and which not
         $this->requireCanSee($transect);
 
-        $sequence = $transect->colorSortSequences()->whereColor($color)->select('sequence')->first()->sequence;
+        $sequence = $transect->colorSortSequences()->whereColor($color)->select('sequence')->first();
 
         if ($sequence === null) {
             abort(404);
         }
 
-        return $sequence;
+        return $sequence->sequence;
     }
 
     /**
