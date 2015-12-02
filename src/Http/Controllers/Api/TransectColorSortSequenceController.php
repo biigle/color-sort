@@ -45,7 +45,7 @@ class TransectColorSortSequenceController extends Controller
      */
     public function index($id)
     {
-        $transect = $this->requireNotNull(Transect::find($id));
+        $transect = Transect::findOrFail($id);
         $this->requireCanSee($transect);
 
         return $transect->colorSortSequences()->whereNotNull('sequence')->lists('color');
@@ -72,14 +72,18 @@ class TransectColorSortSequenceController extends Controller
      */
     public function show($id, $color)
     {
-        $transect = $this->requireNotNull(Transect::select('id')->find($id));
+        $transect = Transect::select('id')->findOrFail($id);
         // check this first before fetching the sequence so unauthorized users can't see
         // which sequences exist and which not
         $this->requireCanSee($transect);
 
-        return $this->requireNotNull(
-            $transect->colorSortSequences()->whereColor($color)->select('sequence')->first()
-        )->sequence;
+        $sequence = $transect->colorSortSequences()->whereColor($color)->select('sequence')->first()->sequence;
+
+        if ($sequence === null) {
+            abort(404);
+        }
+
+        return $sequence;
     }
 
     /**
@@ -100,7 +104,7 @@ class TransectColorSortSequenceController extends Controller
     public function store($id)
     {
         $this->validate($this->request, Sequence::$createRules);
-        $transect = $this->requireNotNull(Transect::select('id')->find($id));
+        $transect = Transect::select('id')->findOrFail($id);
         $this->requireCanEdit($transect);
 
         $s = new Sequence;
