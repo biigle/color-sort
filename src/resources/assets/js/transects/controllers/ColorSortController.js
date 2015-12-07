@@ -5,12 +5,12 @@
  * @memberOf dias.transects
  * @description Global controller for the color sort feature
  */
-angular.module('dias.transects').controller('ColorSortController', function ($scope, ColorSortSequence, $interval, msg) {
+angular.module('dias.transects').controller('ColorSortController', function ($scope, ColorSortSequence, $interval, msg, TRANSECT_ID) {
         "use strict";
 
         var popoverOpen = false;
 
-        var localStorageActiveColorKey = 'dias.transects.' + $scope.transectId + '.color-sort.active-color';
+        var localStorageActiveColorKey = 'dias.transects.' + TRANSECT_ID + '.color-sort.active-color';
 
         // stores all sorting sequence arrays with the related colors as keys
         var sequencesCache = {};
@@ -57,7 +57,7 @@ angular.module('dias.transects').controller('ColorSortController', function ($sc
             };
 
             var check = function () {
-                ColorSortSequence.get({transect_id: $scope.transectId, color: color}, success, error);
+                ColorSortSequence.get({transect_id: TRANSECT_ID, color: color}, success, error);
             };
 
             // poll every 5 seconds
@@ -68,7 +68,7 @@ angular.module('dias.transects').controller('ColorSortController', function ($sc
             popoverOpen = !popoverOpen;
             if (popoverOpen) {
                 // refresh the list of available colors every time the popover is opened
-                ColorSortSequence.query({transect_id: $scope.transectId}, function (value) {
+                ColorSortSequence.query({transect_id: TRANSECT_ID}, function (value) {
                     $scope.colors = value;
                 });
             }
@@ -95,7 +95,7 @@ angular.module('dias.transects').controller('ColorSortController', function ($sc
                 }
             };
 
-            ColorSortSequence.request({transect_id: $scope.transectId}, {color: color}, success, error);
+            ColorSortSequence.request({transect_id: TRANSECT_ID}, {color: color}, success, error);
         };
 
         var activateCachedColor = function (color) {
@@ -121,7 +121,7 @@ angular.module('dias.transects').controller('ColorSortController', function ($sc
                     activateCachedColor(color);
                 };
 
-                ColorSortSequence.get({transect_id: $scope.transectId, color: color}, success, msg.responseError);
+                ColorSortSequence.get({transect_id: TRANSECT_ID, color: color}, success, msg.responseError);
             }
         };
 

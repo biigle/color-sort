@@ -15,7 +15,7 @@ var sequence = ColorSortSequence.get({transect_id: 1, color: 'bada55'}, function
     console.log(sequence) ; // [2, 3, 1, 4]
 });
 // request a new color sort sequence
-var sequence = ColorSortSequence.request({transect_id: $scope.transectId}, {color: 'c0ffee'}, function () {
+var sequence = ColorSortSequence.request({transect_id: TRANSECT_ID}, {color: 'c0ffee'}, function () {
     console.log(sequence); // {color: 'c0ffee'}
 });
  *
