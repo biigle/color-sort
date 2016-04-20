@@ -3,6 +3,7 @@
 namespace Dias\Modules\Copria\ColorSort;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Routing\Router;
 use Dias\Services\Modules;
 
 class CopriaColorSortServiceProvider extends ServiceProvider {
@@ -10,9 +11,12 @@ class CopriaColorSortServiceProvider extends ServiceProvider {
     /**
      * Bootstrap the application events.
      *
+     * @param  \Dias\Services\Modules  $modules
+     * @param  \Illuminate\Routing\Router  $router
+     *
      * @return void
      */
-    public function boot(Modules $modules)
+    public function boot(Modules $modules, Router $router)
     {
         $this->loadViewsFrom(__DIR__.'/resources/views', 'copria-color-sort');
 
@@ -28,7 +32,13 @@ class CopriaColorSortServiceProvider extends ServiceProvider {
             __DIR__.'/database/migrations/' => database_path('migrations')
         ], 'migrations');
 
-        include __DIR__.'/Http/routes.php';
+        $router->group([
+            'namespace' => 'Dias\Modules\Copria\ColorSort\Http\Controllers',
+            'middleware' => 'web',
+        ], function ($router) {
+            require __DIR__.'/Http/routes.php';
+        });
+
 
         \Dias\Image::observe(new \Dias\Modules\Copria\ColorSort\Observers\ImageObserver);
 
