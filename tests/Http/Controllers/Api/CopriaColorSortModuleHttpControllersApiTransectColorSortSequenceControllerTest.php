@@ -8,9 +8,8 @@ class CopriaColorSortModuleHttpControllersApiTransectColorSortSequenceController
 
     public function testIndex()
     {
-        $transect = TransectTest::create();
+        $transect = $this->transect();
         $id = $transect->id;
-        $this->project->addTransectId($id);
 
         $s1 = CopriaColorSortModuleSequenceTest::make(['transect_id' => $transect->id]);
         $s1->sequence = [1, 2];
@@ -19,11 +18,11 @@ class CopriaColorSortModuleHttpControllersApiTransectColorSortSequenceController
 
         $this->doTestApiRoute('GET', "/api/v1/transects/{$id}/color-sort-sequence");
 
-        $this->be($this->user);
+        $this->beUser();
         $this->get("/api/v1/transects/{$id}/color-sort-sequence")
             ->assertResponseStatus(401);
 
-        $this->be($this->guest);
+        $this->beGuest();
         $this->get("/api/v1/transects/{$id}/color-sort-sequence")
             // show only sequences with actual sorting data
             ->seeJsonEquals([$s1->color]);
@@ -31,19 +30,18 @@ class CopriaColorSortModuleHttpControllersApiTransectColorSortSequenceController
 
     public function testShow()
     {
-        $transect = TransectTest::create();
+        $transect = $this->transect();
         $id = $transect->id;
-        $this->project->addTransectId($id);
 
         $s = CopriaColorSortModuleSequenceTest::create(['transect_id' => $transect->id]);
 
         $this->doTestApiRoute('GET', "/api/v1/transects/{$id}/color-sort-sequence/{$s->color}");
 
-        $this->be($this->user);
+        $this->beUser();
         $this->get("/api/v1/transects/{$id}/color-sort-sequence/{$s->color}")
             ->assertResponseStatus(401);
 
-        $this->be($this->guest);
+        $this->beGuest();
         $this->get("/api/v1/transects/{$id}/color-sort-sequence/abc")
             ->assertResponseStatus(404);
 
@@ -62,45 +60,38 @@ class CopriaColorSortModuleHttpControllersApiTransectColorSortSequenceController
     {
         AttributeTest::create(['name' => 'copria_api_key', 'type' => 'string']);
 
-        $transect = Transect::find(TransectTest::create()->id);
+        $transect = Transect::find($this->transect()->id);
         $id = $transect->id;
-        $this->project->addTransectId($id);
 
         $this->doTestApiRoute('POST', "/api/v1/transects/{$id}/color-sort-sequence");
 
         // guests cannot request new color sort sequences
-        $this->be($this->guest);
-        $this->guest->attachDiasAttribute('copria_api_key', 'abcd');
-        $this->callAjax('POST', "/api/v1/transects/{$id}/color-sort-sequence", [
-            '_token' => Session::token(),
+        $this->beGuest();
+        $this->guest()->attachDiasAttribute('copria_api_key', 'abcd');
+        $this->post("/api/v1/transects/{$id}/color-sort-sequence", [
             'color' => 'abcdef',
         ]);
         $this->assertResponseStatus(401);
 
-        $this->be($this->editor);
+        $this->beEditor();
 
-        $this->callAjax('POST', "/api/v1/transects/{$id}/color-sort-sequence", [
-            '_token' => Session::token(),
+        $this->post("/api/v1/transects/{$id}/color-sort-sequence", [
             'color' => 'c0ffee',
         ]);
         // user has no Copria account connected
         $this->assertResponseStatus(401);
-        $this->editor->attachDiasAttribute('copria_api_key', 'abcd');
+        $this->editor()->attachDiasAttribute('copria_api_key', 'abcd');
 
         // missing color
-        $this->callAjax('POST', "/api/v1/transects/{$id}/color-sort-sequence", [
-            '_token' => Session::token(),
-        ]);
+        $this->json('POST', "/api/v1/transects/{$id}/color-sort-sequence");
         $this->assertResponseStatus(422);
 
         // invalid color
-        $this->callAjax('POST', "/api/v1/transects/{$id}/color-sort-sequence", [
-            '_token' => Session::token(),
+        $this->json('POST', "/api/v1/transects/{$id}/color-sort-sequence", [
             'color' => 'bcdefg',
         ]);
         $this->assertResponseStatus(422);
-        $this->callAjax('POST', "/api/v1/transects/{$id}/color-sort-sequence", [
-            '_token' => Session::token(),
+        $this->json('POST', "/api/v1/transects/{$id}/color-sort-sequence", [
             'color' => 'abcdef1',
         ]);
         $this->assertResponseStatus(422);
@@ -109,7 +100,6 @@ class CopriaColorSortModuleHttpControllersApiTransectColorSortSequenceController
 
         $this->assertEquals(0, $transect->colorSortSequences()->count());
         $this->post("/api/v1/transects/{$id}/color-sort-sequence", [
-            '_token' => Session::token(),
             'color' => 'bada55',
         ])->assertResponseOk();
         $this->assertEquals(1, $transect->colorSortSequences()->count());
@@ -117,7 +107,6 @@ class CopriaColorSortModuleHttpControllersApiTransectColorSortSequenceController
 
         // requesting the same color twice is not allowed
         $this->post("/api/v1/transects/{$id}/color-sort-sequence", [
-            '_token' => Session::token(),
             'color' => 'bada55',
         ])->assertResponseStatus(405);
     }
