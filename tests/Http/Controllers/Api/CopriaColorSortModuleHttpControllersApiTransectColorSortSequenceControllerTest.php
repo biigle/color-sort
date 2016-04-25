@@ -3,6 +3,7 @@
 use Dias\Modules\Copria\ColorSort\Transect;
 use Dias\Modules\Copria\ColorSort\Sequence;
 use Dias\Modules\Copria\PipelineCallback;
+use Dias\Modules\Copria\ApiToken;
 
 class CopriaColorSortModuleHttpControllersApiTransectColorSortSequenceControllerTest extends ApiTestCase {
 
@@ -58,8 +59,6 @@ class CopriaColorSortModuleHttpControllersApiTransectColorSortSequenceController
 
     public function testStore()
     {
-        AttributeTest::create(['name' => 'copria_api_key', 'type' => 'string']);
-
         $transect = Transect::find($this->transect()->id);
         $id = $transect->id;
 
@@ -67,7 +66,10 @@ class CopriaColorSortModuleHttpControllersApiTransectColorSortSequenceController
 
         // guests cannot request new color sort sequences
         $this->beGuest();
-        $this->guest()->attachDiasAttribute('copria_api_key', 'abcd');
+        $token = new ApiToken;
+        $token->owner()->associate($this->guest());
+        $token->token = 'abcd';
+        $token->save();
         $this->post("/api/v1/transects/{$id}/color-sort-sequence", [
             'color' => 'abcdef',
         ]);
@@ -80,7 +82,11 @@ class CopriaColorSortModuleHttpControllersApiTransectColorSortSequenceController
         ]);
         // user has no Copria account connected
         $this->assertResponseStatus(401);
-        $this->editor()->attachDiasAttribute('copria_api_key', 'abcd');
+
+        $token = new ApiToken;
+        $token->owner()->associate($this->editor());
+        $token->token = 'abcd';
+        $token->save();
 
         // missing color
         $this->json('POST', "/api/v1/transects/{$id}/color-sort-sequence");

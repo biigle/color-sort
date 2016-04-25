@@ -9,12 +9,11 @@ use Dias\User;
 use Dias\Modules\Copria\User as CopriaUser;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Dias\Modules\Copria\PipelineCallback;
 use Dias\Modules\Copria\ColorSort\Http\Controllers\Api\TransectColorSortSequenceController;
 
-class ExecuteNewSequencePipeline extends Job implements SelfHandling, ShouldQueue
+class ExecuteNewSequencePipeline extends Job implements ShouldQueue
 {
     use InteractsWithQueue, SerializesModels;
 

@@ -1,6 +1,6 @@
 <?php
 
-use Dias\Modules\Copria\User;
+use Dias\Modules\Copria\ApiToken;
 use Dias\Modules\Copria\ColorSort\Jobs\ExecuteNewSequencePipeline;
 use Dias\Modules\Copria\PipelineCallback;
 
@@ -9,7 +9,6 @@ class CopriaColorSortModuleJobsExecuteNewSequencePipelineTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        AttributeTest::create(['name' => 'copria_api_key', 'type' => 'string']);
 
         if (DB::connection() instanceof Illuminate\Database\SQLiteConnection) {
             // ignore reconnect because sqlite DB would be dumped
@@ -28,7 +27,10 @@ class CopriaColorSortModuleJobsExecuteNewSequencePipelineTest extends TestCase
         $sequence->color = 'bada55';
         $sequence->save();
 
-        User::convert($transect->creator)->copria_api_key = 'abcd';
+        $token = new ApiToken;
+        $token->owner()->associate($transect->creator);
+        $token->token = 'abcd';
+        $token->save();
 
         // this should work even if the application is located in a subdiectory!
         config(['app.url' => 'http://localhost:8000/sub']);
@@ -65,7 +67,10 @@ class CopriaColorSortModuleJobsExecuteNewSequencePipelineTest extends TestCase
         $sequence->color = 'bada55';
         $sequence->save();
 
-        User::convert($transect->creator)->copria_api_key = 'abcd';
+        $token = new ApiToken;
+        $token->owner()->associate($transect->creator);
+        $token->token = 'abcd';
+        $token->save();
 
         Copria::shouldReceive('userExecutePipeline')->andThrow('Exception');
 
