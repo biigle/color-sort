@@ -20,17 +20,17 @@
 }
 
 .available-colors-item {
-    $size: 30px;
+    $size: 25px;
     display: inline-block;
     height: $size;
     width: $size;
     border-radius: 50%;
-    margin: 0 0.5em 0.5em 0;
+    margin-right: 0.5em;
     cursor: pointer;
 
-    &.active {
+    &:hover, &.active {
         border: 1px solid #777;
-        padding: 3px;
+        padding: 2px;
         background-clip: content-box;
     }
 }
@@ -40,8 +40,10 @@
 }
 
 .available-colors-list {
-    max-height: 150px;
-    overflow-y: auto;
+    white-space: nowrap;
+    overflow-x: auto;
+    margin-bottom: 0;
+    margin-top: .5em;
 }
 
 .color-sort-popup-help {
@@ -52,4 +54,9 @@
     height: 100%;
     overflow-y: auto;
     background-color: white;
+}
+
+a.color-sort-list-group-item:hover {
+    background-color: transparent;
+    cursor: default;
 }

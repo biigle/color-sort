@@ -42,7 +42,7 @@ class CopriaColorSortServiceProvider extends ServiceProvider {
 
         \Dias\Image::observe(new \Dias\Modules\Copria\ColorSort\Observers\ImageObserver);
 
-        $modules->addMixin('copria-color-sort', 'transectsMenubar');
+        $modules->addMixin('copria-color-sort', 'transectsSorters');
         $modules->addMixin('copria-color-sort', 'transectsScripts');
         $modules->addMixin('copria-color-sort', 'transectsStyles');
     }

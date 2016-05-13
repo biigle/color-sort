@@ -14,22 +14,24 @@
 
 .available-colors-item {
   display: inline-block;
-  height: 30px;
-  width: 30px;
+  height: 25px;
+  width: 25px;
   border-radius: 50%;
-  margin: 0 0.5em 0.5em 0;
+  margin-right: 0.5em;
   cursor: pointer; }
-  .available-colors-item.active {
+  .available-colors-item:hover, .available-colors-item.active {
     border: 1px solid #777;
-    padding: 3px;
+    padding: 2px;
     background-clip: content-box; }
 
 .new-color-form {
   display: inline-block; }
 
 .available-colors-list {
-  max-height: 150px;
-  overflow-y: auto; }
+  white-space: nowrap;
+  overflow-x: auto;
+  margin-bottom: 0;
+  margin-top: .5em; }
 
 .color-sort-popup-help {
   position: absolute;
@@ -39,5 +41,9 @@
   height: 100%;
   overflow-y: auto;
   background-color: white; }
+
+a.color-sort-list-group-item:hover {
+  background-color: transparent;
+  cursor: default; }
 
 /*# sourceMappingURL=transects.css.map */
