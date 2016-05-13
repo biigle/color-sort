@@ -29,9 +29,16 @@
     cursor: pointer;
 
     &:hover, &.active {
-        border: 1px solid #777;
         padding: 2px;
         background-clip: content-box;
+    }
+
+    &:hover {
+        border: 1px solid #777;
+    }
+
+    &.active {
+        border: 2px solid #337ab7;
     }
 }
 
@@ -56,7 +63,10 @@
     background-color: white;
 }
 
-a.color-sort-list-group-item:hover {
-    background-color: transparent;
-    cursor: default;
+a.color-sort-list-group-item {
+
+    &:hover, &:focus, &:active {
+        background-color: transparent;
+        cursor: default;
+    }
 }
