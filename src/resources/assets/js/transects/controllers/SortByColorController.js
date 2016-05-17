@@ -12,6 +12,7 @@ angular.module('dias.transects').controller('SortByColorController', function ($
         var colorsCacheKey = 'color-colors';
         var sequenceCacheKey = 'color-sequence-';
         var activeColorCacheKey = 'color-active';
+        var isComputingCacheKey = 'color-is-computing';
 
         // interval in ms to poll for a newly requested color
         var pollInterval = 5000;
@@ -27,7 +28,13 @@ angular.module('dias.transects').controller('SortByColorController', function ($
 
         var availableColors = $scope.getCache(colorsCacheKey);
 
-        var newColorIsComputing = false;
+        if (!$scope.hasCache(isComputingCacheKey)) {
+            $scope.setCache(isComputingCacheKey, false);
+        }
+
+        var setIsComputingNewColor = function (value) {
+            $scope.setCache(isComputingCacheKey, value);
+        };
 
         var colorSequenceLoaded = function () {
             $scope.setLoading(false);
@@ -42,7 +49,7 @@ angular.module('dias.transects').controller('SortByColorController', function ($
                 // TODO what if the transect _is_ empty?
                 if (sequence.length > 0) {
                     $interval.cancel(promise);
-                    newColorIsComputing = false;
+                    setIsComputingNewColor(false);
                     $scope.setCache(key, sequence);
                     availableColors.push(color);
                     msg.success('The new color is now available for sorting.');
@@ -51,7 +58,7 @@ angular.module('dias.transects').controller('SortByColorController', function ($
 
             var error = function (response) {
                 $interval.cancel(promise);
-                newColorIsComputing = false;
+                setIsComputingNewColor(false);
                 if (response.status === 404) {
                     msg.danger('The COPRIA pipeline for computing a new color sort sequence failed.');
                 } else {
@@ -112,7 +119,7 @@ angular.module('dias.transects').controller('SortByColorController', function ($
         };
 
         $scope.isComputingNewColor = function () {
-            return newColorIsComputing;
+            return $scope.getCache(isComputingCacheKey);
         };
 
         $scope.canRequestNewColor = function () {
@@ -126,7 +133,7 @@ angular.module('dias.transects').controller('SortByColorController', function ($
             var color = $scope.new.color.substring(1);
 
             var success = function () {
-                newColorIsComputing = true;
+                setIsComputingNewColor(true);
                 poll(color);
             };
 
