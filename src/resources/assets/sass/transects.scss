@@ -1,72 +1,36 @@
-.color-sort-popup {
-    position: relative;
-
-    &.help {
-        min-height: 200px;
-    }
-
+.color-sort-list-group-item {
     .color-picker {
-        height: 34px;
-        padding: 0.25em 0.5em;
+        width: 30px;
+        height: 22px;
     }
 
-    .close-button {
-        position: absolute;
-        top: 0;
-        right: 1em;
-        background-color: rgba(255, 255, 255, 0.5);
-        font-weight: bold;
-    }
-}
+    .available-colors-item {
+        $size: 25px;
+        display: inline-block;
+        height: $size;
+        width: $size;
+        border-radius: 50%;
+        margin-right: 0.5em;
+        cursor: pointer;
 
-.available-colors-item {
-    $size: 25px;
-    display: inline-block;
-    height: $size;
-    width: $size;
-    border-radius: 50%;
-    margin-right: 0.5em;
-    cursor: pointer;
+        &:hover, &.active {
+            padding: 2px;
+            background-clip: content-box;
+        }
 
-    &:hover, &.active {
-        padding: 2px;
-        background-clip: content-box;
-    }
+        &:hover {
+            border: 1px solid #777;
+        }
 
-    &:hover {
-        border: 1px solid #777;
+        &.active {
+            border: 2px solid #337ab7;
+        }
     }
 
-    &.active {
-        border: 2px solid #337ab7;
-    }
-}
-
-.new-color-form {
-    display: inline-block;
-}
-
-.available-colors-list {
-    white-space: nowrap;
-    overflow-x: auto;
-    margin-bottom: 0;
-    margin-top: .5em;
-}
-
-.color-sort-popup-help {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    overflow-y: auto;
-    background-color: white;
-}
-
-a.color-sort-list-group-item {
-
-    &:hover, &:focus, &:active {
-        background-color: transparent;
-        cursor: default;
+    .available-colors-list {
+        white-space: nowrap;
+        overflow-x: auto;
+        margin-bottom: 0;
+        margin-top: .5em;
     }
 }

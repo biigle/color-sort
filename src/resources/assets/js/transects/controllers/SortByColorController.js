@@ -13,6 +13,9 @@ angular.module('dias.transects').controller('SortByColorController', function ($
         var sequenceCacheKey = 'color-sequence-';
         var activeColorCacheKey = 'color-active';
 
+        // interval in ms to poll for a newly requested color
+        var pollInterval = 5000;
+
         var fetchingColors = false;
 
         if (!$scope.hasCache(colorsCacheKey)) {
@@ -24,8 +27,47 @@ angular.module('dias.transects').controller('SortByColorController', function ($
 
         var availableColors = $scope.getCache(colorsCacheKey);
 
+        var newColorIsComputing = false;
+
         var colorSequenceLoaded = function () {
             $scope.setLoading(false);
+        };
+
+        // regularly check if a requested color is now available
+        var poll = function (color) {
+            var promise;
+            var key = sequenceCacheKey + color;
+
+            var success = function (sequence) {
+                // TODO what if the transect _is_ empty?
+                if (sequence.length > 0) {
+                    $interval.cancel(promise);
+                    newColorIsComputing = false;
+                    $scope.setCache(key, sequence);
+                    availableColors.push(color);
+                    msg.success('The new color is now available for sorting.');
+                }
+            };
+
+            var error = function (response) {
+                $interval.cancel(promise);
+                newColorIsComputing = false;
+                if (response.status === 404) {
+                    msg.danger('The COPRIA pipeline for computing a new color sort sequence failed.');
+                } else {
+                    msg.responseError(response);
+                }
+            };
+
+            var check = function () {
+                ColorSortSequence.get({transect_id: TRANSECT_ID, color: color}, success, error);
+            };
+
+            promise = $interval(check, pollInterval);
+        };
+
+        $scope.new = {
+            color: '#000000'
         };
 
         $scope.toggle = function (color) {
@@ -65,12 +107,38 @@ angular.module('dias.transects').controller('SortByColorController', function ($
             return availableColors;
         };
 
-        $scope.catchClick = function (e) {
-            e.preventDefault();
-        };
-
         $scope.isFetchingColors = function () {
             return fetchingColors;
+        };
+
+        $scope.isComputingNewColor = function () {
+            return newColorIsComputing;
+        };
+
+        $scope.canRequestNewColor = function () {
+            return !$scope.isFetchingColors() && !$scope.isComputingNewColor();
+        };
+
+        $scope.requestNewColor = function () {
+            if (!$scope.canRequestNewColor()) return;
+
+            // omit the '#' at the beginning of the hex color
+            var color = $scope.new.color.substring(1);
+
+            var success = function () {
+                newColorIsComputing = true;
+                poll(color);
+            };
+
+            var error = function (response) {
+                if (response.status === 405) {
+                    msg.warning('This color is already available (or still computing).');
+                } else {
+                    msg.responseError(response);
+                }
+            };
+
+            ColorSortSequence.request({transect_id: TRANSECT_ID}, {color: color}, success, error);
         };
     }
 );
