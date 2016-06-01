@@ -1,8 +1,8 @@
 {
     "name": "dias/copria-color-sort",
     "require": {
-        "dias/transects": "0.1.0",
-        "dias/copria": "0.1.0"
+        "dias/transects": "^0.1.0",
+        "dias/copria": "^0.1.0"
     },
     "require-dev": {
     },
