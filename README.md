@@ -8,7 +8,7 @@ Add this to your `composer.json` repositories array:
 }
 ```
 
-Run `php composer.phar require dias/copria-color-sort:dev-master`.
+Run `php composer.phar require dias/copria-color-sort`.
 
 To activate the module, add `'Dias\Modules\Copria\ColorSort\CopriaColorSortServiceProvider'` to the providers array of `config/app.php`. Then run `php artisan copria-color-sort:install` to publish and run the migration.
 
