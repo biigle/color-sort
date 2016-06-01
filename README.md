@@ -4,7 +4,7 @@ Add this to your `composer.json` repositories array:
 ```json
 {
     "type": "vcs",
-    "url": "porta.cebitec.uni-bielefeld.de:/vol/biodtmin/git/dias-copria-color-sort.git"
+    "url": "git@github.com:BiodataMiningGroup/dias-copria-color-sort.git"
 }
 ```
 
