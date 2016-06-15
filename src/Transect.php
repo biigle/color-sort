@@ -10,6 +10,21 @@ use Dias\Transect as BaseTransect;
 class Transect extends BaseTransect {
 
     /**
+     * Converts a regular Dias transect to a Copria color sort transect
+     *
+     * @param BaseTransect $transect Regular Dias transect instance
+     *
+     * @return User
+     */
+    public static function convert(BaseTransect $transect)
+    {
+        $instance = new static;
+        $instance->setRawAttributes($transect->attributes);
+        $instance->exists = $transect->exists;
+        return $instance->setRelations($transect->relations);
+    }
+
+    /**
      * The color sort sequences belonging to this transect
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

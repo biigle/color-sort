@@ -2,6 +2,7 @@
 
 namespace Dias\Modules\Copria\ColorSort\Http\Controllers\Api;
 
+use Dias\Transect as BaseTransect;
 use Dias\Modules\Copria\ColorSort\Transect;
 use Dias\Modules\Copria\ColorSort\Sequence;
 use Dias\Http\Controllers\Api\Controller;
@@ -45,10 +46,13 @@ class TransectColorSortSequenceController extends Controller
      */
     public function index($id)
     {
-        $transect = Transect::findOrFail($id);
-        $this->requireCanSee($transect);
+        $transect = BaseTransect::findOrFail($id);
+        $this->authorize('access', $transect);
 
-        return $transect->colorSortSequences()->whereNotNull('sequence')->lists('color');
+        return Transect::convert($transect)
+            ->colorSortSequences()
+            ->whereNotNull('sequence')
+            ->pluck('color');
     }
 
     /**
@@ -72,12 +76,16 @@ class TransectColorSortSequenceController extends Controller
      */
     public function show($id, $color)
     {
-        $transect = Transect::select('id')->findOrFail($id);
+        $transect = BaseTransect::findOrFail($id);
         // check this first before fetching the sequence so unauthorized users can't see
         // which sequences exist and which not
-        $this->requireCanSee($transect);
+        $this->authorize('access', $transect);
 
-        $sequence = $transect->colorSortSequences()->whereColor($color)->select('sequence')->first();
+        $sequence = Transect::convert($transect)
+            ->colorSortSequences()
+            ->whereColor($color)
+            ->select('sequence')
+            ->first();
 
         if ($sequence === null) {
             abort(404);
@@ -104,8 +112,8 @@ class TransectColorSortSequenceController extends Controller
     public function store($id)
     {
         $this->validate($this->request, Sequence::$createRules);
-        $transect = Transect::select('id')->findOrFail($id);
-        $this->requireCanEdit($transect);
+        $transect = BaseTransect::findOrFail($id);
+        $this->authorize('edit-in', $transect);
 
         $s = new Sequence;
         $s->transect_id = $id;

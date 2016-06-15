@@ -21,7 +21,7 @@ class CopriaColorSortModuleHttpControllersApiTransectColorSortSequenceController
 
         $this->beUser();
         $this->get("/api/v1/transects/{$id}/color-sort-sequence")
-            ->assertResponseStatus(401);
+            ->assertResponseStatus(403);
 
         $this->beGuest();
         $this->get("/api/v1/transects/{$id}/color-sort-sequence")
@@ -40,7 +40,7 @@ class CopriaColorSortModuleHttpControllersApiTransectColorSortSequenceController
 
         $this->beUser();
         $this->get("/api/v1/transects/{$id}/color-sort-sequence/{$s->color}")
-            ->assertResponseStatus(401);
+            ->assertResponseStatus(403);
 
         $this->beGuest();
         $this->get("/api/v1/transects/{$id}/color-sort-sequence/abc")
@@ -73,7 +73,7 @@ class CopriaColorSortModuleHttpControllersApiTransectColorSortSequenceController
         $this->post("/api/v1/transects/{$id}/color-sort-sequence", [
             'color' => 'abcdef',
         ]);
-        $this->assertResponseStatus(401);
+        $this->assertResponseStatus(403);
 
         $this->beEditor();
 
