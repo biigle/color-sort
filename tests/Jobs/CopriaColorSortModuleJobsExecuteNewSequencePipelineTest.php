@@ -6,17 +6,6 @@ use Dias\Modules\Copria\PipelineCallback;
 
 class CopriaColorSortModuleJobsExecuteNewSequencePipelineTest extends TestCase
 {
-    public function setUp()
-    {
-        parent::setUp();
-
-        if (DB::connection() instanceof Illuminate\Database\SQLiteConnection) {
-            // ignore reconnect because sqlite DB would be dumped
-            DB::shouldReceive('reconnect')->once();
-            // add this, otherwise disconnect of TestCase would fail
-            DB::shouldReceive('disconnect')->once();
-        }
-    }
 
     public function testHandle()
     {
@@ -53,8 +42,7 @@ class CopriaColorSortModuleJobsExecuteNewSequencePipelineTest extends TestCase
             ->with(config('copria_color_sort.pipeline_id'), 'abcd', $urlMatcher, $paramsMatcher);
 
         $this->assertEquals(0, PipelineCallback::count());
-        // queue is synchronous in test environment and processes immediately
-        Queue::push(new ExecuteNewSequencePipeline($sequence, $transect->creator));
+        with(new ExecuteNewSequencePipeline($sequence, $transect->creator))->handle();
         $this->assertEquals(1, PipelineCallback::count());
     }
 
@@ -75,7 +63,7 @@ class CopriaColorSortModuleJobsExecuteNewSequencePipelineTest extends TestCase
         Copria::shouldReceive('userExecutePipeline')->andThrow('Exception');
 
         try {
-            Queue::push(new ExecuteNewSequencePipeline($sequence, $transect->creator));
+            with(new ExecuteNewSequencePipeline($sequence, $transect->creator))->handle();
             $this->assertFalse(true);
         } catch (Exception $e) {
             // don't create the callback if anything went wrong

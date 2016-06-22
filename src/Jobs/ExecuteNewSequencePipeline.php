@@ -51,9 +51,6 @@ class ExecuteNewSequencePipeline extends Job implements ShouldQueue
      */
     public function handle()
     {
-        // ensure a fresh DB connection because this job is run with the daemon queue worker
-        DB::reconnect();
-
         $callback = new PipelineCallback;
         $callback->generateToken();
         $callback->function = TransectColorSortSequenceController::class.'@result';
