@@ -2,24 +2,22 @@
 
 namespace Dias\Modules\Copria\ColorSort\Http\Controllers\Api;
 
+use Dias\Image;
+use Illuminate\Http\Request;
 use Dias\Transect as BaseTransect;
+use Illuminate\Contracts\Auth\Guard;
+use Dias\Http\Controllers\Api\Controller;
 use Dias\Modules\Copria\ColorSort\Transect;
 use Dias\Modules\Copria\ColorSort\Sequence;
-use Dias\Http\Controllers\Api\Controller;
-use Illuminate\Http\Request;
 use Dias\Modules\Copria\ColorSort\Jobs\ExecuteNewSequencePipeline;
-use Dias\Image;
 
 class TransectColorSortSequenceController extends Controller
 {
     /**
      * Creates a new TransectColorSortSequenceController instance.
-     *
-     * @param Request $request
      */
-    public function __construct(Request $request)
+    public function __construct()
     {
-        parent::__construct($request);
         // the user has to have their Copria key configured to request a new color sort sequence
         $this->middleware('copria.key', ['only' => 'store']);
     }
@@ -106,18 +104,20 @@ class TransectColorSortSequenceController extends Controller
      * @apiParam {Number} id The transect ID.
      * @apiParam (Required attributes) {String} color The color of the new color sort sequence.
      *
+     * @param Request $request
+     * @param Guard $auth
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function store($id)
+    public function store(Request $request, Guard $auth, $id)
     {
-        $this->validate($this->request, Sequence::$createRules);
+        $this->validate($request, Sequence::$createRules);
         $transect = BaseTransect::findOrFail($id);
         $this->authorize('edit-in', $transect);
 
         $s = new Sequence;
         $s->transect_id = $id;
-        $s->color = $this->request->input('color');
+        $s->color = $request->input('color');
 
         try {
             $s->save();
@@ -125,7 +125,7 @@ class TransectColorSortSequenceController extends Controller
             abort(405, 'The color sort sequence already exists for this transect');
         }
 
-        $this->dispatch(new ExecuteNewSequencePipeline($s, $this->user));
+        $this->dispatch(new ExecuteNewSequencePipeline($s, $auth->user()));
     }
 
     /**
@@ -134,19 +134,18 @@ class TransectColorSortSequenceController extends Controller
      * @apiParam (Required attributes) {String} pin1 Image IDs, imploded with a ',', when the images are sorted by the color of the color sort sequence. If this attribute is not present, `state` must be.
      * @apiParam (Required attributes) {String} state Json object. If this attribute is not present, `pin1` must be.
      *
+     * @param Request $request
      * @param  array  $payload Payload of the PipelineCallback that was called with the result of the pipeline
      * @return \Illuminate\Http\Response
      */
-    public function result($payload)
+    public function result(Request $request, $payload)
     {
         $sequence = Sequence::findOrFail($payload['id']);
-
-        $request = $this->request;
 
         if ($request->has(config('copria_color_sort.result_request_param'))) {
             // job was successfully computed
             $returnedIds = array_map('intval', explode(',', $request->input(config('copria_color_sort.result_request_param'))));
-            $imagesIds = Image::where('transect_id', $sequence->transect_id)->lists('id')->toArray();
+            $imagesIds = Image::where('transect_id', $sequence->transect_id)->pluck('id')->toArray();
 
             // take only those of the returned IDs that actually belong to the transect
             // (e.g. images could have been deleted while the color sort sequence was computing)
