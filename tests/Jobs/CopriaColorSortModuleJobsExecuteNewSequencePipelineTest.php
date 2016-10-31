@@ -10,8 +10,7 @@ class CopriaColorSortModuleJobsExecuteNewSequencePipelineTest extends TestCase
     public function testHandle()
     {
         $transect = TransectTest::create(['url' => '/vol/images']);
-        ImageTest::create(['transect_id' => $transect->id, 'filename' => 'a.jpg']);
-        ImageTest::create(['transect_id' => $transect->id, 'filename' => 'b.jpg']);
+        $transect->createImages(['a.jpg', 'b.jpg']);
         $sequence = CopriaColorSortModuleSequenceTest::make(['transect_id' => $transect->id]);
         $sequence->color = 'bada55';
         $sequence->save();
