@@ -1,9 +1,10 @@
 <?php
 
+use Dias\Modules\Copria\ApiToken;
+use Dias\Modules\Copria\PipelineCallback;
 use Dias\Modules\Copria\ColorSort\Transect;
 use Dias\Modules\Copria\ColorSort\Sequence;
-use Dias\Modules\Copria\PipelineCallback;
-use Dias\Modules\Copria\ApiToken;
+use Dias\Modules\Copria\ColorSort\Jobs\ExecuteNewSequencePipeline;
 
 class CopriaColorSortModuleHttpControllersApiTransectColorSortSequenceControllerTest extends ApiTestCase {
 
@@ -102,7 +103,7 @@ class CopriaColorSortModuleHttpControllersApiTransectColorSortSequenceController
         ]);
         $this->assertResponseStatus(422);
 
-        $this->expectsJobs(\Dias\Modules\Copria\ColorSort\Jobs\ExecuteNewSequencePipeline::class);
+        $this->expectsJobs(ExecuteNewSequencePipeline::class);
 
         $this->assertEquals(0, $transect->colorSortSequences()->count());
         $this->post("/api/v1/transects/{$id}/color-sort-sequence", [
@@ -115,6 +116,27 @@ class CopriaColorSortModuleHttpControllersApiTransectColorSortSequenceController
         $this->post("/api/v1/transects/{$id}/color-sort-sequence", [
             'color' => 'bada55',
         ])->assertResponseStatus(405);
+    }
+
+    public function testStoreRemote()
+    {
+        $transect = Transect::find($this->transect()->id);
+        $id = $transect->id;
+        $transect->url = 'http://localhost';
+        $transect->save();
+
+        $this->beEditor();
+        $token = new ApiToken;
+        $token->owner()->associate($this->editor());
+        $token->token = 'abcd';
+        $token->save();
+
+        $this->doesntExpectJobs(ExecuteNewSequencePipeline::class);
+
+        $this->json('POST', "/api/v1/transects/{$id}/color-sort-sequence", [
+            'color' => 'bada55',
+        ]);
+        $this->assertResponseStatus(422);
     }
 
     public function testResultMalformed()

@@ -100,6 +100,7 @@ class TransectColorSortSequenceController extends Controller
      * @apiName StoreTransectColorSortSequence
      * @apiPermission projectEditor
      * @apiDescription Initiates computing of a new color sort sequence. Poll the "show" endpoint to see when computing has finished.
+     * **Computing of a color sort sequence is not available for remote transects.**
      *
      * @apiParam {Number} id The transect ID.
      * @apiParam (Required attributes) {String} color The color of the new color sort sequence.
@@ -114,6 +115,12 @@ class TransectColorSortSequenceController extends Controller
         $this->validate($request, Sequence::$createRules);
         $transect = BaseTransect::findOrFail($id);
         $this->authorize('edit-in', $transect);
+
+        if ($transect->isRemote()) {
+            return $this->buildFailedValidationResponse($request, [
+                'id' => 'Computing of a color sort sequence is not available for remote transects.',
+            ]);
+        }
 
         $s = new Sequence;
         $s->transect_id = $id;

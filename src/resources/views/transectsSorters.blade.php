@@ -1,3 +1,4 @@
+@unless ($transect->isRemote())
 <span class="list-group-item color-sort-list-group-item" title="Sort images by color" data-ng-controller="SortByColorController">
     <div class="clearfix">
         @can('edit-in', $transect)
@@ -19,3 +20,4 @@
         <li class="available-colors-item" data-ng-repeat="color in getColors()" style="background-color:#@{{color}};" title="Sort by this color" data-ng-click="toggle(color)" data-ng-class="{active: active(color)}"></li>
     </ul>
 </span>
+@endunless
