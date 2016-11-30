@@ -7,6 +7,7 @@ $router->group([
     ], function ($router) {
 
         $router->resource('transects.color-sort-sequence', 'TransectColorSortSequenceController', [
-            'only' => ['index', 'show', 'store']
+            'only' => ['index', 'show', 'store'],
+            'parameters' => ['transects' => 'id'],
         ]);
 });
