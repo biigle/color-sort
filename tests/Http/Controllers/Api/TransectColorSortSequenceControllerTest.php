@@ -1,22 +1,27 @@
 <?php
 
+namespace Dias\Tests\Modules\CopriaColorSort\Http\Controllers\Api;
+
+use ApiTestCase;
+use Dias\Tests\ImageTest;
 use Dias\Modules\Copria\ApiToken;
 use Dias\Modules\Copria\PipelineCallback;
 use Dias\Modules\Copria\ColorSort\Transect;
 use Dias\Modules\Copria\ColorSort\Sequence;
+use Dias\Tests\Modules\CopriaColorSort\SequenceTest;
 use Dias\Modules\Copria\ColorSort\Jobs\ExecuteNewSequencePipeline;
 
-class CopriaColorSortModuleHttpControllersApiTransectColorSortSequenceControllerTest extends ApiTestCase {
-
+class TransectColorSortSequenceControllerTest extends ApiTestCase
+{
     public function testIndex()
     {
         $transect = $this->transect();
         $id = $transect->id;
 
-        $s1 = CopriaColorSortModuleSequenceTest::make(['transect_id' => $transect->id]);
+        $s1 = SequenceTest::make(['transect_id' => $transect->id]);
         $s1->sequence = [1, 2];
         $s1->save();
-        $s2 = CopriaColorSortModuleSequenceTest::create(['transect_id' => $transect->id]);
+        $s2 = SequenceTest::create(['transect_id' => $transect->id]);
 
         $this->doTestApiRoute('GET', "/api/v1/transects/{$id}/color-sort-sequence");
 
@@ -35,7 +40,7 @@ class CopriaColorSortModuleHttpControllersApiTransectColorSortSequenceController
         $transect = $this->transect();
         $id = $transect->id;
 
-        $s = CopriaColorSortModuleSequenceTest::create(['transect_id' => $transect->id]);
+        $s = SequenceTest::create(['transect_id' => $transect->id]);
 
         $this->doTestApiRoute('GET', "/api/v1/transects/{$id}/color-sort-sequence/{$s->color}");
 
@@ -142,7 +147,7 @@ class CopriaColorSortModuleHttpControllersApiTransectColorSortSequenceController
     public function testResultMalformed()
     {
 
-        $sequence = CopriaColorSortModuleSequenceTest::create();
+        $sequence = SequenceTest::create();
 
         $callback = new PipelineCallback;
         $callback->generateToken();
@@ -158,7 +163,7 @@ class CopriaColorSortModuleHttpControllersApiTransectColorSortSequenceController
     public function testResultFailed()
     {
 
-        $sequence = CopriaColorSortModuleSequenceTest::create();
+        $sequence = SequenceTest::create();
 
         $callback = new PipelineCallback;
         $callback->generateToken();
@@ -174,7 +179,7 @@ class CopriaColorSortModuleHttpControllersApiTransectColorSortSequenceController
 
     public function testResultSuccess()
     {
-        $sequence = CopriaColorSortModuleSequenceTest::create();
+        $sequence = SequenceTest::create();
 
         $callback = new PipelineCallback;
         $callback->generateToken();

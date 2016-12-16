@@ -1,17 +1,26 @@
 <?php
 
-use Dias\Modules\Copria\ApiToken;
-use Dias\Modules\Copria\ColorSort\Jobs\ExecuteNewSequencePipeline;
-use Dias\Modules\Copria\PipelineCallback;
+namespace Dias\Tests\Modules\CopriaColorSort\Jobs;
 
-class CopriaColorSortModuleJobsExecuteNewSequencePipelineTest extends TestCase
+use Copria;
+use Mockery;
+use TestCase;
+use Exception;
+use Dias\Tests\ImageTest;
+use Dias\Tests\TransectTest;
+use Dias\Modules\Copria\ApiToken;
+use Dias\Modules\Copria\PipelineCallback;
+use Dias\Tests\Modules\CopriaColorSort\SequenceTest;
+use Dias\Modules\Copria\ColorSort\Jobs\ExecuteNewSequencePipeline;
+
+class ExecuteNewSequencePipelineTest extends TestCase
 {
 
     public function testHandle()
     {
         $transect = TransectTest::create(['url' => '/vol/images']);
         $transect->createImages(['a.jpg', 'b.jpg']);
-        $sequence = CopriaColorSortModuleSequenceTest::make(['transect_id' => $transect->id]);
+        $sequence = SequenceTest::make(['transect_id' => $transect->id]);
         $sequence->color = 'bada55';
         $sequence->save();
 
@@ -50,7 +59,7 @@ class CopriaColorSortModuleJobsExecuteNewSequencePipelineTest extends TestCase
         $transect = TransectTest::create(['url' => '/vol/images']);
         ImageTest::create(['transect_id' => $transect->id, 'filename' => 'a.jpg']);
         ImageTest::create(['transect_id' => $transect->id, 'filename' => 'b.jpg']);
-        $sequence = CopriaColorSortModuleSequenceTest::make(['transect_id' => $transect->id]);
+        $sequence = SequenceTest::make(['transect_id' => $transect->id]);
         $sequence->color = 'bada55';
         $sequence->save();
 

@@ -1,9 +1,13 @@
 <?php
 
+namespace Dias\Tests\Modules\CopriaColorSort;
+
+use TestCase;
+use Dias\Tests\TransectTest;
 use Dias\Modules\Copria\ColorSort\Sequence;
 
-class CopriaColorSortModuleSequenceTest extends TestCase {
-
+class SequenceTest extends TestCase
+{
     public static function make($params = [])
     {
         $s = new Sequence;
