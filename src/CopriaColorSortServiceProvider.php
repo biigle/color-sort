@@ -19,6 +19,7 @@ class CopriaColorSortServiceProvider extends ServiceProvider {
     public function boot(Modules $modules, Router $router)
     {
         $this->loadViewsFrom(__DIR__.'/resources/views', 'copria-color-sort');
+        $this->loadMigrationsFrom(__DIR__.'/database/migrations');
 
         $this->publishes([
             __DIR__.'/public/assets' => public_path('vendor/copria-color-sort'),
@@ -27,10 +28,6 @@ class CopriaColorSortServiceProvider extends ServiceProvider {
         $this->publishes([
             __DIR__.'/config/copria_color_sort.php' => config_path('copria_color_sort.php'),
         ], 'config');
-
-        $this->publishes([
-            __DIR__.'/database/migrations/' => database_path('migrations')
-        ], 'migrations');
 
         $router->group([
             'namespace' => 'Dias\Modules\Copria\ColorSort\Http\Controllers',
