@@ -1,6 +1,6 @@
 <?php
 
-namespace Dias\Tests\Modules\CopriaColorSort;
+namespace Biigle\Tests\Modules\CopriaColorSort;
 
 use TestCase;
 

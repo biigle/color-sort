@@ -1,6 +1,6 @@
 <?php
 
-namespace Dias\Modules\Copria\ColorSort;
+namespace Biigle\Modules\Copria\ColorSort;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -65,6 +65,6 @@ class Sequence extends Model {
      */
     public function transect()
     {
-        return $this->belongsTo('Dias\Transect');
+        return $this->belongsTo('Biigle\Transect');
     }
 }

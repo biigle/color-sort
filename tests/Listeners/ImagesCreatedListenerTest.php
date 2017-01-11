@@ -1,10 +1,10 @@
 <?php
 
-namespace Dias\Tests\Modules\CopriaColorSort\Listeners;
+namespace Biigle\Tests\Modules\CopriaColorSort\Listeners;
 
 use TestCase;
-use Dias\Tests\Modules\CopriaColorSort\SequenceTest;
-use Dias\Modules\Copria\ColorSort\Listeners\ImagesCreatedListener;
+use Biigle\Tests\Modules\CopriaColorSort\SequenceTest;
+use Biigle\Modules\Copria\ColorSort\Listeners\ImagesCreatedListener;
 
 class ImagesCreatedListenerTest extends TestCase
 {

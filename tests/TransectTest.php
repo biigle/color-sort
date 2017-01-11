@@ -1,10 +1,10 @@
 <?php
 
-namespace Dias\Tests\Modules\CopriaColorSort;
+namespace Biigle\Tests\Modules\CopriaColorSort;
 
 use TestCase;
-use Dias\Modules\Copria\ColorSort\Transect;
-use Dias\Tests\TransectTest as BaseTransectTest;
+use Biigle\Modules\Copria\ColorSort\Transect;
+use Biigle\Tests\TransectTest as BaseTransectTest;
 
 class TransectTest extends TestCase
 {

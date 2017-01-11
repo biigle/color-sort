@@ -1,15 +1,15 @@
 <?php
 
-namespace Dias\Modules\Copria\ColorSort\Http\Controllers\Api;
+namespace Biigle\Modules\Copria\ColorSort\Http\Controllers\Api;
 
-use Dias\Image;
+use Biigle\Image;
 use Illuminate\Http\Request;
-use Dias\Transect as BaseTransect;
+use Biigle\Transect as BaseTransect;
 use Illuminate\Contracts\Auth\Guard;
-use Dias\Http\Controllers\Api\Controller;
-use Dias\Modules\Copria\ColorSort\Transect;
-use Dias\Modules\Copria\ColorSort\Sequence;
-use Dias\Modules\Copria\ColorSort\Jobs\ExecuteNewSequencePipeline;
+use Biigle\Http\Controllers\Api\Controller;
+use Biigle\Modules\Copria\ColorSort\Transect;
+use Biigle\Modules\Copria\ColorSort\Sequence;
+use Biigle\Modules\Copria\ColorSort\Jobs\ExecuteNewSequencePipeline;
 
 class TransectColorSortSequenceController extends Controller
 {

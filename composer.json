@@ -1,14 +1,14 @@
 {
-    "name": "dias/copria-color-sort",
+    "name": "biigle/copria-color-sort",
     "require": {
-        "dias/transects": "~1.0",
-        "dias/copria": "~1.0"
+        "biigle/transects": "~1.0",
+        "biigle/copria": "~1.0"
     },
     "require-dev": {
     },
     "autoload": {
         "psr-4": {
-            "Dias\\Modules\\Copria\\ColorSort\\": "src"
+            "Biigle\\Modules\\Copria\\ColorSort\\": "src"
         }
     },
     "scripts": {

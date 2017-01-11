@@ -1,11 +1,11 @@
 /**
- * @namespace dias.transects
+ * @namespace biigle.transects
  * @ngdoc controller
  * @name SortByColorController
- * @memberOf dias.transects
+ * @memberOf biigle.transects
  * @description Controller for the color sort feature
  */
-angular.module('dias.transects').controller('SortByColorController', function ($scope, ColorSortSequence, $interval, msg, TRANSECT_ID, sort) {
+angular.module('biigle.transects').controller('SortByColorController', function ($scope, ColorSortSequence, $interval, msg, TRANSECT_ID, sort) {
         "use strict";
 
         var id = 'color-';

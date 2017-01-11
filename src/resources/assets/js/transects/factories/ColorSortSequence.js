@@ -1,7 +1,7 @@
 /**
  * @ngdoc factory
  * @name ColorSortSequence
- * @memberOf dias.transects
+ * @memberOf biigle.transects
  * @description Provides the resource for color sort sequences.
  * @requires $resource
  * @returns {Object} A new [ngResource](https://docs.angularjs.org/api/ngResource/service/$resource) object
@@ -20,7 +20,7 @@ var sequence = ColorSortSequence.request({transect_id: TRANSECT_ID}, {color: 'c0
 });
  *
  */
-angular.module('dias.transects').factory('ColorSortSequence', function ($resource, URL) {
+angular.module('biigle.transects').factory('ColorSortSequence', function ($resource, URL) {
     "use strict";
 
     return $resource(URL + '/api/v1/transects/:transect_id/color-sort-sequence/:color', {}, {

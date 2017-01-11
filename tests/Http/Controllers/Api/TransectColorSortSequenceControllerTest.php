@@ -1,15 +1,15 @@
 <?php
 
-namespace Dias\Tests\Modules\CopriaColorSort\Http\Controllers\Api;
+namespace Biigle\Tests\Modules\CopriaColorSort\Http\Controllers\Api;
 
 use ApiTestCase;
-use Dias\Tests\ImageTest;
-use Dias\Modules\Copria\ApiToken;
-use Dias\Modules\Copria\PipelineCallback;
-use Dias\Modules\Copria\ColorSort\Transect;
-use Dias\Modules\Copria\ColorSort\Sequence;
-use Dias\Tests\Modules\CopriaColorSort\SequenceTest;
-use Dias\Modules\Copria\ColorSort\Jobs\ExecuteNewSequencePipeline;
+use Biigle\Tests\ImageTest;
+use Biigle\Modules\Copria\ApiToken;
+use Biigle\Modules\Copria\PipelineCallback;
+use Biigle\Modules\Copria\ColorSort\Transect;
+use Biigle\Modules\Copria\ColorSort\Sequence;
+use Biigle\Tests\Modules\CopriaColorSort\SequenceTest;
+use Biigle\Modules\Copria\ColorSort\Jobs\ExecuteNewSequencePipeline;
 
 class TransectColorSortSequenceControllerTest extends ApiTestCase
 {
@@ -151,7 +151,7 @@ class TransectColorSortSequenceControllerTest extends ApiTestCase
 
         $callback = new PipelineCallback;
         $callback->generateToken();
-        $callback->function = 'Dias\Modules\Copria\ColorSort\Http\Controllers\Api\TransectColorSortSequenceController@result';
+        $callback->function = 'Biigle\Modules\Copria\ColorSort\Http\Controllers\Api\TransectColorSortSequenceController@result';
         $callback->payload = ['id' => $sequence->id];
         $callback->save();
 
@@ -167,7 +167,7 @@ class TransectColorSortSequenceControllerTest extends ApiTestCase
 
         $callback = new PipelineCallback;
         $callback->generateToken();
-        $callback->function = 'Dias\Modules\Copria\ColorSort\Http\Controllers\Api\TransectColorSortSequenceController@result';
+        $callback->function = 'Biigle\Modules\Copria\ColorSort\Http\Controllers\Api\TransectColorSortSequenceController@result';
         $callback->payload = ['id' => $sequence->id];
         $callback->save();
 
@@ -183,7 +183,7 @@ class TransectColorSortSequenceControllerTest extends ApiTestCase
 
         $callback = new PipelineCallback;
         $callback->generateToken();
-        $callback->function = 'Dias\Modules\Copria\ColorSort\Http\Controllers\Api\TransectColorSortSequenceController@result';
+        $callback->function = 'Biigle\Modules\Copria\ColorSort\Http\Controllers\Api\TransectColorSortSequenceController@result';
         $callback->payload = ['id' => $sequence->id];
         $callback->save();
 

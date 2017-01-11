@@ -1,8 +1,8 @@
 <?php
 
-namespace Dias\Modules\Copria\ColorSort\Listeners;
+namespace Biigle\Modules\Copria\ColorSort\Listeners;
 
-use Dias\Modules\Copria\ColorSort\Sequence;
+use Biigle\Modules\Copria\ColorSort\Sequence;
 
 class ImagesCreatedListener
 {

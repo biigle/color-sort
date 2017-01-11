@@ -1,11 +1,11 @@
 <?php
 
-namespace Dias\Tests\Modules\CopriaColorSort\Observers;
+namespace Biigle\Tests\Modules\CopriaColorSort\Observers;
 
 use TestCase;
-use Dias\Tests\ImageTest;
-use Dias\Tests\TransectTest;
-use Dias\Tests\Modules\CopriaColorSort\SequenceTest;
+use Biigle\Tests\ImageTest;
+use Biigle\Tests\TransectTest;
+use Biigle\Tests\Modules\CopriaColorSort\SequenceTest;
 
 class ImageObserverTest extends TestCase
 {

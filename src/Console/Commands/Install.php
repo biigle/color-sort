@@ -1,9 +1,9 @@
 <?php
 
-namespace Dias\Modules\Copria\ColorSort\Console\Commands;
+namespace Biigle\Modules\Copria\ColorSort\Console\Commands;
 
 use Illuminate\Console\Command;
-use Dias\Modules\Copria\ColorSort\CopriaColorSortServiceProvider as ServiceProvider;
+use Biigle\Modules\Copria\ColorSort\CopriaColorSortServiceProvider as ServiceProvider;
 
 class Install extends Command {
 

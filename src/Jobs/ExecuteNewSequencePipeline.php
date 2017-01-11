@@ -1,17 +1,17 @@
 <?php
 
-namespace Dias\Modules\Copria\ColorSort\Jobs;
+namespace Biigle\Modules\Copria\ColorSort\Jobs;
 
 use DB;
-use Dias\User;
-use Dias\Jobs\Job;
+use Biigle\User;
+use Biigle\Jobs\Job;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
-use Dias\Modules\Copria\PipelineCallback;
+use Biigle\Modules\Copria\PipelineCallback;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Dias\Modules\Copria\ColorSort\Sequence;
-use Dias\Modules\Copria\User as CopriaUser;
-use Dias\Modules\Copria\ColorSort\Http\Controllers\Api\TransectColorSortSequenceController;
+use Biigle\Modules\Copria\ColorSort\Sequence;
+use Biigle\Modules\Copria\User as CopriaUser;
+use Biigle\Modules\Copria\ColorSort\Http\Controllers\Api\TransectColorSortSequenceController;
 
 class ExecuteNewSequencePipeline extends Job implements ShouldQueue
 {

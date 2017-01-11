@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-use Dias\Modules\Copria\ColorSort\Sequence;
+use Biigle\Modules\Copria\ColorSort\Sequence;
 
 class CreateCopriaColorSortSequencesTable extends Migration
 {

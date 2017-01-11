@@ -1,18 +1,18 @@
 <?php
 
-namespace Dias\Modules\Copria\ColorSort;
+namespace Biigle\Modules\Copria\ColorSort;
 
-use Dias\Transect as BaseTransect;
+use Biigle\Transect as BaseTransect;
 
 /**
- * Extends the base Dias transect by the color sort sequence relation
+ * Extends the base Biigle transect by the color sort sequence relation
  */
 class Transect extends BaseTransect {
 
     /**
-     * Converts a regular Dias transect to a Copria color sort transect
+     * Converts a regular Biigle transect to a Copria color sort transect
      *
-     * @param BaseTransect $transect Regular Dias transect instance
+     * @param BaseTransect $transect Regular Biigle transect instance
      *
      * @return User
      */
@@ -31,6 +31,6 @@ class Transect extends BaseTransect {
      */
     public function colorSortSequences()
     {
-        return $this->hasMany('Dias\Modules\Copria\ColorSort\Sequence');
+        return $this->hasMany('Biigle\Modules\Copria\ColorSort\Sequence');
     }
 }

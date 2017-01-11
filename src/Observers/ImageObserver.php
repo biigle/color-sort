@@ -1,15 +1,15 @@
 <?php
 
-namespace Dias\Modules\Copria\ColorSort\Observers;
+namespace Biigle\Modules\Copria\ColorSort\Observers;
 
-use Dias\Modules\Copria\ColorSort\Transect;
+use Biigle\Modules\Copria\ColorSort\Transect;
 
 class ImageObserver
 {
     /**
      * Updates the color sort sequences containing the ID of the deleted image.
      *
-     * @param \Dias\Image $image
+     * @param \Biigle\Image $image
      * @return bool
      */
     public function deleted($image)

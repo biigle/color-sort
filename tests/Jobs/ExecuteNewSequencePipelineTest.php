@@ -1,17 +1,17 @@
 <?php
 
-namespace Dias\Tests\Modules\CopriaColorSort\Jobs;
+namespace Biigle\Tests\Modules\CopriaColorSort\Jobs;
 
 use Copria;
 use Mockery;
 use TestCase;
 use Exception;
-use Dias\Tests\ImageTest;
-use Dias\Tests\TransectTest;
-use Dias\Modules\Copria\ApiToken;
-use Dias\Modules\Copria\PipelineCallback;
-use Dias\Tests\Modules\CopriaColorSort\SequenceTest;
-use Dias\Modules\Copria\ColorSort\Jobs\ExecuteNewSequencePipeline;
+use Biigle\Tests\ImageTest;
+use Biigle\Tests\TransectTest;
+use Biigle\Modules\Copria\ApiToken;
+use Biigle\Modules\Copria\PipelineCallback;
+use Biigle\Tests\Modules\CopriaColorSort\SequenceTest;
+use Biigle\Modules\Copria\ColorSort\Jobs\ExecuteNewSequencePipeline;
 
 class ExecuteNewSequencePipelineTest extends TestCase
 {

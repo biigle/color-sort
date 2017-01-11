@@ -1,17 +1,17 @@
 <?php
 
-namespace Dias\Modules\Copria\ColorSort;
+namespace Biigle\Modules\Copria\ColorSort;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Routing\Router;
-use Dias\Services\Modules;
+use Biigle\Services\Modules;
 
 class CopriaColorSortServiceProvider extends ServiceProvider {
 
     /**
      * Bootstrap the application events.
      *
-     * @param  \Dias\Services\Modules  $modules
+     * @param  \Biigle\Services\Modules  $modules
      * @param  \Illuminate\Routing\Router  $router
      *
      * @return void
@@ -30,14 +30,14 @@ class CopriaColorSortServiceProvider extends ServiceProvider {
         ], 'config');
 
         $router->group([
-            'namespace' => 'Dias\Modules\Copria\ColorSort\Http\Controllers',
+            'namespace' => 'Biigle\Modules\Copria\ColorSort\Http\Controllers',
             'middleware' => 'web',
         ], function ($router) {
             require __DIR__.'/Http/routes.php';
         });
 
 
-        \Dias\Image::observe(new Observers\ImageObserver);
+        \Biigle\Image::observe(new Observers\ImageObserver);
         \Event::listen('images.created', Listeners\ImagesCreatedListener::class);
 
         $modules->addMixin('copria-color-sort', 'transectsSorters');
@@ -57,11 +57,11 @@ class CopriaColorSortServiceProvider extends ServiceProvider {
 
         // set up the console commands
         $this->app->singleton('command.copria-color-sort.install', function ($app) {
-            return new \Dias\Modules\Copria\ColorSort\Console\Commands\Install();
+            return new \Biigle\Modules\Copria\ColorSort\Console\Commands\Install();
         });
         $this->commands('command.copria-color-sort.install');
         $this->app->singleton('command.copria-color-sort.publish', function ($app) {
-            return new \Dias\Modules\Copria\ColorSort\Console\Commands\Publish();
+            return new \Biigle\Modules\Copria\ColorSort\Console\Commands\Publish();
         });
         $this->commands('command.copria-color-sort.publish');
     }
