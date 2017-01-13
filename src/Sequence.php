@@ -5,7 +5,7 @@ namespace Biigle\Modules\Copria\ColorSort;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * This model represents a sequence of transect images sorted by a specific color.
+ * This model represents a sequence of volume images sorted by a specific color.
  */
 class Sequence extends Model {
 
@@ -59,12 +59,12 @@ class Sequence extends Model {
     ];
 
     /**
-     * The transect, this image belongs to.
+     * The volume, this image belongs to.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function transect()
+    public function volume()
     {
-        return $this->belongsTo('Biigle\Transect');
+        return $this->belongsTo('Biigle\Volume');
     }
 }

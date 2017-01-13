@@ -1,11 +1,11 @@
 /**
- * @namespace biigle.transects
+ * @namespace biigle.volumes
  * @ngdoc controller
  * @name SortByColorController
- * @memberOf biigle.transects
+ * @memberOf biigle.volumes
  * @description Controller for the color sort feature
  */
-angular.module('biigle.transects').controller('SortByColorController', function ($scope, ColorSortSequence, $interval, msg, TRANSECT_ID, sort) {
+angular.module('biigle.volumes').controller('SortByColorController', function ($scope, ColorSortSequence, $interval, msg, VOLUME_ID, sort) {
         "use strict";
 
         var id = 'color-';
@@ -21,7 +21,7 @@ angular.module('biigle.transects').controller('SortByColorController', function 
 
         if (!$scope.hasCache(colorsCacheKey)) {
             fetchingColors = true;
-            $scope.setCache(colorsCacheKey, ColorSortSequence.query({transect_id: TRANSECT_ID}, function () {
+            $scope.setCache(colorsCacheKey, ColorSortSequence.query({volume_id: VOLUME_ID}, function () {
                 fetchingColors = false;
             }));
         }
@@ -46,7 +46,7 @@ angular.module('biigle.transects').controller('SortByColorController', function 
             var key = sequenceCacheKey + color;
 
             var success = function (sequence) {
-                // TODO what if the transect _is_ empty?
+                // TODO what if the volume _is_ empty?
                 if (sequence.length > 0) {
                     $interval.cancel(promise);
                     setIsComputingNewColor(false);
@@ -67,7 +67,7 @@ angular.module('biigle.transects').controller('SortByColorController', function 
             };
 
             var check = function () {
-                ColorSortSequence.get({transect_id: TRANSECT_ID, color: color}, success, error);
+                ColorSortSequence.get({volume_id: VOLUME_ID, color: color}, success, error);
             };
 
             promise = $interval(check, pollInterval);
@@ -84,7 +84,7 @@ angular.module('biigle.transects').controller('SortByColorController', function 
             var key = sequenceCacheKey + color;
             if (!$scope.hasCache(key)) {
                 $scope.setLoading(true);
-                $scope.setCache(key, ColorSortSequence.get({transect_id: TRANSECT_ID, color: color}, colorSequenceLoaded, msg.responseError));
+                $scope.setCache(key, ColorSortSequence.get({volume_id: VOLUME_ID, color: color}, colorSequenceLoaded, msg.responseError));
             }
 
             $scope.getCache(key).$promise.then(function (s) {
@@ -145,7 +145,7 @@ angular.module('biigle.transects').controller('SortByColorController', function 
                 }
             };
 
-            ColorSortSequence.request({transect_id: TRANSECT_ID}, {color: color}, success, error);
+            ColorSortSequence.request({volume_id: VOLUME_ID}, {color: color}, success, error);
         };
     }
 );

@@ -4,17 +4,17 @@ namespace Biigle\Modules\Copria\ColorSort\Http\Controllers\Api;
 
 use Biigle\Image;
 use Illuminate\Http\Request;
-use Biigle\Transect as BaseTransect;
+use Biigle\Volume as BaseVolume;
 use Illuminate\Contracts\Auth\Guard;
 use Biigle\Http\Controllers\Api\Controller;
-use Biigle\Modules\Copria\ColorSort\Transect;
+use Biigle\Modules\Copria\ColorSort\Volume;
 use Biigle\Modules\Copria\ColorSort\Sequence;
 use Biigle\Modules\Copria\ColorSort\Jobs\ExecuteNewSequencePipeline;
 
-class TransectColorSortSequenceController extends Controller
+class VolumeColorSortSequenceController extends Controller
 {
     /**
-     * Creates a new TransectColorSortSequenceController instance.
+     * Creates a new VolumeColorSortSequenceController instance.
      */
     public function __construct()
     {
@@ -23,15 +23,15 @@ class TransectColorSortSequenceController extends Controller
     }
 
     /**
-     * List all color sort sequence colors of the specified transect.
+     * List all color sort sequence colors of the specified volume.
      *
-     * @api {get} transects/:id/color-sort-sequence Get all sequences
-     * @apiGroup Transects
-     * @apiName IndexTransectColorSortSequences
+     * @api {get} volumes/:id/color-sort-sequence Get all sequences
+     * @apiGroup Volumes
+     * @apiName IndexVolumeColorSortSequences
      * @apiPermission projectMember
-     * @apiDescription Returns a list of all colors of color sort sequences of the transect. Note that this list does _not_ contain the sequences still computing (i.e. having no sorting data yet).
+     * @apiDescription Returns a list of all colors of color sort sequences of the volume. Note that this list does _not_ contain the sequences still computing (i.e. having no sorting data yet).
      *
-     * @apiParam {Number} id The transect ID.
+     * @apiParam {Number} id The volume ID.
      *
      * @apiSuccessExample {json} Success response:
      * [
@@ -44,10 +44,10 @@ class TransectColorSortSequenceController extends Controller
      */
     public function index($id)
     {
-        $transect = BaseTransect::findOrFail($id);
-        $this->authorize('access', $transect);
+        $volume = BaseVolume::findOrFail($id);
+        $this->authorize('access', $volume);
 
-        return Transect::convert($transect)
+        return Volume::convert($volume)
             ->colorSortSequences()
             ->whereNotNull('sequence')
             ->pluck('color');
@@ -56,13 +56,13 @@ class TransectColorSortSequenceController extends Controller
     /**
      * Show the sequence of images sorted by a specific color
      *
-     * @api {get} transects/:id/color-sort-sequence/:color Get the sequence of a color
-     * @apiGroup Transects
-     * @apiName ShowTransectColorSortSequence
+     * @api {get} volumes/:id/color-sort-sequence/:color Get the sequence of a color
+     * @apiGroup Volumes
+     * @apiName ShowVolumeColorSortSequence
      * @apiPermission projectMember
      * @apiDescription Returns an array of image IDs sorted by the color
      *
-     * @apiParam {Number} id The transect ID.
+     * @apiParam {Number} id The volume ID.
      * @apiParam {String} color The hex color
      *
      * @apiSuccessExample {json} Success response:
@@ -74,12 +74,12 @@ class TransectColorSortSequenceController extends Controller
      */
     public function show($id, $color)
     {
-        $transect = BaseTransect::findOrFail($id);
+        $volume = BaseVolume::findOrFail($id);
         // check this first before fetching the sequence so unauthorized users can't see
         // which sequences exist and which not
-        $this->authorize('access', $transect);
+        $this->authorize('access', $volume);
 
-        $sequence = Transect::convert($transect)
+        $sequence = Volume::convert($volume)
             ->colorSortSequences()
             ->whereColor($color)
             ->select('sequence')
@@ -95,14 +95,14 @@ class TransectColorSortSequenceController extends Controller
     /**
      * Request a new color sort sequence
      *
-     * @api {post} transects/:id/color-sort-sequence Request a new color sort sequence
-     * @apiGroup Transects
-     * @apiName StoreTransectColorSortSequence
+     * @api {post} volumes/:id/color-sort-sequence Request a new color sort sequence
+     * @apiGroup Volumes
+     * @apiName StoreVolumeColorSortSequence
      * @apiPermission projectEditor
      * @apiDescription Initiates computing of a new color sort sequence. Poll the "show" endpoint to see when computing has finished.
-     * **Computing of a color sort sequence is not available for remote transects.**
+     * **Computing of a color sort sequence is not available for remote volumes.**
      *
-     * @apiParam {Number} id The transect ID.
+     * @apiParam {Number} id The volume ID.
      * @apiParam (Required attributes) {String} color The color of the new color sort sequence.
      *
      * @param Request $request
@@ -113,23 +113,23 @@ class TransectColorSortSequenceController extends Controller
     public function store(Request $request, Guard $auth, $id)
     {
         $this->validate($request, Sequence::$createRules);
-        $transect = BaseTransect::findOrFail($id);
-        $this->authorize('edit-in', $transect);
+        $volume = BaseVolume::findOrFail($id);
+        $this->authorize('edit-in', $volume);
 
-        if ($transect->isRemote()) {
+        if ($volume->isRemote()) {
             return $this->buildFailedValidationResponse($request, [
-                'id' => 'Computing of a color sort sequence is not available for remote transects.',
+                'id' => 'Computing of a color sort sequence is not available for remote volumes.',
             ]);
         }
 
         $s = new Sequence;
-        $s->transect_id = $id;
+        $s->volume_id = $id;
         $s->color = $request->input('color');
 
         try {
             $s->save();
         } catch (\Illuminate\Database\QueryException $e) {
-            abort(405, 'The color sort sequence already exists for this transect');
+            abort(405, 'The color sort sequence already exists for this volume');
         }
 
         $this->dispatch(new ExecuteNewSequencePipeline($s, $auth->user()));
@@ -152,9 +152,9 @@ class TransectColorSortSequenceController extends Controller
         if ($request->has(config('copria_color_sort.result_request_param'))) {
             // job was successfully computed
             $returnedIds = array_map('intval', explode(',', $request->input(config('copria_color_sort.result_request_param'))));
-            $imagesIds = Image::where('transect_id', $sequence->transect_id)->pluck('id')->toArray();
+            $imagesIds = Image::where('volume_id', $sequence->volume_id)->pluck('id')->toArray();
 
-            // take only those of the returned IDs that actually belong to the transect
+            // take only those of the returned IDs that actually belong to the volume
             // (e.g. images could have been deleted while the color sort sequence was computing)
             $sequence->sequence = array_values(array_intersect($returnedIds, $imagesIds));
             $sequence->save();

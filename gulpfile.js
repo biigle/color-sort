@@ -8,8 +8,8 @@ var shell   = require('gulp-shell');
 
 elixir(function (mix) {
     process.chdir('src');
-    mix.sass('transects.scss', 'public/assets/styles/transects.css')
-    mix.angular('resources/assets/js/transects/', 'public/assets/scripts', 'transects.js');
+    mix.sass('volumes.scss', 'public/assets/styles/volumes.css')
+    mix.angular('resources/assets/js/volumes/', 'public/assets/scripts', 'volumes.js');
     mix.task('publish', 'public/assets/**/*');
 });
 
