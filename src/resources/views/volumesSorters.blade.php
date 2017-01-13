@@ -1,7 +1,7 @@
-@unless ($transect->isRemote())
+@unless ($volume->isRemote())
 <span class="list-group-item color-sort-list-group-item" title="Sort images by color" data-ng-controller="SortByColorController">
     <div class="clearfix">
-        @can('edit-in', $transect)
+        @can('edit-in', $volume)
             @if (Copria::userHasKey())
                 <span class="pull-right" data-ng-if="canRequestNewColor()">
                     <form data-ng-submit="requestNewColor()">

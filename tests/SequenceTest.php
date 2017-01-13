@@ -3,7 +3,7 @@
 namespace Biigle\Tests\Modules\CopriaColorSort;
 
 use TestCase;
-use Biigle\Tests\TransectTest;
+use Biigle\Tests\VolumeTest;
 use Biigle\Modules\Copria\ColorSort\Sequence;
 
 class SequenceTest extends TestCase
@@ -11,7 +11,7 @@ class SequenceTest extends TestCase
     public static function make($params = [])
     {
         $s = new Sequence;
-        $s->transect_id = isset($params['transect_id']) ? $params['transect_id'] : TransectTest::create()->id;
+        $s->volume_id = isset($params['volume_id']) ? $params['volume_id'] : VolumeTest::create()->id;
         $s->color = str_random(6);
 
         return $s;
@@ -25,10 +25,13 @@ class SequenceTest extends TestCase
         return $s;
     }
 
-    public function testTransectOnDeleteCascade()
+    public function testVolumeOnDeleteCascade()
     {
+        if ($this->isSqlite()) {
+            $this->markTestSkipped('Can\'t test with SQLite because altering foreign key constraints is not supported.');
+        }
         $s = static::create();
-        $s->transect()->delete();
+        $s->volume()->delete();
         $this->assertNull($s->fresh());
     }
 

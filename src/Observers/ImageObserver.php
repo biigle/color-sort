@@ -2,7 +2,7 @@
 
 namespace Biigle\Modules\Copria\ColorSort\Observers;
 
-use Biigle\Modules\Copria\ColorSort\Transect;
+use Biigle\Modules\Copria\ColorSort\Volume;
 
 class ImageObserver
 {
@@ -14,7 +14,7 @@ class ImageObserver
      */
     public function deleted($image)
     {
-        $sequences = Transect::find($image->transect_id)->colorSortSequences()
+        $sequences = Volume::find($image->volume_id)->colorSortSequences()
             ->select('id', 'sequence')
             ->whereNotNull('sequence')
             ->get();

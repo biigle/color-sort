@@ -11,7 +11,7 @@ use Biigle\Modules\Copria\PipelineCallback;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Biigle\Modules\Copria\ColorSort\Sequence;
 use Biigle\Modules\Copria\User as CopriaUser;
-use Biigle\Modules\Copria\ColorSort\Http\Controllers\Api\TransectColorSortSequenceController;
+use Biigle\Modules\Copria\ColorSort\Http\Controllers\Api\VolumeColorSortSequenceController;
 
 class ExecuteNewSequencePipeline extends Job implements ShouldQueue
 {
@@ -53,18 +53,18 @@ class ExecuteNewSequencePipeline extends Job implements ShouldQueue
     {
         $callback = new PipelineCallback;
         $callback->generateToken();
-        $callback->function = TransectColorSortSequenceController::class.'@result';
+        $callback->function = VolumeColorSortSequenceController::class.'@result';
         $callback->payload = ['id' => $this->sequence->id];
 
-        $transect = $this->sequence->transect()->first();
-        $images = $transect->images()
+        $volume = $this->sequence->volume()->first();
+        $images = $volume->images()
             ->orderBy('id')
             ->pluck('filename', 'id');
 
         CopriaUser::convert($this->user)
             ->executeCopriaPipeline(config('copria_color_sort.pipeline_id'), $callback->url, [
                 config('copria_color_sort.hex_color_selector') => $this->sequence->color,
-                config('copria_color_sort.images_directory_selector') => $transect->url,
+                config('copria_color_sort.images_directory_selector') => $volume->url,
                 config('copria_color_sort.images_filenames_selector') => $images->values()->implode(','),
                 config('copria_color_sort.images_ids_selector') => $images->keys()->implode(','),
                 config('copria_color_sort.target_url_selector') => $callback->url,

@@ -1,7 +1,7 @@
 {
     "name": "biigle/copria-color-sort",
     "require": {
-        "biigle/transects": "~1.0",
+        "biigle/volumes": "~1.0",
         "biigle/copria": "~1.0"
     },
     "require-dev": {

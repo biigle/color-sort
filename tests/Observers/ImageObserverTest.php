@@ -4,17 +4,17 @@ namespace Biigle\Tests\Modules\CopriaColorSort\Observers;
 
 use TestCase;
 use Biigle\Tests\ImageTest;
-use Biigle\Tests\TransectTest;
+use Biigle\Tests\VolumeTest;
 use Biigle\Tests\Modules\CopriaColorSort\SequenceTest;
 
 class ImageObserverTest extends TestCase
 {
     public function testDeleted()
     {
-        $transect = TransectTest::create();
-        $image1 = ImageTest::create(['transect_id' => $transect->id, 'filename' => 'a.jpg']);
-        $image2 = ImageTest::create(['transect_id' => $transect->id, 'filename' => 'b.jpg']);
-        $sequence = SequenceTest::make(['transect_id' => $transect->id]);
+        $volume = VolumeTest::create();
+        $image1 = ImageTest::create(['volume_id' => $volume->id, 'filename' => 'a.jpg']);
+        $image2 = ImageTest::create(['volume_id' => $volume->id, 'filename' => 'b.jpg']);
+        $sequence = SequenceTest::make(['volume_id' => $volume->id]);
         $sequence->sequence = [$image1->id, $image2->id];
         $sequence->save();
 
@@ -26,10 +26,10 @@ class ImageObserverTest extends TestCase
 
     public function testDeletedSpecialSequences()
     {
-        $transect = TransectTest::create();
-        $image = ImageTest::create(['transect_id' => $transect->id, 'filename' => 'a.jpg']);
+        $volume = VolumeTest::create();
+        $image = ImageTest::create(['volume_id' => $volume->id, 'filename' => 'a.jpg']);
         // $sequence->sequence is still null!
-        $sequence = SequenceTest::create(['transect_id' => $transect->id]);
+        $sequence = SequenceTest::create(['volume_id' => $volume->id]);
         // shouldn't fail
         $image->delete();
     }

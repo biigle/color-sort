@@ -11,7 +11,7 @@ class ImagesCreatedListenerTest extends TestCase
     public function testHandle()
     {
         $sequence = SequenceTest::create();
-        with(new ImagesCreatedListener)->handle($sequence->transect_id, []);
+        with(new ImagesCreatedListener)->handle($sequence->volume_id, []);
         $this->assertNull($sequence->fresh());
     }
 }

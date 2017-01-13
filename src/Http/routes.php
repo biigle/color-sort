@@ -6,8 +6,8 @@ $router->group([
     'middleware' => 'auth.api',
     ], function ($router) {
 
-        $router->resource('transects.color-sort-sequence', 'TransectColorSortSequenceController', [
+        $router->resource('volumes.color-sort-sequence', 'VolumeColorSortSequenceController', [
             'only' => ['index', 'show', 'store'],
-            'parameters' => ['transects' => 'id'],
+            'parameters' => ['volumes' => 'id'],
         ]);
 });

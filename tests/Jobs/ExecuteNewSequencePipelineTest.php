@@ -7,7 +7,7 @@ use Mockery;
 use TestCase;
 use Exception;
 use Biigle\Tests\ImageTest;
-use Biigle\Tests\TransectTest;
+use Biigle\Tests\VolumeTest;
 use Biigle\Modules\Copria\ApiToken;
 use Biigle\Modules\Copria\PipelineCallback;
 use Biigle\Tests\Modules\CopriaColorSort\SequenceTest;
@@ -18,14 +18,14 @@ class ExecuteNewSequencePipelineTest extends TestCase
 
     public function testHandle()
     {
-        $transect = TransectTest::create(['url' => '/vol/images']);
-        $transect->createImages(['a.jpg', 'b.jpg']);
-        $sequence = SequenceTest::make(['transect_id' => $transect->id]);
+        $volume = VolumeTest::create(['url' => '/vol/images']);
+        $volume->createImages(['a.jpg', 'b.jpg']);
+        $sequence = SequenceTest::make(['volume_id' => $volume->id]);
         $sequence->color = 'bada55';
         $sequence->save();
 
         $token = new ApiToken;
-        $token->owner()->associate($transect->creator);
+        $token->owner()->associate($volume->creator);
         $token->token = 'abcd';
         $token->save();
 
@@ -50,28 +50,28 @@ class ExecuteNewSequencePipelineTest extends TestCase
             ->with(config('copria_color_sort.pipeline_id'), 'abcd', $urlMatcher, $paramsMatcher);
 
         $this->assertEquals(0, PipelineCallback::count());
-        with(new ExecuteNewSequencePipeline($sequence, $transect->creator))->handle();
+        with(new ExecuteNewSequencePipeline($sequence, $volume->creator))->handle();
         $this->assertEquals(1, PipelineCallback::count());
     }
 
     public function testHandleFailure()
     {
-        $transect = TransectTest::create(['url' => '/vol/images']);
-        ImageTest::create(['transect_id' => $transect->id, 'filename' => 'a.jpg']);
-        ImageTest::create(['transect_id' => $transect->id, 'filename' => 'b.jpg']);
-        $sequence = SequenceTest::make(['transect_id' => $transect->id]);
+        $volume = VolumeTest::create(['url' => '/vol/images']);
+        ImageTest::create(['volume_id' => $volume->id, 'filename' => 'a.jpg']);
+        ImageTest::create(['volume_id' => $volume->id, 'filename' => 'b.jpg']);
+        $sequence = SequenceTest::make(['volume_id' => $volume->id]);
         $sequence->color = 'bada55';
         $sequence->save();
 
         $token = new ApiToken;
-        $token->owner()->associate($transect->creator);
+        $token->owner()->associate($volume->creator);
         $token->token = 'abcd';
         $token->save();
 
         Copria::shouldReceive('userExecutePipeline')->andThrow('Exception');
 
         try {
-            with(new ExecuteNewSequencePipeline($sequence, $transect->creator))->handle();
+            with(new ExecuteNewSequencePipeline($sequence, $volume->creator))->handle();
             $this->assertFalse(true);
         } catch (Exception $e) {
             // don't create the callback if anything went wrong
