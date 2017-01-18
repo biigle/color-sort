@@ -146,7 +146,6 @@ class VolumeColorSortSequenceControllerTest extends ApiTestCase
 
     public function testResultMalformed()
     {
-
         $sequence = SequenceTest::create();
 
         $callback = new PipelineCallback;
@@ -162,7 +161,6 @@ class VolumeColorSortSequenceControllerTest extends ApiTestCase
 
     public function testResultFailed()
     {
-
         $sequence = SequenceTest::create();
 
         $callback = new PipelineCallback;

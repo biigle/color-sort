@@ -15,7 +15,6 @@ use Biigle\Modules\Copria\ColorSort\Jobs\ExecuteNewSequencePipeline;
 
 class ExecuteNewSequencePipelineTest extends TestCase
 {
-
     public function testHandle()
     {
         $volume = VolumeTest::create(['url' => '/vol/images']);
@@ -43,6 +42,7 @@ class ExecuteNewSequencePipelineTest extends TestCase
             $valid &= $arg[config('copria_color_sort.images_filenames_selector')] === 'a.jpg,b.jpg';
             $valid &= $arg[config('copria_color_sort.images_ids_selector')] === '1,2';
             $valid &= $urlMatcher->match($arg[config('copria_color_sort.target_url_selector')]);
+
             return $valid === 1;
         });
 

@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * This model represents a sequence of volume images sorted by a specific color.
  */
-class Sequence extends Model {
-
+class Sequence extends Model
+{
     /**
      * Name of the database table that is used for this model.
      *

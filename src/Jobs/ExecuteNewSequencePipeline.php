@@ -2,7 +2,6 @@
 
 namespace Biigle\Modules\Copria\ColorSort\Jobs;
 
-use DB;
 use Biigle\User;
 use Biigle\Jobs\Job;
 use Illuminate\Queue\SerializesModels;
@@ -18,14 +17,14 @@ class ExecuteNewSequencePipeline extends Job implements ShouldQueue
     use InteractsWithQueue, SerializesModels;
 
     /**
-     * The color sort sequence that should be computed
+     * The color sort sequence that should be computed.
      *
      * @var Sequence
      */
     private $sequence;
 
     /**
-     * The user who requested the new color sort sequence
+     * The user who requested the new color sort sequence.
      *
      * @var User
      */

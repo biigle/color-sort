@@ -5,9 +5,8 @@ $router->group([
     'prefix' => 'api/v1',
     'middleware' => 'auth.api',
     ], function ($router) {
-
         $router->resource('volumes.color-sort-sequence', 'VolumeColorSortSequenceController', [
             'only' => ['index', 'show', 'store'],
             'parameters' => ['volumes' => 'id'],
         ]);
-});
+    });

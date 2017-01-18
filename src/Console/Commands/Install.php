@@ -5,8 +5,8 @@ namespace Biigle\Modules\Copria\ColorSort\Console\Commands;
 use Illuminate\Console\Command;
 use Biigle\Modules\Copria\ColorSort\CopriaColorSortServiceProvider as ServiceProvider;
 
-class Install extends Command {
-
+class Install extends Command
+{
     /**
      * The console command name.
      *

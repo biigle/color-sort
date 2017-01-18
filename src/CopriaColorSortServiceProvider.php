@@ -6,8 +6,8 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Routing\Router;
 use Biigle\Services\Modules;
 
-class CopriaColorSortServiceProvider extends ServiceProvider {
-
+class CopriaColorSortServiceProvider extends ServiceProvider
+{
     /**
      * Bootstrap the application events.
      *
@@ -35,7 +35,6 @@ class CopriaColorSortServiceProvider extends ServiceProvider {
         ], function ($router) {
             require __DIR__.'/Http/routes.php';
         });
-
 
         \Biigle\Image::observe(new Observers\ImageObserver);
         \Event::listen('images.created', Listeners\ImagesCreatedListener::class);

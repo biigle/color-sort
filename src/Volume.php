@@ -5,12 +5,12 @@ namespace Biigle\Modules\Copria\ColorSort;
 use Biigle\Volume as BaseVolume;
 
 /**
- * Extends the base Biigle volume by the color sort sequence relation
+ * Extends the base Biigle volume by the color sort sequence relation.
  */
-class Volume extends BaseVolume {
-
+class Volume extends BaseVolume
+{
     /**
-     * Converts a regular Biigle volume to a Copria color sort volume
+     * Converts a regular Biigle volume to a Copria color sort volume.
      *
      * @param BaseVolume $volume Regular Biigle volume instance
      *
@@ -21,11 +21,12 @@ class Volume extends BaseVolume {
         $instance = new static;
         $instance->setRawAttributes($volume->attributes);
         $instance->exists = $volume->exists;
+
         return $instance->setRelations($volume->relations);
     }
 
     /**
-     * The color sort sequences belonging to this volume
+     * The color sort sequences belonging to this volume.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */

@@ -54,7 +54,7 @@ class VolumeColorSortSequenceController extends Controller
     }
 
     /**
-     * Show the sequence of images sorted by a specific color
+     * Show the sequence of images sorted by a specific color.
      *
      * @api {get} volumes/:id/color-sort-sequence/:color Get the sequence of a color
      * @apiGroup Volumes
@@ -93,7 +93,7 @@ class VolumeColorSortSequenceController extends Controller
     }
 
     /**
-     * Request a new color sort sequence
+     * Request a new color sort sequence.
      *
      * @api {post} volumes/:id/color-sort-sequence Request a new color sort sequence
      * @apiGroup Volumes
@@ -136,7 +136,7 @@ class VolumeColorSortSequenceController extends Controller
     }
 
     /**
-     * Return a computation result for a new color sort sequence
+     * Return a computation result for a new color sort sequence.
      *
      * @apiParam (Required attributes) {String} pin1 Image IDs, imploded with a ',', when the images are sorted by the color of the color sort sequence. If this attribute is not present, `state` must be.
      * @apiParam (Required attributes) {String} state Json object. If this attribute is not present, `pin1` must be.
@@ -158,7 +158,7 @@ class VolumeColorSortSequenceController extends Controller
             // (e.g. images could have been deleted while the color sort sequence was computing)
             $sequence->sequence = array_values(array_intersect($returnedIds, $imagesIds));
             $sequence->save();
-        } else if ($request->has('state')) {
+        } elseif ($request->has('state')) {
             // route was called with the Copria SubmittedJob object instead of the result.
             // we can assume that the job failed
             $sequence->delete();
