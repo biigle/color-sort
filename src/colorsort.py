@@ -17,10 +17,11 @@ f.close()
 
 targetColor = np.array(hex_to_rgb(js['targetColor'])).reshape(1, -1)
 imgs = np.array(js['files'])
+imgidxs = np.array(js['imgidxs'])
 
 mdists = []
 for imgfile in imgs:
     img = imread(imgfile)
     mdists.append(np.mean(scipy.spatial.distance.cdist(targetColor, img.reshape(-1, 3))))
 idxs = np.argsort(mdists)
-print imgs[idxs]
+print json.dumps({"idxs": imgidxs[idxs].tolist()})
