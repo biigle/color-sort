@@ -10,6 +10,8 @@ Add this to your `composer.json` repositories array:
 
 Run `php composer.phar require biigle/copria-color-sort`.
 
+Run `pip install -r vendor/biigle/copria-color-sort/requirements.txt` to install Python requirements.
+
 To activate the module, add `'Biigle\Modules\Copria\ColorSort\CopriaColorSortServiceProvider'` to the providers array of `config/app.php`. Then run `php artisan copria-color-sort:install` to publish and run the migration.
 
 # Configuration

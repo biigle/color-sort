@@ -39,7 +39,6 @@ class CopriaColorSortServiceProvider extends ServiceProvider
         \Biigle\Image::observe(new Observers\ImageObserver);
         \Event::listen('images.created', Listeners\ImagesCreatedListener::class);
 
-        $modules->addMixin('copria-color-sort', 'volumesSorters');
         $modules->addMixin('copria-color-sort', 'volumesScripts');
         $modules->addMixin('copria-color-sort', 'volumesStyles');
     }
