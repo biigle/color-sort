@@ -9,19 +9,10 @@ use Illuminate\Contracts\Auth\Guard;
 use Biigle\Http\Controllers\Api\Controller;
 use Biigle\Modules\Copria\ColorSort\Volume;
 use Biigle\Modules\Copria\ColorSort\Sequence;
-use Biigle\Modules\Copria\ColorSort\Jobs\ExecuteNewSequencePipeline;
+use Biigle\Modules\Copria\ColorSort\Jobs\ComputeNewSequence;
 
 class VolumeColorSortSequenceController extends Controller
 {
-    /**
-     * Creates a new VolumeColorSortSequenceController instance.
-     */
-    public function __construct()
-    {
-        // the user has to have their Copria key configured to request a new color sort sequence
-        $this->middleware('copria.key', ['only' => 'store']);
-    }
-
     /**
      * List all color sort sequence colors of the specified volume.
      *
@@ -106,11 +97,10 @@ class VolumeColorSortSequenceController extends Controller
      * @apiParam (Required attributes) {String} color The color of the new color sort sequence.
      *
      * @param Request $request
-     * @param Guard $auth
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Guard $auth, $id)
+    public function store(Request $request, $id)
     {
         $this->validate($request, Sequence::$createRules);
         $volume = BaseVolume::findOrFail($id);
@@ -132,39 +122,8 @@ class VolumeColorSortSequenceController extends Controller
             abort(405, 'The color sort sequence already exists for this volume');
         }
 
-        $this->dispatch(new ExecuteNewSequencePipeline($s, $auth->user()));
-    }
+        $this->dispatchNow(new ComputeNewSequence($s));
 
-    /**
-     * Return a computation result for a new color sort sequence.
-     *
-     * @apiParam (Required attributes) {String} pin1 Image IDs, imploded with a ',', when the images are sorted by the color of the color sort sequence. If this attribute is not present, `state` must be.
-     * @apiParam (Required attributes) {String} state Json object. If this attribute is not present, `pin1` must be.
-     *
-     * @param Request $request
-     * @param  array  $payload Payload of the PipelineCallback that was called with the result of the pipeline
-     * @return \Illuminate\Http\Response
-     */
-    public function result(Request $request, $payload)
-    {
-        $sequence = Sequence::findOrFail($payload['id']);
-
-        if ($request->has(config('copria_color_sort.result_request_param'))) {
-            // job was successfully computed
-            $returnedIds = array_map('intval', explode(',', $request->input(config('copria_color_sort.result_request_param'))));
-            $imagesIds = Image::where('volume_id', $sequence->volume_id)->pluck('id')->toArray();
-
-            // take only those of the returned IDs that actually belong to the volume
-            // (e.g. images could have been deleted while the color sort sequence was computing)
-            $sequence->sequence = array_values(array_intersect($returnedIds, $imagesIds));
-            $sequence->save();
-        } elseif ($request->has('state')) {
-            // route was called with the Copria SubmittedJob object instead of the result.
-            // we can assume that the job failed
-            $sequence->delete();
-        } else {
-            // request doesn't have the required data
-            return response('Invalid request parameters. You must either provide "'.config('copria_color_sort.result_request_param').'" or "state".', 422);
-        }
+        return $s->fresh()->sequence;
     }
 }

@@ -4,12 +4,10 @@ namespace Biigle\Tests\Modules\CopriaColorSort\Http\Controllers\Api;
 
 use ApiTestCase;
 use Biigle\Tests\ImageTest;
-use Biigle\Modules\Copria\ApiToken;
-use Biigle\Modules\Copria\PipelineCallback;
 use Biigle\Modules\Copria\ColorSort\Volume;
 use Biigle\Modules\Copria\ColorSort\Sequence;
 use Biigle\Tests\Modules\CopriaColorSort\SequenceTest;
-use Biigle\Modules\Copria\ColorSort\Jobs\ExecuteNewSequencePipeline;
+use Biigle\Modules\Copria\ColorSort\Jobs\ComputeNewSequence;
 
 class VolumeColorSortSequenceControllerTest extends ApiTestCase
 {
@@ -72,28 +70,12 @@ class VolumeColorSortSequenceControllerTest extends ApiTestCase
 
         // guests cannot request new color sort sequences
         $this->beGuest();
-        $token = new ApiToken;
-        $token->owner()->associate($this->guest());
-        $token->token = 'abcd';
-        $token->save();
         $this->post("/api/v1/volumes/{$id}/color-sort-sequence", [
             'color' => 'abcdef',
         ]);
         $this->assertResponseStatus(403);
 
         $this->beEditor();
-
-        $this->post("/api/v1/volumes/{$id}/color-sort-sequence", [
-            'color' => 'c0ffee',
-        ]);
-        // user has no Copria account connected
-        $this->assertResponseStatus(401);
-
-        $token = new ApiToken;
-        $token->owner()->associate($this->editor());
-        $token->token = 'abcd';
-        $token->save();
-
         // missing color
         $this->json('POST', "/api/v1/volumes/{$id}/color-sort-sequence");
         $this->assertResponseStatus(422);
@@ -108,7 +90,7 @@ class VolumeColorSortSequenceControllerTest extends ApiTestCase
         ]);
         $this->assertResponseStatus(422);
 
-        $this->expectsJobs(ExecuteNewSequencePipeline::class);
+        $this->expectsJobs(ComputeNewSequence::class);
 
         $this->assertEquals(0, $volume->colorSortSequences()->count());
         $this->post("/api/v1/volumes/{$id}/color-sort-sequence", [
@@ -131,68 +113,11 @@ class VolumeColorSortSequenceControllerTest extends ApiTestCase
         $volume->save();
 
         $this->beEditor();
-        $token = new ApiToken;
-        $token->owner()->associate($this->editor());
-        $token->token = 'abcd';
-        $token->save();
-
-        $this->doesntExpectJobs(ExecuteNewSequencePipeline::class);
+        $this->doesntExpectJobs(ComputeNewSequence::class);
 
         $this->json('POST', "/api/v1/volumes/{$id}/color-sort-sequence", [
             'color' => 'bada55',
         ]);
         $this->assertResponseStatus(422);
-    }
-
-    public function testResultMalformed()
-    {
-        $sequence = SequenceTest::create();
-
-        $callback = new PipelineCallback;
-        $callback->generateToken();
-        $callback->function = 'Biigle\Modules\Copria\ColorSort\Http\Controllers\Api\VolumeColorSortSequenceController@result';
-        $callback->payload = ['id' => $sequence->id];
-        $callback->save();
-
-        // image ids are missing
-        $this->post("api/v1/copria-pipeline-callback/{$callback->token}")
-            ->assertResponseStatus(422);
-    }
-
-    public function testResultFailed()
-    {
-        $sequence = SequenceTest::create();
-
-        $callback = new PipelineCallback;
-        $callback->generateToken();
-        $callback->function = 'Biigle\Modules\Copria\ColorSort\Http\Controllers\Api\VolumeColorSortSequenceController@result';
-        $callback->payload = ['id' => $sequence->id];
-        $callback->save();
-
-        // job failed, delete color sort sequence
-        $this->post("api/v1/copria-pipeline-callback/{$callback->token}", ['state' => []])
-            ->assertResponseOk();
-        $this->assertNull($sequence->fresh());
-    }
-
-    public function testResultSuccess()
-    {
-        $sequence = SequenceTest::create();
-
-        $callback = new PipelineCallback;
-        $callback->generateToken();
-        $callback->function = 'Biigle\Modules\Copria\ColorSort\Http\Controllers\Api\VolumeColorSortSequenceController@result';
-        $callback->payload = ['id' => $sequence->id];
-        $callback->save();
-
-        $image1 = ImageTest::create(['volume_id' => $sequence->volume->id, 'filename' => 'a']);
-        $image2 = ImageTest::create(['volume_id' => $sequence->volume->id, 'filename' => 'b']);
-
-        // job succeeded, set sorting order
-        $this->post("api/v1/copria-pipeline-callback/{$callback->token}", ['pin1' => $image2->id.',300,200,'.$image1->id])
-            ->assertResponseOk();
-        // the sequence should only contain image IDs that actually belong to the volume
-        // the ordering must be kept, though
-        $this->assertEquals([$image2->id, $image1->id], $sequence->fresh()->sequence);
     }
 }

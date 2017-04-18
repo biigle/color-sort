@@ -9,7 +9,7 @@ var shell   = require('gulp-shell');
 elixir(function (mix) {
     process.chdir('src');
     mix.sass('volumes.scss', 'public/assets/styles/volumes.css')
-    mix.angular('resources/assets/js/volumes/', 'public/assets/scripts', 'volumes.js');
+    mix.angular('resources/assets/js/', 'public/assets/scripts', 'volumes.js');
     mix.task('publish', 'public/assets/**/*');
 });
 
