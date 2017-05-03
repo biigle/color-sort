@@ -1,3 +1,19 @@
+.color-sort-sequence-color, .color-sort-list-group-item .available-colors-item {
+    $size: 25px;
+    display: inline-block;
+    height: $size;
+    width: $size;
+    border-radius: 50%;
+    margin-right: 0.5em;
+}
+
+.color-sort-sequence-color {
+    vertical-align: middle;
+    padding: 2px;
+    background-clip: content-box;
+    border: 1px solid #777;
+}
+
 .color-sort-list-group-item {
     color: #aaa;
 
@@ -7,12 +23,6 @@
     }
 
     .available-colors-item {
-        $size: 25px;
-        display: inline-block;
-        height: $size;
-        width: $size;
-        border-radius: 50%;
-        margin-right: 0.5em;
         cursor: pointer;
 
         &:hover, &.active {

@@ -6,7 +6,7 @@ $router->group([
     'middleware' => 'auth.api',
     ], function ($router) {
         $router->resource('volumes.color-sort-sequence', 'VolumeColorSortSequenceController', [
-            'only' => ['index', 'show', 'store'],
+            'only' => ['index', 'show', 'store', 'destroy'],
             'parameters' => ['volumes' => 'id'],
         ]);
     });

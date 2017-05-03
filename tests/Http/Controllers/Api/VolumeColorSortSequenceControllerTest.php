@@ -100,9 +100,9 @@ class VolumeColorSortSequenceControllerTest extends ApiTestCase
         $this->assertEquals('bada55', $volume->colorSortSequences()->first()->color);
 
         // requesting the same color twice is not allowed
-        $this->post("/api/v1/volumes/{$id}/color-sort-sequence", [
+        $this->json('POST', "/api/v1/volumes/{$id}/color-sort-sequence", [
             'color' => 'bada55',
-        ])->assertResponseStatus(405);
+        ])->assertResponseStatus(422);
     }
 
     public function testStoreRemote()
@@ -119,5 +119,27 @@ class VolumeColorSortSequenceControllerTest extends ApiTestCase
             'color' => 'bada55',
         ]);
         $this->assertResponseStatus(422);
+    }
+
+    public function testDestroy()
+    {
+        $volume = $this->volume();
+        $id = $volume->id;
+        $s = SequenceTest::create(['volume_id' => $volume->id]);
+
+        $this->doTestApiRoute('DELETE', "/api/v1/volumes/{$id}/color-sort-sequence/{$s->color}");
+
+        $this->beEditor();
+        $this->delete("/api/v1/volumes/{$id}/color-sort-sequence/{$s->color}")
+            ->assertResponseStatus(403);
+
+        $this->beAdmin();
+        $this->delete("/api/v1/volumes/{$id}/color-sort-sequence/abc")
+            ->assertResponseStatus(404);
+
+        $this->assertNotNull($s->fresh());
+        $this->delete("/api/v1/volumes/{$id}/color-sort-sequence/{$s->color}");
+        $this->assertResponseOk();
+        $this->assertNull($s->fresh());
     }
 }

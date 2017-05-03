@@ -12,6 +12,9 @@
  * Request a new color sort sequence:
  * resource.save({volume_id: 1}, {color: 'c0ffee'}).then(...);
  *
+ * Delete a color sort sequence:
+ * resource.delete({volume_id: 1, color: 'c0ffee'}).then(...);
+ *
  * @type {Vue.resource}
  */
 biigle.$declare('api.colorSortSequence', Vue.resource('api/v1/volumes{/volume_id}/color-sort-sequence{/color}'));

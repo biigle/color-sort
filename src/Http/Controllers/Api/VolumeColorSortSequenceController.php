@@ -4,10 +4,9 @@ namespace Biigle\Modules\Copria\ColorSort\Http\Controllers\Api;
 
 use Biigle\Image;
 use Illuminate\Http\Request;
-use Biigle\Volume as BaseVolume;
+use Biigle\Volume;
 use Illuminate\Contracts\Auth\Guard;
 use Biigle\Http\Controllers\Api\Controller;
-use Biigle\Modules\Copria\ColorSort\Volume;
 use Biigle\Modules\Copria\ColorSort\Sequence;
 use Biigle\Modules\Copria\ColorSort\Jobs\ComputeNewSequence;
 
@@ -35,11 +34,10 @@ class VolumeColorSortSequenceController extends Controller
      */
     public function index($id)
     {
-        $volume = BaseVolume::findOrFail($id);
+        $volume = Volume::findOrFail($id);
         $this->authorize('access', $volume);
 
-        return Volume::convert($volume)
-            ->colorSortSequences()
+        return Sequence::where('volume_id', $id)
             ->whereNotNull('sequence')
             ->pluck('color');
     }
@@ -65,20 +63,14 @@ class VolumeColorSortSequenceController extends Controller
      */
     public function show($id, $color)
     {
-        $volume = BaseVolume::findOrFail($id);
+        $volume = Volume::findOrFail($id);
         // check this first before fetching the sequence so unauthorized users can't see
         // which sequences exist and which not
         $this->authorize('access', $volume);
 
-        $sequence = Volume::convert($volume)
-            ->colorSortSequences()
-            ->whereColor($color)
-            ->select('sequence')
-            ->first();
-
-        if ($sequence === null) {
-            abort(404);
-        }
+        $sequence = Sequence::where('volume_id', $id)
+            ->where('color', $color)
+            ->firstOrFail();
 
         return $sequence->sequence;
     }
@@ -103,27 +95,56 @@ class VolumeColorSortSequenceController extends Controller
     public function store(Request $request, $id)
     {
         $this->validate($request, Sequence::$createRules);
-        $volume = BaseVolume::findOrFail($id);
+        $volume = Volume::findOrFail($id);
         $this->authorize('edit-in', $volume);
 
         if ($volume->isRemote()) {
             return $this->buildFailedValidationResponse($request, [
-                'id' => 'Computing of a color sort sequence is not available for remote volumes.',
+                'id' => ['Computing of a color sort sequence is not available for remote volumes.'],
+            ]);
+        }
+
+        $color = $request->input('color');
+
+        if (Sequence::where('volume_id', $id)->where('color', $color)->exists()) {
+            return $this->buildFailedValidationResponse($request, [
+                'color' => ['The color sort sequence already exists for this volume'],
             ]);
         }
 
         $s = new Sequence;
         $s->volume_id = $id;
         $s->color = $request->input('color');
-
-        try {
-            $s->save();
-        } catch (\Illuminate\Database\QueryException $e) {
-            abort(405, 'The color sort sequence already exists for this volume');
-        }
+        $s->save();
 
         $this->dispatchNow(new ComputeNewSequence($s));
 
         return $s->fresh()->sequence;
+    }
+
+    /**
+     * Delete a color sort sequence.
+     *
+     * @api {delete} volumes/:id/color-sort-sequence/:color Delete a color sort wequence
+     * @apiGroup Volumes
+     * @apiName DestroyVolumeColorSortSequence
+     * @apiPermission projectAdmin
+     *
+     * @apiParam {Number} id The volume ID.
+     * @apiParam {String} color The hex color
+     *
+     * @param  int  $id
+     * @param  string  $color
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id, $color)
+    {
+        $volume = Volume::findOrFail($id);
+        $this->authorize('update', $volume);
+
+        Sequence::where('volume_id', $id)
+            ->where('color', $color)
+            ->firstOrFail()
+            ->delete();
     }
 }

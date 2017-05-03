@@ -41,6 +41,9 @@ class CopriaColorSortServiceProvider extends ServiceProvider
 
         $modules->addMixin('copria-color-sort', 'volumesScripts');
         $modules->addMixin('copria-color-sort', 'volumesStyles');
+        $modules->addMixin('copria-color-sort', 'volumesEditScripts');
+        $modules->addMixin('copria-color-sort', 'volumesEditStyles');
+        $modules->addMixin('copria-color-sort', 'volumesEditLeft');
     }
 
     /**
