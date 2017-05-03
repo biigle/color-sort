@@ -3,8 +3,8 @@
 namespace Biigle\Modules\Copria\ColorSort\Http\Controllers\Api;
 
 use Biigle\Image;
-use Illuminate\Http\Request;
 use Biigle\Volume;
+use Illuminate\Http\Request;
 use Illuminate\Contracts\Auth\Guard;
 use Biigle\Http\Controllers\Api\Controller;
 use Biigle\Modules\Copria\ColorSort\Sequence;

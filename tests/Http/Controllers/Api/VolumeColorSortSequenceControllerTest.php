@@ -4,7 +4,6 @@ namespace Biigle\Tests\Modules\CopriaColorSort\Http\Controllers\Api;
 
 use ApiTestCase;
 use Biigle\Tests\ImageTest;
-use Biigle\Modules\Copria\ColorSort\Volume;
 use Biigle\Modules\Copria\ColorSort\Sequence;
 use Biigle\Tests\Modules\CopriaColorSort\SequenceTest;
 use Biigle\Modules\Copria\ColorSort\Jobs\ComputeNewSequence;
@@ -63,8 +62,7 @@ class VolumeColorSortSequenceControllerTest extends ApiTestCase
 
     public function testStore()
     {
-        $volume = Volume::find($this->volume()->id);
-        $id = $volume->id;
+        $id = $this->volume()->id;
 
         $this->doTestApiRoute('POST', "/api/v1/volumes/{$id}/color-sort-sequence");
 
@@ -92,12 +90,12 @@ class VolumeColorSortSequenceControllerTest extends ApiTestCase
 
         $this->expectsJobs(ComputeNewSequence::class);
 
-        $this->assertEquals(0, $volume->colorSortSequences()->count());
+        $this->assertEquals(0, Sequence::where('volume_id', $id)->count());
         $this->post("/api/v1/volumes/{$id}/color-sort-sequence", [
             'color' => 'bada55',
         ])->assertResponseOk();
-        $this->assertEquals(1, $volume->colorSortSequences()->count());
-        $this->assertEquals('bada55', $volume->colorSortSequences()->first()->color);
+        $this->assertEquals(1, Sequence::where('volume_id', $id)->count());
+        $this->assertEquals('bada55', Sequence::where('volume_id', $id)->first()->color);
 
         // requesting the same color twice is not allowed
         $this->json('POST', "/api/v1/volumes/{$id}/color-sort-sequence", [
@@ -107,10 +105,10 @@ class VolumeColorSortSequenceControllerTest extends ApiTestCase
 
     public function testStoreRemote()
     {
-        $volume = Volume::find($this->volume()->id);
-        $id = $volume->id;
+        $volume = $this->volume();
         $volume->url = 'http://localhost';
         $volume->save();
+        $id = $volume->id;
 
         $this->beEditor();
         $this->doesntExpectJobs(ComputeNewSequence::class);
@@ -123,9 +121,8 @@ class VolumeColorSortSequenceControllerTest extends ApiTestCase
 
     public function testDestroy()
     {
-        $volume = $this->volume();
-        $id = $volume->id;
-        $s = SequenceTest::create(['volume_id' => $volume->id]);
+        $id = $this->volume()->id;
+        $s = SequenceTest::create(['volume_id' => $id]);
 
         $this->doTestApiRoute('DELETE', "/api/v1/volumes/{$id}/color-sort-sequence/{$s->color}");
 
