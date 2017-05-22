@@ -103,7 +103,7 @@ biigle.$require('volumes.stores.sorters').push({
             },
         },
         mounted: function () {
-            biigle.$require('biigle.events').$once('sidebar.open.sorting', this.fetchColors);
+            biigle.$require('events').$once('sidebar.open.sorting', this.fetchColors);
 
             if (this.active) {
                 this.activeColor = this.activeSorter.substr(
