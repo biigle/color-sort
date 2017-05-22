@@ -1,18 +1,25 @@
-"use strict";
-process.env.DISABLE_NOTIFIER = true;
+"use strict"
 
-var gulp    = require('gulp');
-var elixir  = require('laravel-elixir');
-var angular = require('laravel-elixir-angular');
-var shell   = require('gulp-shell');
+var gulp = require('gulp');
+var h = require('gulp-helpers');
+var publish = h.publish('Biigle\\Modules\\Copria\\ColorSort\\CopriaColorSortServiceProvider', 'public');
 
-elixir(function (mix) {
-    process.chdir('src');
-    mix.sass('volumes.scss', 'public/assets/styles/volumes.css')
-    mix.angular('resources/assets/js/', 'public/assets/scripts', 'volumes.js');
-    mix.task('publish', 'public/assets/**/*');
+h.paths.sass = 'src/resources/assets/sass/';
+h.paths.js = 'src/resources/assets/js/';
+h.paths.public = 'src/public/assets/';
+
+gulp.task('sass', function () {
+    h.sass('volumes.scss', 'volumes.css');
 });
 
-gulp.task('publish', function () {
-    gulp.src('').pipe(shell('php ../../../../artisan vendor:publish --provider="Biigle\\Modules\\Copria\\ColorSort\\CopriaColorSortServiceProvider" --tag="public" --force'));
+gulp.task('js', function (cb) {
+    h.js('**/*.js', 'volumes.js', cb);
 });
+
+gulp.task('watch', function () {
+    gulp.watch(h.paths.sass + '**/*.scss', ['sass']);
+    gulp.watch(h.paths.js + '**/*.js', ['js']);
+    gulp.watch(h.paths.public + '**/*', publish);
+});
+
+gulp.task('default', ['sass', 'js'], publish)
