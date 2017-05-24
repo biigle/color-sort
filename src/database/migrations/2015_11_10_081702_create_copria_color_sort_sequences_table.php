@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateColorSortSequencesTable extends Migration
+class CreateCopriaColorSortSequencesTable extends Migration
 {
     /**
      * Run the migrations.
