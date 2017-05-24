@@ -1,5 +1,5 @@
 @unless ($volume->isRemote())
-<script src="{{ cachebust_asset('vendor/copria-color-sort/scripts/volumes.js') }}"></script>
+<script src="{{ cachebust_asset('vendor/color-sort/scripts/volumes.js') }}"></script>
 <script type="text/x-template" id="color-sort-template">
     <span class="list-group-item color-sort-list-group-item" title="Sort images by color">
         <div class="clearfix">

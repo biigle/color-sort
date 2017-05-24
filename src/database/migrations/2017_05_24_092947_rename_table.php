@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class RenameTransectColumn extends Migration
+class RenameTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,7 @@ class RenameTransectColumn extends Migration
      */
     public function up()
     {
-        Schema::table('copria_color_sort_sequence', function (Blueprint $table) {
-            $table->renameColumn('transect_id', 'volume_id');
-        });
+        Schema::rename('copria_color_sort_sequence', 'color_sort_sequence');
     }
 
     /**
@@ -25,8 +23,6 @@ class RenameTransectColumn extends Migration
      */
     public function down()
     {
-        Schema::table('copria_color_sort_sequence', function (Blueprint $table) {
-            $table->renameColumn('volume_id', 'transect_id');
-        });
+        Schema::rename('color_sort_sequence', 'copria_color_sort_sequence');
     }
 }

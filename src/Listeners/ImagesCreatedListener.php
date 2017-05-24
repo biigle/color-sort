@@ -1,8 +1,8 @@
 <?php
 
-namespace Biigle\Modules\Copria\ColorSort\Listeners;
+namespace Biigle\Modules\ColorSort\Listeners;
 
-use Biigle\Modules\Copria\ColorSort\Sequence;
+use Biigle\Modules\ColorSort\Sequence;
 
 class ImagesCreatedListener
 {

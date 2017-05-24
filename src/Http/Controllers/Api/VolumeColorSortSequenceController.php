@@ -1,14 +1,14 @@
 <?php
 
-namespace Biigle\Modules\Copria\ColorSort\Http\Controllers\Api;
+namespace Biigle\Modules\ColorSort\Http\Controllers\Api;
 
 use Biigle\Image;
 use Biigle\Volume;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Auth\Guard;
 use Biigle\Http\Controllers\Api\Controller;
-use Biigle\Modules\Copria\ColorSort\Sequence;
-use Biigle\Modules\Copria\ColorSort\Jobs\ComputeNewSequence;
+use Biigle\Modules\ColorSort\Sequence;
+use Biigle\Modules\ColorSort\Jobs\ComputeNewSequence;
 
 class VolumeColorSortSequenceController extends Controller
 {

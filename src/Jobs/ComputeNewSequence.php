@@ -1,13 +1,13 @@
 <?php
 
-namespace Biigle\Modules\Copria\ColorSort\Jobs;
+namespace Biigle\Modules\ColorSort\Jobs;
 
 use Biigle\Jobs\Job;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Biigle\Modules\Copria\ColorSort\Sequence;
-use Biigle\Modules\Copria\ColorSort\Support\Sort;
+use Biigle\Modules\ColorSort\Sequence;
+use Biigle\Modules\ColorSort\Support\Sort;
 
 class ComputeNewSequence extends Job implements ShouldQueue
 {

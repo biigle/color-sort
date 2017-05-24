@@ -1,5 +1,5 @@
 {
-    "name": "biigle/copria-color-sort",
+    "name": "biigle/color-sort",
     "require": {
         "biigle/volumes": "~1.5"
     },
@@ -7,7 +7,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Biigle\\Modules\\Copria\\ColorSort\\": "src"
+            "Biigle\\Modules\\ColorSort\\": "src"
         }
     },
     "scripts": {

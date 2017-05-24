@@ -1,6 +1,6 @@
 <?php
 
-namespace Biigle\Modules\Copria\ColorSort;
+namespace Biigle\Modules\ColorSort;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -10,18 +10,11 @@ use Illuminate\Database\Eloquent\Model;
 class Sequence extends Model
 {
     /**
-     * Name of the database table that is used for this model.
-     *
-     * @var String
-     */
-    const DB_TABLE_NAME = 'copria_color_sort_sequence';
-
-    /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = self::DB_TABLE_NAME;
+    protected $table = 'color_sort_sequence';
 
     /**
      * Don't maintain timestamps for this model.

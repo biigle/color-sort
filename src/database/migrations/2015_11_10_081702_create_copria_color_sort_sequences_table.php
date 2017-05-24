@@ -2,9 +2,8 @@
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-use Biigle\Modules\Copria\ColorSort\Sequence;
 
-class CreateCopriaColorSortSequencesTable extends Migration
+class CreateColorSortSequencesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -18,7 +17,7 @@ class CreateCopriaColorSortSequencesTable extends Migration
         | to a certain color. The attributes are the transect ID, the images belong to, the color
         | as hex value and the sequence of image IDs as JSON array.
         */
-        Schema::create(Sequence::DB_TABLE_NAME, function (Blueprint $table) {
+        Schema::create('copria_color_sort_sequence', function (Blueprint $table) {
             $table->increments('id');
 
             $table->integer('transect_id')->unsigned();
@@ -45,6 +44,6 @@ class CreateCopriaColorSortSequencesTable extends Migration
      */
     public function down()
     {
-        Schema::drop(Sequence::DB_TABLE_NAME);
+        Schema::drop('copria_color_sort_sequence');
     }
 }

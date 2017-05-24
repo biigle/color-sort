@@ -1,10 +1,10 @@
 <?php
 
-namespace Biigle\Tests\Modules\CopriaColorSort;
+namespace Biigle\Tests\Modules\ColorSort;
 
 use TestCase;
 use Biigle\Tests\VolumeTest;
-use Biigle\Modules\Copria\ColorSort\Sequence;
+use Biigle\Modules\ColorSort\Sequence;
 
 class SequenceTest extends TestCase
 {

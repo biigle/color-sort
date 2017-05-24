@@ -1,8 +1,8 @@
 <?php
 
-namespace Biigle\Modules\Copria\ColorSort\Observers;
+namespace Biigle\Modules\ColorSort\Observers;
 
-use Biigle\Modules\Copria\ColorSort\Sequence;
+use Biigle\Modules\ColorSort\Sequence;
 
 class ImageObserver
 {

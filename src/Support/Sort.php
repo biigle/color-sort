@@ -1,6 +1,6 @@
 <?php
 
-namespace Biigle\Modules\Copria\ColorSort\Support;
+namespace Biigle\Modules\ColorSort\Support;
 
 use Log;
 use File;
@@ -34,8 +34,8 @@ class Sort
         ]));
 
         $code = 0;
-        $python = config('copria_color_sort.python');
-        $script = config('copria_color_sort.script');
+        $python = config('color_sort.python');
+        $script = config('color_sort.script');
         $lines = [];
         $command = "{$python} {$script} \"{$file}\" 2>&1";
 

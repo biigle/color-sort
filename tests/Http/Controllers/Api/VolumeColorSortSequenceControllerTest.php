@@ -1,12 +1,12 @@
 <?php
 
-namespace Biigle\Tests\Modules\CopriaColorSort\Http\Controllers\Api;
+namespace Biigle\Tests\Modules\ColorSort\Http\Controllers\Api;
 
 use ApiTestCase;
 use Biigle\Tests\ImageTest;
-use Biigle\Modules\Copria\ColorSort\Sequence;
-use Biigle\Tests\Modules\CopriaColorSort\SequenceTest;
-use Biigle\Modules\Copria\ColorSort\Jobs\ComputeNewSequence;
+use Biigle\Modules\ColorSort\Sequence;
+use Biigle\Tests\Modules\ColorSort\SequenceTest;
+use Biigle\Modules\ColorSort\Jobs\ComputeNewSequence;
 
 class VolumeColorSortSequenceControllerTest extends ApiTestCase
 {

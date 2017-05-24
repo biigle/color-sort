@@ -1,11 +1,11 @@
 <?php
 
-namespace Biigle\Tests\Modules\CopriaColorSort\Observers;
+namespace Biigle\Tests\Modules\ColorSort\Observers;
 
 use TestCase;
 use Biigle\Tests\ImageTest;
 use Biigle\Tests\VolumeTest;
-use Biigle\Tests\Modules\CopriaColorSort\SequenceTest;
+use Biigle\Tests\Modules\ColorSort\SequenceTest;
 
 class ImageObserverTest extends TestCase
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace Biigle\Modules\Copria\ColorSort\Console\Commands;
+namespace Biigle\Modules\ColorSort\Console\Commands;
 
 use Illuminate\Console\Command;
-use Biigle\Modules\Copria\ColorSort\CopriaColorSortServiceProvider as ServiceProvider;
+use Biigle\Modules\ColorSort\ColorSortServiceProvider as ServiceProvider;
 
 class Install extends Command
 {
@@ -12,7 +12,7 @@ class Install extends Command
      *
      * @var string
      */
-    protected $name = 'copria-color-sort:install';
+    protected $name = 'color-sort:install';
 
     /**
      * The console command description.
@@ -38,6 +38,6 @@ class Install extends Command
         }
 
         // publish the public assets
-        $this->call('copria-color-sort:publish');
+        $this->call('color-sort:publish');
     }
 }

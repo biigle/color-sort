@@ -2,7 +2,7 @@
 
 var gulp = require('gulp');
 var h = require('gulp-helpers');
-var publish = h.publish('Biigle\\Modules\\Copria\\ColorSort\\CopriaColorSortServiceProvider', 'public');
+var publish = h.publish('Biigle\\Modules\\ColorSort\\CopriaColorSortServiceProvider', 'public');
 
 h.paths.sass = 'src/resources/assets/sass/';
 h.paths.js = 'src/resources/assets/js/';
