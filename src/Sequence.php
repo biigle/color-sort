@@ -14,7 +14,7 @@ class Sequence extends Model
      *
      * @var string
      */
-    protected $table = 'color_sort_sequence';
+    protected $table = 'color_sort_sequences';
 
     /**
      * Don't maintain timestamps for this model.

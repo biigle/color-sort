@@ -13,7 +13,7 @@ class RenameTable extends Migration
      */
     public function up()
     {
-        Schema::rename('copria_color_sort_sequence', 'color_sort_sequence');
+        Schema::rename('copria_color_sort_sequence', 'color_sort_sequences');
     }
 
     /**
@@ -23,6 +23,6 @@ class RenameTable extends Migration
      */
     public function down()
     {
-        Schema::rename('color_sort_sequence', 'copria_color_sort_sequence');
+        Schema::rename('color_sort_sequences', 'copria_color_sort_sequence');
     }
 }
