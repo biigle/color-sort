@@ -23,13 +23,13 @@ class VolumeColorSortSequenceControllerTest extends ApiTestCase
         $this->doTestApiRoute('GET', "/api/v1/volumes/{$id}/color-sort-sequence");
 
         $this->beUser();
-        $this->get("/api/v1/volumes/{$id}/color-sort-sequence")
-            ->assertResponseStatus(403);
+        $response = $this->get("/api/v1/volumes/{$id}/color-sort-sequence")
+            ->assertStatus(403);
 
         $this->beGuest();
-        $this->get("/api/v1/volumes/{$id}/color-sort-sequence")
+        $response = $this->get("/api/v1/volumes/{$id}/color-sort-sequence")
             // show only sequences with actual sorting data
-            ->seeJsonEquals([$s1->color]);
+            ->assertExactJson([$s1->color]);
     }
 
     public function testShow()
@@ -42,22 +42,22 @@ class VolumeColorSortSequenceControllerTest extends ApiTestCase
         $this->doTestApiRoute('GET', "/api/v1/volumes/{$id}/color-sort-sequence/{$s->color}");
 
         $this->beUser();
-        $this->get("/api/v1/volumes/{$id}/color-sort-sequence/{$s->color}")
-            ->assertResponseStatus(403);
+        $response = $this->get("/api/v1/volumes/{$id}/color-sort-sequence/{$s->color}")
+            ->assertStatus(403);
 
         $this->beGuest();
-        $this->get("/api/v1/volumes/{$id}/color-sort-sequence/abc")
-            ->assertResponseStatus(404);
+        $response = $this->get("/api/v1/volumes/{$id}/color-sort-sequence/abc")
+            ->assertStatus(404);
 
-        $this->get("/api/v1/volumes/{$id}/color-sort-sequence/{$s->color}");
+        $response = $this->get("/api/v1/volumes/{$id}/color-sort-sequence/{$s->color}");
         // exists but computing is not finished yet
-        $this->assertEmpty($this->response->getContent());
+        $this->assertEmpty($response->getContent());
 
         $s->sequence = [1, 3, 2];
         $s->save();
 
-        $this->get("/api/v1/volumes/{$id}/color-sort-sequence/{$s->color}")
-            ->seeJsonEquals([1, 3, 2]);
+        $response = $this->get("/api/v1/volumes/{$id}/color-sort-sequence/{$s->color}")
+            ->assertExactJson([1, 3, 2]);
     }
 
     public function testStore()
@@ -68,39 +68,39 @@ class VolumeColorSortSequenceControllerTest extends ApiTestCase
 
         // guests cannot request new color sort sequences
         $this->beGuest();
-        $this->post("/api/v1/volumes/{$id}/color-sort-sequence", [
+        $response = $this->post("/api/v1/volumes/{$id}/color-sort-sequence", [
             'color' => 'abcdef',
         ]);
-        $this->assertResponseStatus(403);
+        $response->assertStatus(403);
 
         $this->beEditor();
         // missing color
-        $this->json('POST', "/api/v1/volumes/{$id}/color-sort-sequence");
-        $this->assertResponseStatus(422);
+        $response = $this->json('POST', "/api/v1/volumes/{$id}/color-sort-sequence");
+        $response->assertStatus(422);
 
         // invalid color
-        $this->json('POST', "/api/v1/volumes/{$id}/color-sort-sequence", [
+        $response = $this->json('POST', "/api/v1/volumes/{$id}/color-sort-sequence", [
             'color' => 'bcdefg',
         ]);
-        $this->assertResponseStatus(422);
-        $this->json('POST', "/api/v1/volumes/{$id}/color-sort-sequence", [
+        $response->assertStatus(422);
+        $response = $this->json('POST', "/api/v1/volumes/{$id}/color-sort-sequence", [
             'color' => 'abcdef1',
         ]);
-        $this->assertResponseStatus(422);
+        $response->assertStatus(422);
 
         $this->expectsJobs(ComputeNewSequence::class);
 
         $this->assertEquals(0, Sequence::where('volume_id', $id)->count());
-        $this->post("/api/v1/volumes/{$id}/color-sort-sequence", [
+        $response = $this->post("/api/v1/volumes/{$id}/color-sort-sequence", [
             'color' => 'bada55',
-        ])->assertResponseOk();
+        ])->assertStatus(200);
         $this->assertEquals(1, Sequence::where('volume_id', $id)->count());
         $this->assertEquals('bada55', Sequence::where('volume_id', $id)->first()->color);
 
         // requesting the same color twice is not allowed
-        $this->json('POST', "/api/v1/volumes/{$id}/color-sort-sequence", [
+        $response = $this->json('POST', "/api/v1/volumes/{$id}/color-sort-sequence", [
             'color' => 'bada55',
-        ])->assertResponseStatus(422);
+        ])->assertStatus(422);
     }
 
     public function testStoreRemote()
@@ -113,10 +113,10 @@ class VolumeColorSortSequenceControllerTest extends ApiTestCase
         $this->beEditor();
         $this->doesntExpectJobs(ComputeNewSequence::class);
 
-        $this->json('POST', "/api/v1/volumes/{$id}/color-sort-sequence", [
+        $response = $this->json('POST', "/api/v1/volumes/{$id}/color-sort-sequence", [
             'color' => 'bada55',
         ]);
-        $this->assertResponseStatus(422);
+        $response->assertStatus(422);
     }
 
     public function testDestroy()
@@ -127,16 +127,16 @@ class VolumeColorSortSequenceControllerTest extends ApiTestCase
         $this->doTestApiRoute('DELETE', "/api/v1/volumes/{$id}/color-sort-sequence/{$s->color}");
 
         $this->beEditor();
-        $this->delete("/api/v1/volumes/{$id}/color-sort-sequence/{$s->color}")
-            ->assertResponseStatus(403);
+        $response = $this->delete("/api/v1/volumes/{$id}/color-sort-sequence/{$s->color}")
+            ->assertStatus(403);
 
         $this->beAdmin();
-        $this->delete("/api/v1/volumes/{$id}/color-sort-sequence/abc")
-            ->assertResponseStatus(404);
+        $response = $this->delete("/api/v1/volumes/{$id}/color-sort-sequence/abc")
+            ->assertStatus(404);
 
         $this->assertNotNull($s->fresh());
-        $this->delete("/api/v1/volumes/{$id}/color-sort-sequence/{$s->color}");
-        $this->assertResponseOk();
+        $response = $this->delete("/api/v1/volumes/{$id}/color-sort-sequence/{$s->color}");
+        $response->assertStatus(200);
         $this->assertNull($s->fresh());
     }
 }
