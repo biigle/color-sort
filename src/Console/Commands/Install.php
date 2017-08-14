@@ -28,16 +28,16 @@ class Install extends Command
      */
     public function handle()
     {
-        $response = $this->call('vendor:publish', [
+        $this->call('vendor:publish', [
             '--provider' => ServiceProvider::class,
             '--tag' => ['migrations'],
         ]);
 
         if ($this->confirm('Do you want to run the migration right away?')) {
-            $response = $this->call('migrate');
+            $this->call('migrate');
         }
 
         // publish the public assets
-        $response = $this->call('color-sort:publish');
+        $this->call('color-sort:publish');
     }
 }
