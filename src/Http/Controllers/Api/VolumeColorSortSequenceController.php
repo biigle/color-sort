@@ -117,9 +117,9 @@ class VolumeColorSortSequenceController extends Controller
         $s->color = $request->input('color');
         $s->save();
 
-        $this->dispatchNow(new ComputeNewSequence($s));
+        $this->dispatch(new ComputeNewSequence($s));
 
-        return $s->fresh()->sequence;
+        return $s;
     }
 
     /**
