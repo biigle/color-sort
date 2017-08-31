@@ -36,6 +36,9 @@ biigle.$require('volumes.stores.sorters').push({
             canRequestNewColor: function () {
                 return !this.fetchingColors && !this.loadingSequence && !this.computingSequence;
             },
+            api: function () {
+                return biigle.$require('api.colorSortSequence');
+            },
         },
         methods: {
             getSequence: function () {
@@ -49,16 +52,15 @@ biigle.$require('volumes.stores.sorters').push({
                 }
 
                 this.loadingSequence = true;
-                return biigle.$require('api.colorSortSequence')
-                    .get({volume_id: this.volumeId, color: color})
-                        .then(this.parseResponse)
-                        .then(function (sequence) {
-                            self.cache[color] = sequence;
-                            return sequence;
-                        })
-                        .finally(function () {
-                            self.loadingSequence = false;
-                        });
+                return this.api.get({volume_id: this.volumeId, color: color})
+                    .then(this.parseResponse)
+                    .then(function (sequence) {
+                        self.cache[color] = sequence;
+                        return sequence;
+                    })
+                    .finally(function () {
+                        self.loadingSequence = false;
+                    });
             },
             parseResponse: function (response) {
                 return response.data;
@@ -77,29 +79,47 @@ biigle.$require('volumes.stores.sorters').push({
             },
             fetchColors: function () {
                 var self = this;
-                biigle.$require('api.colorSortSequence')
-                    .query({volume_id: this.volumeId})
-                        .then(this.initColors)
-                        .catch(biigle.$require('messages.store').handleErrorResponse)
-                        .finally(function () {
-                            self.fetchingColors = false;
-                        });
+                this.api.query({volume_id: this.volumeId})
+                    .then(this.initColors)
+                    .catch(biigle.$require('messages.store').handleErrorResponse)
+                    .finally(function () {
+                        self.fetchingColors = false;
+                    });
+            },
+            pollNewSequence: function (response) {
+                var self = this;
+                var color = response.body.color;
+
+                return new Vue.Promise(function (resolve, reject) {
+                    var interval = window.setInterval(function () {
+                        self.api.get({volume_id: self.volumeId, color: color})
+                            .then(function (response) {
+                                if (response.data) {
+                                    window.clearInterval(interval);
+                                    resolve(response);
+                                }
+                            }, function (response) {
+                                window.clearInterval(interval);
+                                reject(response);
+                            });
+                    }, 2500);
+                });
             },
             requestNewColor: function () {
                 this.computingSequence = true;
                 var self = this;
                 var color = this.newColor.substr(1);
-                biigle.$require('api.colorSortSequence')
-                    .save({volume_id: this.volumeId}, {color: color})
-                        .then(function (response) {
-                            self.cache[color] = response.data;
-                            self.colors.push(color);
-                            self.select(color);
-                        })
-                        .catch(biigle.$require('messages.store').handleErrorResponse)
-                        .finally(function () {
-                            self.computingSequence = false;
-                        });
+                this.api.save({volume_id: this.volumeId}, {color: color})
+                    .then(this.pollNewSequence)
+                    .then(function (response) {
+                        self.cache[color] = response.data;
+                        self.colors.push(color);
+                        self.select(color);
+                    })
+                    .catch(biigle.$require('messages.store').handleErrorResponse)
+                    .finally(function () {
+                        self.computingSequence = false;
+                    });
             },
         },
         mounted: function () {
