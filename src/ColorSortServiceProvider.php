@@ -39,11 +39,16 @@ class ColorSortServiceProvider extends ServiceProvider
         \Biigle\Image::observe(new Observers\ImageObserver);
         \Event::listen('images.created', Listeners\ImagesCreatedListener::class);
 
-        $modules->addMixin('color-sort', 'volumesScripts');
-        $modules->addMixin('color-sort', 'volumesStyles');
-        $modules->addMixin('color-sort', 'volumesEditScripts');
-        $modules->addMixin('color-sort', 'volumesEditStyles');
-        $modules->addMixin('color-sort', 'volumesEditLeft');
+        $modules->register('color-sort', [
+            'viewMixins' => [
+                'volumesScripts',
+                'volumesStyles',
+                'volumesEditScripts',
+                'volumesEditStyles',
+                'volumesEditLeft',
+                'volumesManualRemoteVolumes',
+            ],
+        ]);
     }
 
     /**
