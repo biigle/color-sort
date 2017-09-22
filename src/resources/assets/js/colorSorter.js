@@ -100,6 +100,9 @@ biigle.$require('volumes.stores.sorters').push({
                                 }
                             }, function (response) {
                                 window.clearInterval(interval);
+                                if (response.status === 404) {
+                                    response.body.message = 'Computing the color sort sequence failed. Sorry.';
+                                }
                                 reject(response);
                             });
                     }, 2500);
