@@ -1,4 +1,3 @@
-@unless ($volume->isRemote())
 <div id="color-sort-panel" class="panel panel-default">
     <div class="panel-heading">
         Color sort sequences
@@ -14,4 +13,3 @@
         <li class="list-group-item text-muted" v-if="!hasSequences">This volume has no color sort sequences. Add some in the sorting tab of the <a href="{{route('volume', $volume->id)}}">volume overview</a>.</li>
     </ul>
 </div>
-@endunless

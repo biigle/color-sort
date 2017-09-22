@@ -105,18 +105,20 @@ class VolumeColorSortSequenceControllerTest extends ApiTestCase
 
     public function testStoreRemote()
     {
+        // In an older version color sorting was disabled for remote volumes. But now
+        // it works here, too.
         $volume = $this->volume();
         $volume->url = 'http://localhost';
         $volume->save();
         $id = $volume->id;
 
         $this->beEditor();
-        $this->doesntExpectJobs(ComputeNewSequence::class);
+        $this->expectsJobs(ComputeNewSequence::class);
 
         $response = $this->json('POST', "/api/v1/volumes/{$id}/color-sort-sequence", [
             'color' => 'bada55',
         ]);
-        $response->assertStatus(422);
+        $response->assertStatus(200);
     }
 
     public function testDestroy()

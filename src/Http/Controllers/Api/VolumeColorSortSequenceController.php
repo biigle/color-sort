@@ -83,7 +83,6 @@ class VolumeColorSortSequenceController extends Controller
      * @apiName StoreVolumeColorSortSequence
      * @apiPermission projectEditor
      * @apiDescription Initiates computing of a new color sort sequence. Poll the "show" endpoint to see when computing has finished.
-     * **Computing of a color sort sequence is not available for remote volumes.**
      *
      * @apiParam {Number} id The volume ID.
      * @apiParam (Required attributes) {String} color The color of the new color sort sequence.
@@ -97,13 +96,6 @@ class VolumeColorSortSequenceController extends Controller
         $this->validate($request, Sequence::$createRules);
         $volume = Volume::findOrFail($id);
         $this->authorize('edit-in', $volume);
-
-        if ($volume->isRemote()) {
-            return $this->buildFailedValidationResponse($request, [
-                'id' => ['Computing of a color sort sequence is not available for remote volumes.'],
-            ]);
-        }
-
         $color = $request->input('color');
 
         if (Sequence::where('volume_id', $id)->where('color', $color)->exists()) {

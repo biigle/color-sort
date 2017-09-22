@@ -46,7 +46,6 @@ class ColorSortServiceProvider extends ServiceProvider
                 'volumesEditScripts',
                 'volumesEditStyles',
                 'volumesEditLeft',
-                'volumesManualRemoteVolumes',
             ],
         ]);
     }
