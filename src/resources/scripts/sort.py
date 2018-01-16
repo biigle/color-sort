@@ -21,7 +21,8 @@ ids = np.array(js['ids'])
 
 mdists = []
 for file in files:
-    img = imread(base + '/' + file + '.' + file_format)
+    path = '{}/{}/{}/{}.{}'.format(base, file[0:2], file[2:4], file, file_format)
+    img = imread(path)
     mdists.append(np.mean(scipy.spatial.distance.cdist(color, img.reshape(-1, 3))))
 idxs = np.argsort(mdists)
 
