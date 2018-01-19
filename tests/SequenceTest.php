@@ -27,9 +27,6 @@ class SequenceTest extends TestCase
 
     public function testVolumeOnDeleteCascade()
     {
-        if ($this->isSqlite()) {
-            $this->markTestSkipped('Can\'t test with SQLite because altering foreign key constraints is not supported.');
-        }
         $s = static::create();
         $s->volume()->delete();
         $this->assertNull($s->fresh());
