@@ -1,7 +1,7 @@
 {
     "name": "biigle/color-sort",
     "require": {
-        "biigle/volumes": "dev-vips"
+        "biigle/volumes": ">=1.15.0-beta"
     },
     "require-dev": {
     },
