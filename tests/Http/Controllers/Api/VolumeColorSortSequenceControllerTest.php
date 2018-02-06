@@ -96,6 +96,7 @@ class VolumeColorSortSequenceControllerTest extends ApiTestCase
         ])->assertStatus(200);
         $this->assertEquals(1, Sequence::where('volume_id', $id)->count());
         $this->assertEquals('bada55', Sequence::where('volume_id', $id)->first()->color);
+        $this->assertEquals('high', $this->dispatchedJobs[0]->queue);
 
         // requesting the same color twice is not allowed
         $response = $this->json('POST', "/api/v1/volumes/{$id}/color-sort-sequence", [
