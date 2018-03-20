@@ -13,9 +13,11 @@ class RenameTransectColumn extends Migration
      */
     public function up()
     {
-        Schema::table('copria_color_sort_sequence', function (Blueprint $table) {
-            $table->renameColumn('transect_id', 'volume_id');
-        });
+        if (Schema::hasColumn('copria_color_sort_sequence', 'transect_id')) {
+            Schema::table('copria_color_sort_sequence', function (Blueprint $table) {
+                $table->renameColumn('transect_id', 'volume_id');
+            });
+        }
     }
 
     /**
@@ -25,8 +27,10 @@ class RenameTransectColumn extends Migration
      */
     public function down()
     {
-        Schema::table('copria_color_sort_sequence', function (Blueprint $table) {
-            $table->renameColumn('volume_id', 'transect_id');
-        });
+        if (Schema::hasColumn('copria_color_sort_sequence', 'volume_id')) {
+            Schema::table('copria_color_sort_sequence', function (Blueprint $table) {
+                $table->renameColumn('volume_id', 'transect_id');
+            });
+        }
     }
 }

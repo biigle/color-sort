@@ -20,10 +20,17 @@ class CreateCopriaColorSortSequencesTable extends Migration
         Schema::create('copria_color_sort_sequence', function (Blueprint $table) {
             $table->increments('id');
 
-            $table->integer('transect_id')->unsigned();
-            $table->foreign('transect_id')
+            // Make this compatible with instances where this module is added *after*
+            // transects has been renamed to volumes.
+            $volumeName = 'volume';
+            if (Schema::hasTable('transects')) {
+                $volumeName = 'transect';
+            }
+
+            $table->integer("{$volumeName}_id")->unsigned();
+            $table->foreign("{$volumeName}_id")
               ->references('id')
-              ->on('transects')
+              ->on("{$volumeName}s")
               // if the transect is deleted, the color sort information should be deleted, too
               ->onDelete('cascade');
 
@@ -32,8 +39,8 @@ class CreateCopriaColorSortSequencesTable extends Migration
             // the sequence of image IDs when sorted by this color
             $table->json('sequence')->nullable();
 
-            $table->index(['transect_id', 'color']);
-            $table->unique(['transect_id', 'color']);
+            $table->index(["{$volumeName}_id", 'color']);
+            $table->unique(["{$volumeName}_id", 'color']);
         });
     }
 
