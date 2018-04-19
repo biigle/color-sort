@@ -32,5 +32,7 @@ class ImageObserverTest extends TestCase
         $sequence = SequenceTest::create(['volume_id' => $volume->id]);
         // shouldn't fail
         $image->delete();
+        // Add assertion so this test isn't marked as risky.
+        $this->assertTrue(true);
     }
 }
