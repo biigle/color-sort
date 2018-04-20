@@ -6,8 +6,9 @@ use Biigle\Image;
 use Biigle\Volume;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Auth\Guard;
-use Biigle\Http\Controllers\Api\Controller;
 use Biigle\Modules\ColorSort\Sequence;
+use Biigle\Http\Controllers\Api\Controller;
+use Illuminate\Validation\ValidationException;
 use Biigle\Modules\ColorSort\Jobs\ComputeNewSequence;
 
 class VolumeColorSortSequenceController extends Controller
@@ -99,7 +100,7 @@ class VolumeColorSortSequenceController extends Controller
         $color = $request->input('color');
 
         if (Sequence::where('volume_id', $id)->where('color', $color)->exists()) {
-            return $this->buildFailedValidationResponse($request, [
+            throw ValidationException::withMessages([
                 'color' => ['The color sort sequence already exists for this volume'],
             ]);
         }
