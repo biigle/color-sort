@@ -4,7 +4,7 @@ Add this to your `composer.json` repositories array:
 ```json
 {
     "type": "vcs",
-    "url": "git@github.com:BiodataMiningGroup/biigle-color-sort.git"
+    "url": "git@github.com:biigle/color-sort.git"
 }
 ```
 
