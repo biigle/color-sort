@@ -7,7 +7,7 @@
                     <form v-on:submit.prevent="requestNewColor">
                         <loader v-if="computingSequence" :active="computingSequence"></loader>
                         <input type="color" class="btn btn-default btn-xs color-picker" id="color-sort-color" v-model="newColor" title="Choose a new color">
-                        <button :disabled="!canRequestNewColor" type="submit" class="btn btn-default btn-xs" title="Request a new color sort sequence for the chosen color"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                        <button :disabled="!canRequestNewColor" type="submit" class="btn btn-default btn-xs" title="Request a new color sort sequence for the chosen color"><span class="fa fa-plus" aria-hidden="true"></span></button>
                     </form>
                 </span>
             @endcan
