@@ -5,7 +5,6 @@ namespace Biigle\Tests\Modules\ColorSort\Jobs;
 use App;
 use Mockery;
 use TestCase;
-use Biigle\Tests\ImageTest;
 use Biigle\Tests\VolumeTest;
 use Biigle\Modules\ColorSort\Support\Sort;
 use Biigle\Tests\Modules\ColorSort\SequenceTest;

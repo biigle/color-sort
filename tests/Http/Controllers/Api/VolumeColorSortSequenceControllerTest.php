@@ -3,7 +3,6 @@
 namespace Biigle\Tests\Modules\ColorSort\Http\Controllers\Api;
 
 use ApiTestCase;
-use Biigle\Tests\ImageTest;
 use Biigle\Modules\ColorSort\Sequence;
 use Biigle\Tests\Modules\ColorSort\SequenceTest;
 use Biigle\Modules\ColorSort\Jobs\ComputeNewSequence;
