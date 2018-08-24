@@ -5,7 +5,6 @@ namespace Biigle\Modules\ColorSort\Http\Controllers\Api;
 use Biigle\Image;
 use Biigle\Volume;
 use Illuminate\Http\Request;
-use Illuminate\Contracts\Auth\Guard;
 use Biigle\Modules\ColorSort\Sequence;
 use Biigle\Http\Controllers\Api\Controller;
 use Illuminate\Validation\ValidationException;
