@@ -4,11 +4,11 @@ namespace Biigle\Modules\ColorSort\Http\Controllers\Api;
 
 use Biigle\Image;
 use Biigle\Volume;
-use Illuminate\Http\Request;
 use Biigle\Modules\ColorSort\Sequence;
 use Biigle\Http\Controllers\Api\Controller;
 use Illuminate\Validation\ValidationException;
 use Biigle\Modules\ColorSort\Jobs\ComputeNewSequence;
+use Biigle\Modules\ColorSort\Http\Requests\StoreColorSortSequence;
 
 class VolumeColorSortSequenceController extends Controller
 {
@@ -87,25 +87,13 @@ class VolumeColorSortSequenceController extends Controller
      * @apiParam {Number} id The volume ID.
      * @apiParam (Required attributes) {String} color The color of the new color sort sequence.
      *
-     * @param Request $request
-     * @param  int  $id
+     * @param StoreColorSortSequence $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $id)
+    public function store(StoreColorSortSequence $request)
     {
-        $this->validate($request, Sequence::$createRules);
-        $volume = Volume::findOrFail($id);
-        $this->authorize('edit-in', $volume);
-        $color = $request->input('color');
-
-        if (Sequence::where('volume_id', $id)->where('color', $color)->exists()) {
-            throw ValidationException::withMessages([
-                'color' => ['The color sort sequence already exists for this volume'],
-            ]);
-        }
-
         $s = new Sequence;
-        $s->volume_id = $id;
+        $s->volume_id = $request->route('id');
         $s->color = $request->input('color');
         $s->save();
 

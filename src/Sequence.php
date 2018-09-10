@@ -43,15 +43,6 @@ class Sequence extends Model
     ];
 
     /**
-     * Validation rules for creating a new project.
-     *
-     * @var array
-     */
-    public static $createRules = [
-        'color' => 'required|regex:/^[0-9a-fA-F]{6}$/',
-    ];
-
-    /**
      * The volume, this image belongs to.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
