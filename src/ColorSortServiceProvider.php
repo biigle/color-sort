@@ -47,6 +47,7 @@ class ColorSortServiceProvider extends ServiceProvider
                 'volumesEditStyles',
                 'volumesEditLeft',
             ],
+            'apidoc' => [__DIR__.'/Http/Controllers/Api/'],
         ]);
     }
 

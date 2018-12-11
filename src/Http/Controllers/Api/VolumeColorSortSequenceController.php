@@ -16,7 +16,7 @@ class VolumeColorSortSequenceController extends Controller
      * List all color sort sequence colors of the specified volume.
      *
      * @api {get} volumes/:id/color-sort-sequence Get all sequences
-     * @apiGroup Volumes
+     * @apiGroup Color_Sort
      * @apiName IndexVolumeColorSortSequences
      * @apiPermission projectMember
      * @apiDescription Returns a list of all colors of color sort sequences of the volume. Note that this list does _not_ contain the sequences still computing (i.e. having no sorting data yet).
@@ -46,7 +46,7 @@ class VolumeColorSortSequenceController extends Controller
      * Show the sequence of images sorted by a specific color.
      *
      * @api {get} volumes/:id/color-sort-sequence/:color Get the sequence of a color
-     * @apiGroup Volumes
+     * @apiGroup Color_Sort
      * @apiName ShowVolumeColorSortSequence
      * @apiPermission projectMember
      * @apiDescription Returns an array of image IDs sorted by the color
@@ -78,8 +78,8 @@ class VolumeColorSortSequenceController extends Controller
     /**
      * Request a new color sort sequence.
      *
-     * @api {post} volumes/:id/color-sort-sequence Request a new color sort sequence
-     * @apiGroup Volumes
+     * @api {post} volumes/:id/color-sort-sequence Request a sequence
+     * @apiGroup Color_Sort
      * @apiName StoreVolumeColorSortSequence
      * @apiPermission projectEditor
      * @apiDescription Initiates computing of a new color sort sequence. Poll the "show" endpoint to see when computing has finished.
@@ -105,8 +105,8 @@ class VolumeColorSortSequenceController extends Controller
     /**
      * Delete a color sort sequence.
      *
-     * @api {delete} volumes/:id/color-sort-sequence/:color Delete a color sort wequence
-     * @apiGroup Volumes
+     * @api {delete} volumes/:id/color-sort-sequence/:color Delete a sequence
+     * @apiGroup Color_Sort
      * @apiName DestroyVolumeColorSortSequence
      * @apiPermission projectAdmin
      *
