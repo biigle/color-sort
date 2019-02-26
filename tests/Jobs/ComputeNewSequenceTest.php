@@ -5,6 +5,7 @@ namespace Biigle\Tests\Modules\ColorSort\Jobs;
 use App;
 use Mockery;
 use TestCase;
+use Biigle\Tests\ImageTest;
 use Biigle\Tests\VolumeTest;
 use Biigle\Modules\ColorSort\Support\Sort;
 use Biigle\Tests\Modules\ColorSort\SequenceTest;
@@ -15,7 +16,8 @@ class ComputeNewSequenceTest extends TestCase
     public function testHandle()
     {
         $volume = VolumeTest::create(['url' => '/vol/images']);
-        $volume->createImages(['a.jpg', 'b.jpg']);
+        ImageTest::create(['volume_id' => $volume->id, 'filename' => 'a.jpg']);
+        ImageTest::create(['volume_id' => $volume->id, 'filename' => 'b.jpg']);
         $sequence = SequenceTest::make(['volume_id' => $volume->id]);
         $sequence->color = 'bada55';
         $sequence->save();
@@ -37,7 +39,8 @@ class ComputeNewSequenceTest extends TestCase
     public function testHandleFailure()
     {
         $volume = VolumeTest::create(['url' => '/vol/images']);
-        $volume->createImages(['a.jpg', 'b.jpg']);
+        ImageTest::create(['volume_id' => $volume->id, 'filename' => 'a.jpg']);
+        ImageTest::create(['volume_id' => $volume->id, 'filename' => 'b.jpg']);
         $sequence = SequenceTest::make(['volume_id' => $volume->id]);
         $sequence->color = 'bada55';
         $sequence->save();
