@@ -14,14 +14,11 @@ js = json.load(f)
 f.close()
 
 color = np.array(hex_to_rgb(js['color'])).reshape(1, -1)
-base = js['base']
-file_format = js['format']
 files = np.array(js['files'])
 ids = np.array(js['ids'])
 
 mdists = []
-for file in files:
-    path = '{}/{}/{}/{}.{}'.format(base, file[0:2], file[2:4], file, file_format)
+for path in files:
     img = imread(path)
     mdists.append(np.mean(scipy.spatial.distance.cdist(color, img.reshape(-1, 3))))
 idxs = np.argsort(mdists)
