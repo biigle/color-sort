@@ -1,29 +1,22 @@
-# Installation
+# BIIGLE ColorSort Module
 
-Add this to your `composer.json` repositories array:
-```json
-{
-    "type": "vcs",
-    "url": "git@github.com:biigle/color-sort.git"
-}
-```
+This is the BIIGLE module to create, edit and explore image color-sort.
 
-Run `php composer.phar require biigle/color-sort`.
+## Installation
 
-Run `pip install -r vendor/biigle/color-sort/requirements.txt` to install Python requirements.
+1. Run `composer config repositories.color-sort vcs git@github.com:biigle/color-sort.git`
+2. Run `composer require biigle/color-sort`.
+3. Add `Biigle\Modules\ColorSort\ColorSortServiceProvider::class` to the `providers` array in `config/app.php`.
+4. Run `docker-compose exec app php artisan migrate` to create the new database tables.
+4. Run `php artisan vendor:publish --tag=public` to publish the public assets of this module.
+5. Run `pip install -r vendor/biigle/color-sort/requirements.txt` to install the Python requirements.
 
-To activate the module, add `'Biigle\Modules\ColorSort\ColorSortServiceProvider'` to the providers array of `config/app.php`. Then run `php artisan color-sort:install` to publish and run the migration.
+## Developing
 
-# Configuration
+Take a look at the [development guide](https://github.com/biigle/core/blob/master/DEVELOPING.md) of the core repository to get started with the development setup.
 
-If you want to edit any config values, run `php artisan vendor:publish --provider="Biigle\Modules\ColorSort\ColorSortServiceProvider" --tag="config"` and edit `config/color_sort.php`.
+Want to develop a new module? Head over to the [biigle/module](https://github.com/biigle/module) template repository.
 
-# Updating
+## Contributions and bug reports
 
-Update the package using Composer. Then run `php artisan color-sort:publish` to refresh the public assets.
-
-# Removing
-
-To remove the module, roll back the migration and run and `php composer.phar remove biigle/color-sort`. Then remove `'Biigle\Modules\ColorSort\ColorSortServiceProvider'` from the providers array of `config/app.php`.
-
-See [here](http://stackoverflow.com/a/30288058/1796523) for how to roll back a single migration (tl;dr: Find the migration in the `migrations` DB table, set it's batch number to the next highest number of all batch numbers, then run `php artisan migrate:rollback`).
+Contributions to BIIGLE are always welcome. Check out the [contribution guide](https://github.com/biigle/core/blob/master/CONTRIBUTING.md) to get started.
