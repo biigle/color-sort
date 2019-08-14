@@ -1,6 +1,6 @@
 # BIIGLE ColorSort Module
 
-This is the BIIGLE module to create, edit and explore image color-sort.
+This is the BIIGLE module to sort volume images by color.
 
 ## Installation
 
