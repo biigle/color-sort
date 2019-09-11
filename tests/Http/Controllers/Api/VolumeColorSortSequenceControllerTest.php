@@ -92,7 +92,7 @@ class VolumeColorSortSequenceControllerTest extends ApiTestCase
         $this->assertEquals(0, Sequence::where('volume_id', $id)->count());
         $response = $this->post("/api/v1/volumes/{$id}/color-sort-sequence", [
             'color' => 'bada55',
-        ])->assertStatus(200);
+        ])->assertSuccessful();
         $this->assertEquals(1, Sequence::where('volume_id', $id)->count());
         $this->assertEquals('bada55', Sequence::where('volume_id', $id)->first()->color);
         $this->assertEquals('high', $this->dispatchedJobs[0]->queue);
@@ -118,7 +118,7 @@ class VolumeColorSortSequenceControllerTest extends ApiTestCase
         $response = $this->json('POST', "/api/v1/volumes/{$id}/color-sort-sequence", [
             'color' => 'bada55',
         ]);
-        $response->assertStatus(200);
+        $response->assertSuccessful();
     }
 
     public function testDestroy()
