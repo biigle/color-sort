@@ -2,6 +2,7 @@
 
 namespace Biigle\Tests\Modules\ColorSort;
 
+use Str;
 use TestCase;
 use Biigle\Tests\VolumeTest;
 use Biigle\Modules\ColorSort\Sequence;
@@ -12,7 +13,7 @@ class SequenceTest extends TestCase
     {
         $s = new Sequence;
         $s->volume_id = isset($params['volume_id']) ? $params['volume_id'] : VolumeTest::create()->id;
-        $s->color = str_random(6);
+        $s->color = Str::random(6);
 
         return $s;
     }
