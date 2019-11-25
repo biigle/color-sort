@@ -36,20 +36,21 @@ class Sort
             ->toArray();
 
         $callback = function ($files, $paths) use ($images, $color) {
-            $file = tempnam(sys_get_temp_dir(), 'biigle_color_sort');
-            File::put($file, json_encode([
-                'color' => $color,
-                'files' => $paths,
-                'ids' => $images->keys(),
-            ]));
-
-            $code = 0;
-            $python = config('color_sort.python');
-            $script = config('color_sort.script');
-            $lines = [];
-            $command = "{$python} {$script} \"{$file}\" 2>&1";
-
             try {
+                $file = tempnam(sys_get_temp_dir(), 'biigle_color_sort');
+
+                File::put($file, json_encode([
+                    'color' => $color,
+                    'files' => $paths,
+                    'ids' => $images->keys(),
+                ]));
+
+                $code = 0;
+                $python = config('color_sort.python');
+                $script = config('color_sort.script');
+                $lines = [];
+                $command = "{$python} {$script} \"{$file}\" 2>&1";
+
                 $output = json_decode(exec($command, $lines, $code), true);
             } finally {
                 File::delete($file);
