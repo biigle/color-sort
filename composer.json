@@ -1,5 +1,13 @@
 {
     "name": "biigle/color-sort",
+    "description": "BIIGLE module to sort volume images by color.",
+    "keywords": ["biigle", "biigle-module"],
+    "license": "GPL-3.0-only",
+    "support": {
+        "source": "https://github.com/biigle/color-sort",
+        "issues": "https://github.com/biigle/color-sort/issues"
+    },
+    "homepage": "https://biigle.de",
     "authors": [
         {
             "name": "Martin Zurowietz",
