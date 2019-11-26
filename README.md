@@ -1,5 +1,7 @@
 # BIIGLE ColorSort Module
 
+[![Test status](https://github.com/biigle/color-sort/workflows/Tests/badge.svg)](https://github.com/biigle/color-sort/actions?query=workflow%3ATests)
+
 This is the BIIGLE module to sort volume images by color.
 
 ## Installation
