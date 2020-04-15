@@ -38,7 +38,7 @@ class ComputeNewSequence extends Job implements ShouldQueue
      */
     public function handle()
     {
-        $sort = app()->make(Sort::class);
+        $sort = resolve(Sort::class);
         $output = $sort->execute($this->sequence->volume, $this->sequence->color);
         $this->sequence->sequence = $output;
         $this->sequence->save();

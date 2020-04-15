@@ -97,7 +97,8 @@ class VolumeColorSortSequenceController extends Controller
         $s->color = $request->input('color');
         $s->save();
 
-        ComputeNewSequence::dispatch($s)->onQueue('high');
+        ComputeNewSequence::dispatch($s)
+            ->onQueue(config('color_sort.compute_new_sequence_queue'));
 
         return $s;
     }
