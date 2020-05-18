@@ -21,6 +21,20 @@ class ComputeNewSequence extends Job implements ShouldQueue
     private $sequence;
 
     /**
+     * Ignore this job if the annotation does not exist any more.
+     *
+     * @var bool
+     */
+    protected $deleteWhenMissingModels = true;
+
+    /**
+     * The number of times the job may be attempted.
+     *
+     * @var int
+     */
+    public $tries = 1;
+
+    /**
      * Create a new job instance.
      *
      * @param Sequence $sequence The color sort sequence that should be computed
