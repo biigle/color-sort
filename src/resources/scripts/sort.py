@@ -1,5 +1,5 @@
 import numpy as np
-from scipy.misc import imread
+from PIL import Image
 import scipy.spatial.distance
 import sys
 import json
@@ -19,8 +19,8 @@ ids = np.array(js['ids'])
 
 mdists = []
 for path in files:
-    img = imread(path)
+    img = np.array(Image.open(path))
     mdists.append(np.mean(scipy.spatial.distance.cdist(color, img.reshape(-1, 3))))
 idxs = np.argsort(mdists)
 
-print json.dumps(ids[idxs].tolist())
+print(json.dumps(ids[idxs].tolist()))
