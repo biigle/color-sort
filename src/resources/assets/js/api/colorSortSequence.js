@@ -17,4 +17,4 @@
  *
  * @type {Vue.resource}
  */
-biigle.$declare('api.colorSortSequence', Vue.resource('api/v1/volumes{/volume_id}/color-sort-sequence{/color}'));
+export default Vue.resource('api/v1/volumes{/volume_id}/color-sort-sequence{/color}');
