@@ -2,9 +2,9 @@
 
 namespace Biigle\Modules\ColorSort;
 
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Routing\Router;
 use Biigle\Services\Modules;
+use Illuminate\Routing\Router;
+use Illuminate\Support\ServiceProvider;
 
 class ColorSortServiceProvider extends ServiceProvider
 {
@@ -62,10 +62,6 @@ class ColorSortServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__.'/config/color_sort.php', 'color_sort');
 
         // set up the console commands
-        $this->app->singleton('command.color-sort.install', function ($app) {
-            return new \Biigle\Modules\ColorSort\Console\Commands\Install();
-        });
-        $this->commands('command.color-sort.install');
         $this->app->singleton('command.color-sort.publish', function ($app) {
             return new \Biigle\Modules\ColorSort\Console\Commands\Publish();
         });
@@ -80,7 +76,6 @@ class ColorSortServiceProvider extends ServiceProvider
     public function provides()
     {
         return [
-            'command.color-sort.install',
             'command.color-sort.publish',
         ];
     }
