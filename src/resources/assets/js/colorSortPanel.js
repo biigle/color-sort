@@ -1,12 +1,12 @@
 import ColorSortApi from './api/colorSortSequence';
 import {handleErrorResponse} from './import';
-import {Loader} from './import';
+import {LoaderMixin} from './import';
 
 /**
  * The panel for editing color sort sequences
  */
 let listItem = {
-    props: ['color'],
+    props: ['sequence'],
     computed: {
         title() {
             return 'Delete sequence for color #' + this.color;
@@ -14,16 +14,19 @@ let listItem = {
         styleObject() {
             return {'background-color': '#' + this.color};
         },
+        color() {
+            return this.sequence.color;
+        },
     },
     methods: {
         remove() {
-            this.$emit('remove', this.color);
+            this.$emit('remove', this.sequence);
         },
     }
 };
 
 export default {
-    mixins: [Loader],
+    mixins: [LoaderMixin],
     data: {
         sequences: [],
         volumeId: null,
@@ -37,24 +40,24 @@ export default {
         },
     },
     methods: {
-        handleRemove(color) {
-            if (!this.loading && confirm(`Do you really want to delete the sequence for color #${color}?`)) {
+        handleRemove(sequence) {
+            if (!this.loading && confirm(`Do you really want to delete the sequence for color #${sequence.color}?`)) {
                 this.startLoading();
-                ColorSortApi.delete({volume_id: volumeId, color: color})
-                    .then(() => this.sequenceRemoved(color))
+                ColorSortApi.delete({volume_id: this.volumeId, color: sequence.color})
+                    .then(() => this.sequenceRemoved(sequence.id))
                     .catch(handleErrorResponse)
                     .finally(this.finishLoading);
             }
         },
-        sequenceRemoved(color) {
-            let index = this.sequences.indexOf(color);
-            if (index !== -1) {
-                this.sequences.splice(index, 1);
-            }
+        sequenceRemoved(id) {
+            this.sequences = this.sequences.filter((s) => s.id !== id);
         },
     },
     created() {
-        this.sequences = biigle.$require('volumes.colorSortSequences');
+        this.sequences = biigle.$require('volumes.colorSortSequences')
+            .map(function (color, id) {
+                return {color, id};
+            });
         this.volumeId = biigle.$require('volumes.id');
     },
 };

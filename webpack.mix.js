@@ -19,7 +19,10 @@ mix.setPublicPath('src/public');
 
 mix.js('src/resources/assets/js/volumes.js', 'assets/scripts')
     .sass('src/resources/assets/sass/volumes.scss', 'assets/styles')
-    .publish({provider: 'Biigle\\Modules\\ColorSort\\ColorSortServiceProvider'});
+    .publish({
+        provider: 'Biigle\\Modules\\ColorSort\\ColorSortServiceProvider',
+        tag: 'public',
+    });
 
 if (mix.inProduction()) {
     mix.version();

@@ -1,7 +1,7 @@
 import ColorSortApi from './api/colorSortSequence';
 import {Events} from './import';
 import {handleErrorResponse} from './import';
-import {Loader} from './import';
+import {LoaderComponent} from './import';
 import {SortComponent} from './import';
 import {VolumeSorters} from './import';
 
@@ -14,7 +14,7 @@ VolumeSorters.push({
         template: '#color-sort-template',
         mixins: [SortComponent],
         components: {
-            loader: Loader,
+            loader: LoaderComponent,
         },
         data() {
             return {
