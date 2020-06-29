@@ -55,9 +55,7 @@ export default {
     },
     created() {
         this.sequences = biigle.$require('volumes.colorSortSequences')
-            .map(function (color, id) {
-                return {color, id};
-            });
+            .map((color, id) => ({color, id}));
         this.volumeId = biigle.$require('volumes.id');
     },
 };
