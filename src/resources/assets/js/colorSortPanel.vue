@@ -1,3 +1,4 @@
+<script>
 import ColorSortApi from './api/colorSortSequence';
 import {handleErrorResponse} from './import';
 import {LoaderMixin} from './import';
@@ -27,9 +28,11 @@ let listItem = {
 
 export default {
     mixins: [LoaderMixin],
-    data: {
-        sequences: [],
-        volumeId: null,
+    data() {
+        return {
+            sequences: [],
+            volumeId: null,
+        };
     },
     components: {
         listItem: listItem,
@@ -59,3 +62,4 @@ export default {
         this.volumeId = biigle.$require('volumes.id');
     },
 };
+</script>
