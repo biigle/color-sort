@@ -15,7 +15,7 @@
             <span v-if="fetchingColors" class="text-muted">
                 (fetching colors...)
             </span>
-            <span v-else v-if="!hasColors" class=text-muted>
+            <span v-else-if="!hasColors" class=text-muted>
                 (no colors available)
             </span>
         </div>
