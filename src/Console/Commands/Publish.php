@@ -2,8 +2,8 @@
 
 namespace Biigle\Modules\ColorSort\Console\Commands;
 
-use Illuminate\Console\Command;
 use Biigle\Modules\ColorSort\ColorSortServiceProvider as ServiceProvider;
+use Illuminate\Console\Command;
 
 class Publish extends Command
 {

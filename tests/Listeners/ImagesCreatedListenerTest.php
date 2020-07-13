@@ -2,9 +2,9 @@
 
 namespace Biigle\Tests\Modules\ColorSort\Listeners;
 
-use TestCase;
-use Biigle\Tests\Modules\ColorSort\SequenceTest;
 use Biigle\Modules\ColorSort\Listeners\ImagesCreatedListener;
+use Biigle\Tests\Modules\ColorSort\SequenceTest;
+use TestCase;
 
 class ImagesCreatedListenerTest extends TestCase
 {

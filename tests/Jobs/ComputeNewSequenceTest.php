@@ -3,13 +3,13 @@
 namespace Biigle\Tests\Modules\ColorSort\Jobs;
 
 use App;
+use Biigle\Modules\ColorSort\Jobs\ComputeNewSequence;
+use Biigle\Modules\ColorSort\Support\Sort;
+use Biigle\Tests\ImageTest;
+use Biigle\Tests\Modules\ColorSort\SequenceTest;
+use Biigle\Tests\VolumeTest;
 use Mockery;
 use TestCase;
-use Biigle\Tests\ImageTest;
-use Biigle\Tests\VolumeTest;
-use Biigle\Modules\ColorSort\Support\Sort;
-use Biigle\Tests\Modules\ColorSort\SequenceTest;
-use Biigle\Modules\ColorSort\Jobs\ComputeNewSequence;
 
 class ComputeNewSequenceTest extends TestCase
 {

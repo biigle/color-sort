@@ -2,10 +2,10 @@
 
 namespace Biigle\Tests\Modules\ColorSort;
 
+use Biigle\Modules\ColorSort\Sequence;
+use Biigle\Tests\VolumeTest;
 use Str;
 use TestCase;
-use Biigle\Tests\VolumeTest;
-use Biigle\Modules\ColorSort\Sequence;
 
 class SequenceTest extends TestCase
 {

@@ -2,10 +2,10 @@
 
 namespace Biigle\Tests\Modules\ColorSort\Observers;
 
-use TestCase;
 use Biigle\Tests\ImageTest;
-use Biigle\Tests\VolumeTest;
 use Biigle\Tests\Modules\ColorSort\SequenceTest;
+use Biigle\Tests\VolumeTest;
+use TestCase;
 
 class ImageObserverTest extends TestCase
 {

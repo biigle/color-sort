@@ -2,8 +2,8 @@
 
 namespace Biigle\Modules\ColorSort\Http\Requests;
 
-use Biigle\Volume;
 use Biigle\Modules\ColorSort\Sequence;
+use Biigle\Volume;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreColorSortSequence extends FormRequest

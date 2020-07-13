@@ -2,13 +2,13 @@
 
 namespace Biigle\Modules\ColorSort\Http\Controllers\Api;
 
-use Biigle\Image;
-use Biigle\Volume;
-use Biigle\Modules\ColorSort\Sequence;
 use Biigle\Http\Controllers\Api\Controller;
-use Illuminate\Validation\ValidationException;
-use Biigle\Modules\ColorSort\Jobs\ComputeNewSequence;
+use Biigle\Image;
 use Biigle\Modules\ColorSort\Http\Requests\StoreColorSortSequence;
+use Biigle\Modules\ColorSort\Jobs\ComputeNewSequence;
+use Biigle\Modules\ColorSort\Sequence;
+use Biigle\Volume;
+use Illuminate\Validation\ValidationException;
 
 class VolumeColorSortSequenceController extends Controller
 {

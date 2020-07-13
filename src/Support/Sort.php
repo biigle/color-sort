@@ -2,12 +2,12 @@
 
 namespace Biigle\Modules\ColorSort\Support;
 
-use Log;
+use Biigle\FileCache\GenericFile;
+use Biigle\Volume;
+use Exception;
 use File;
 use FileCache;
-use Exception;
-use Biigle\Volume;
-use Biigle\FileCache\GenericFile;
+use Log;
 
 /**
  * Wrapper for the color sort script.

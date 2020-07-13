@@ -3,11 +3,11 @@
 namespace Biigle\Modules\ColorSort\Jobs;
 
 use Biigle\Jobs\Job;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Biigle\Modules\ColorSort\Sequence;
 use Biigle\Modules\ColorSort\Support\Sort;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 
 class ComputeNewSequence extends Job implements ShouldQueue
 {
