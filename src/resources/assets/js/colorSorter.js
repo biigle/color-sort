@@ -11,6 +11,7 @@ import {VolumeSorters} from './import';
 if (Array.isArray(VolumeSorters)) {
     VolumeSorters.push({
         id: 'color',
+        types: ['image'],
         component: {
             template: '#color-sort-template',
             mixins: [SortComponent],
