@@ -8,6 +8,7 @@ use Biigle\Modules\ColorSort\Http\Requests\StoreColorSortSequence;
 use Biigle\Modules\ColorSort\Jobs\ComputeNewSequence;
 use Biigle\Modules\ColorSort\Sequence;
 use Biigle\Volume;
+use Illuminate\Http\Response;
 use Illuminate\Validation\ValidationException;
 
 class VolumeColorSortSequenceController extends Controller
@@ -19,7 +20,7 @@ class VolumeColorSortSequenceController extends Controller
      * @apiGroup Color_Sort
      * @apiName IndexVolumeColorSortSequences
      * @apiPermission projectMember
-     * @apiDescription Returns a list of all colors of color sort sequences of the volume. Note that this list does _not_ contain the sequences still computing (i.e. having no sorting data yet).
+     * @apiDescription Returns a list of all colors of color sort sequences of the volume. Note that this list does _not_ contain the sequences still computing (i.e. having no sorting data yet). Only available for image volumes.
      *
      * @apiParam {Number} id The volume ID.
      *
@@ -36,6 +37,10 @@ class VolumeColorSortSequenceController extends Controller
     {
         $volume = Volume::findOrFail($id);
         $this->authorize('access', $volume);
+
+        if ($volume->isVideoVolume()) {
+            abort(Response::HTTP_NOT_FOUND);
+        }
 
         return Sequence::where('volume_id', $id)
             ->whereNotNull('sequence')
@@ -82,7 +87,7 @@ class VolumeColorSortSequenceController extends Controller
      * @apiGroup Color_Sort
      * @apiName StoreVolumeColorSortSequence
      * @apiPermission projectEditor
-     * @apiDescription Initiates computing of a new color sort sequence. Poll the "show" endpoint to see when computing has finished.
+     * @apiDescription Initiates computing of a new color sort sequence. Poll the "show" endpoint to see when computing has finished. Only available for image volumes.
      *
      * @apiParam {Number} id The volume ID.
      * @apiParam (Required attributes) {String} color The color of the new color sort sequence.
@@ -93,7 +98,7 @@ class VolumeColorSortSequenceController extends Controller
     public function store(StoreColorSortSequence $request)
     {
         $s = new Sequence;
-        $s->volume_id = $request->route('id');
+        $s->volume_id = $request->volume->id;
         $s->color = $request->input('color');
         $s->save();
 

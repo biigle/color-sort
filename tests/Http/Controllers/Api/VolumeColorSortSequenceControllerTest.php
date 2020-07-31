@@ -3,6 +3,7 @@
 namespace Biigle\Tests\Modules\ColorSort\Http\Controllers\Api;
 
 use ApiTestCase;
+use Biigle\MediaType;
 use Biigle\Modules\ColorSort\Jobs\ComputeNewSequence;
 use Biigle\Modules\ColorSort\Sequence;
 use Biigle\Tests\Modules\ColorSort\SequenceTest;
@@ -29,6 +30,15 @@ class VolumeColorSortSequenceControllerTest extends ApiTestCase
         $response = $this->get("/api/v1/volumes/{$id}/color-sort-sequence")
             // show only sequences with actual sorting data
             ->assertExactJson([$s1->color]);
+    }
+
+    public function testIndexVideoVolume()
+    {
+        $volume = $this->volume(['media_type_id' => MediaType::videoId()]);
+        $id = $volume->id;
+
+        $this->beGuest();
+        $this->get("/api/v1/volumes/{$id}/color-sort-sequence")->assertStatus(404);
     }
 
     public function testShow()
@@ -119,6 +129,18 @@ class VolumeColorSortSequenceControllerTest extends ApiTestCase
             'color' => 'bada55',
         ]);
         $response->assertSuccessful();
+    }
+
+    public function testStoreVideoVolume()
+    {
+        $volume = $this->volume(['media_type_id' => MediaType::videoId()]);
+        $id = $volume->id;
+
+        $this->beEditor();
+        $this->postJson("/api/v1/volumes/{$id}/color-sort-sequence", [
+                'color' => 'bada55',
+            ])
+            ->assertStatus(422);
     }
 
     public function testDestroy()
