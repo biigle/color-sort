@@ -9,15 +9,22 @@ use Illuminate\Foundation\Http\FormRequest;
 class StoreColorSortSequence extends FormRequest
 {
     /**
+     * The volume for which the new sequence should be computed.
+     *
+     * @var Volume
+     */
+    public $volume;
+
+    /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
      */
     public function authorize()
     {
-        $volume = Volume::findOrFail($this->route('id'));
+        $this->volume = Volume::findOrFail($this->route('id'));
 
-        return $this->user()->can('edit-in', $volume);
+        return $this->user()->can('edit-in', $this->volume);
     }
 
     /**
@@ -41,6 +48,10 @@ class StoreColorSortSequence extends FormRequest
     public function withValidator($validator)
     {
         $validator->after(function ($validator) {
+            if ($this->volume->isVideoVolume()) {
+                $validator->errors()->add('id', 'Color sort sequences are not available for video volumes.');
+            }
+
             $isDuplicate = Sequence::where('volume_id', $this->route('id'))
                 ->where('color', $this->input('color'))
                 ->exists();
