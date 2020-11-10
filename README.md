@@ -6,6 +6,8 @@ This is the BIIGLE module to sort volume images by color.
 
 ## Installation
 
+This module is already included in [`biigle/biigle`](https://github.com/biigle/biigle).
+
 1. Run `composer require biigle/color-sort`.
 2. Add `Biigle\Modules\ColorSort\ColorSortServiceProvider::class` to the `providers` array in `config/app.php`.
 3. Run `docker-compose exec app php artisan migrate` to create the new database tables.
