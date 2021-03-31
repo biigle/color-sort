@@ -17,7 +17,7 @@ mix.options({processCssUrls: false});
 
 mix.setPublicPath('src/public');
 
-mix.js('src/resources/assets/js/volumes.js', 'assets/scripts')
+mix.js('src/resources/assets/js/volumes.js', 'assets/scripts').vue()
     .sass('src/resources/assets/sass/volumes.scss', 'assets/styles')
     .publish({
         provider: 'Biigle\\Modules\\ColorSort\\ColorSortServiceProvider',
