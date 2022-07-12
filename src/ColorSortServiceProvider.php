@@ -19,7 +19,7 @@ class ColorSortServiceProvider extends ServiceProvider
     public function boot(Modules $modules, Router $router)
     {
         $this->loadViewsFrom(__DIR__.'/resources/views', 'color-sort');
-        $this->loadMigrationsFrom(__DIR__.'/database/migrations');
+        $this->loadMigrationsFrom(__DIR__.'/Database/migrations');
 
         $this->publishes([
             __DIR__.'/public/assets' => public_path('vendor/color-sort'),
