@@ -7,6 +7,7 @@ use Biigle\MediaType;
 use Biigle\Modules\ColorSort\Jobs\ComputeNewSequence;
 use Biigle\Modules\ColorSort\Sequence;
 use Biigle\Tests\Modules\ColorSort\SequenceTest;
+use Queue;
 
 class VolumeColorSortSequenceControllerTest extends ApiTestCase
 {
@@ -97,15 +98,13 @@ class VolumeColorSortSequenceControllerTest extends ApiTestCase
         ]);
         $response->assertStatus(422);
 
-        $this->expectsJobs(ComputeNewSequence::class);
-
         $this->assertEquals(0, Sequence::where('volume_id', $id)->count());
         $response = $this->post("/api/v1/volumes/{$id}/color-sort-sequence", [
             'color' => 'bada55',
         ])->assertSuccessful();
         $this->assertEquals(1, Sequence::where('volume_id', $id)->count());
         $this->assertEquals('bada55', Sequence::where('volume_id', $id)->first()->color);
-        $this->assertEquals('high', $this->dispatchedJobs[0]->queue);
+        Queue::assertPushedOn('high', ComputeNewSequence::class);
 
         // requesting the same color twice is not allowed
         $response = $this->json('POST', "/api/v1/volumes/{$id}/color-sort-sequence", [
@@ -123,12 +122,11 @@ class VolumeColorSortSequenceControllerTest extends ApiTestCase
         $id = $volume->id;
 
         $this->beEditor();
-        $this->expectsJobs(ComputeNewSequence::class);
-
         $response = $this->json('POST', "/api/v1/volumes/{$id}/color-sort-sequence", [
             'color' => 'bada55',
         ]);
         $response->assertSuccessful();
+        Queue::assertPushed(ComputeNewSequence::class);
     }
 
     public function testStoreVideoVolume()
