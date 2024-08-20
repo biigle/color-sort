@@ -38,6 +38,6 @@ class SequenceTest extends TestCase
         $s = static::make();
         $s->sequence = [1, 2, 3];
         $s->save();
-        $this->assertEquals([1, 2, 3], $s->fresh()->sequence);
+        $this->assertSame([1, 2, 3], $s->fresh()->sequence);
     }
 }
