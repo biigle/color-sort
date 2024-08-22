@@ -33,7 +33,7 @@ class ComputeNewSequenceTest extends TestCase
 
         $this->assertNull($sequence->sequence);
         with(new ComputeNewSequence($sequence))->handle();
-        $this->assertEquals([2, 1], $sequence->sequence);
+        $this->assertSame([2, 1], $sequence->sequence);
     }
 
     public function testHandleFailure()
