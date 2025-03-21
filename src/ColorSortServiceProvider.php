@@ -22,7 +22,7 @@ class ColorSortServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__.'/Database/migrations');
 
         $this->publishes([
-            __DIR__.'/public/assets' => public_path('vendor/color-sort'),
+            __DIR__.'/public' => public_path('vendor/color-sort'),
         ], 'public');
 
         $this->publishes([

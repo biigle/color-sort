@@ -1,3 +1,5 @@
+import {Resource} from '../import.js';
+
 /**
  * Resource for color sort sequences.
  *
@@ -14,7 +16,5 @@
  *
  * Delete a color sort sequence:
  * resource.delete({volume_id: 1, color: 'c0ffee'}).then(...);
- *
- * @type {Vue.resource}
  */
-export default Vue.resource('api/v1/volumes{/volume_id}/color-sort-sequence{/color}');
+export default Resource('api/v1/volumes{/volume_id}/color-sort-sequence{/color}');

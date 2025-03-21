@@ -1,6 +1,6 @@
-import {VolumeSorters} from './import';
-import ColorSorter from './colorSorterComponent';
-import ColorSortPanel from './colorSortPanel';
+import {VolumeSorters} from './import.js';
+import ColorSorter from './colorSorterComponent.vue';
+import ColorSortPanel from './colorSortPanel.vue';
 
 if (Array.isArray(VolumeSorters)) {
     VolumeSorters.push({

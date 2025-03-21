@@ -23,11 +23,11 @@
 </template>
 
 <script>
-import ColorSortApi from './api/colorSortSequence';
-import {Events} from './import';
-import {handleErrorResponse} from './import';
-import {LoaderComponent} from './import';
-import {SortComponent} from './import';
+import ColorSortApi from './api/colorSortSequence.js';
+import {Events} from './import.js';
+import {handleErrorResponse} from './import.js';
+import {LoaderComponent} from './import.js';
+import {SortComponent} from './import.js';
 
 /**
  * Sorter for the color sorting.
@@ -71,7 +71,7 @@ export default {
             let color = this.activeColor;
 
             if (this.cache.hasOwnProperty(color)) {
-                return new Vue.Promise((resolve) => {
+                return new Promise((resolve) => {
                     resolve(this.cache[color]);
                 });
             }
@@ -109,7 +109,7 @@ export default {
         pollNewSequence(response) {
             let color = response.body.color;
 
-            return new Vue.Promise((resolve, reject) => {
+            return new Promise((resolve, reject) => {
                 let interval = window.setInterval(() => {
                     ColorSortApi.get({volume_id: this.volumeId, color: color})
                         .then(function (response) {

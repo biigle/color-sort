@@ -1,7 +1,7 @@
 <script>
-import ColorSortApi from './api/colorSortSequence';
-import {handleErrorResponse} from './import';
-import {LoaderMixin} from './import';
+import ColorSortApi from './api/colorSortSequence.js';
+import {handleErrorResponse} from './import.js';
+import {LoaderMixin} from './import.js';
 
 /**
  * The panel for editing color sort sequences
