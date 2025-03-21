@@ -1,3 +1,3 @@
 @if ($volume->isImageVolume())
-    <link href="{{ cachebust_asset('vendor/color-sort/styles/volumes.css') }}" rel="stylesheet">
+    {{vite_hot(base_path('vendor/biigle/color-sort/hot'), ['src/resources/assets/sass/main.scss'], 'vendor/color-sort')}}
 @endif
