@@ -1,30 +1,8 @@
 <script>
-import ColorSortApi from './api/colorSortSequence';
-import {handleErrorResponse} from './import';
-import {LoaderMixin} from './import';
-
-/**
- * The panel for editing color sort sequences
- */
-let listItem = {
-    props: ['sequence'],
-    computed: {
-        title() {
-            return 'Delete sequence for color #' + this.color;
-        },
-        styleObject() {
-            return {'background-color': '#' + this.color};
-        },
-        color() {
-            return this.sequence.color;
-        },
-    },
-    methods: {
-        remove() {
-            this.$emit('remove', this.sequence);
-        },
-    }
-};
+import ColorSortApi from './api/colorSortSequence.js';
+import ListItem from './colorSortListItem.vue';
+import {handleErrorResponse} from './import.js';
+import {LoaderMixin} from './import.js';
 
 export default {
     mixins: [LoaderMixin],
@@ -35,7 +13,7 @@ export default {
         };
     },
     components: {
-        listItem: listItem,
+        listItem: ListItem,
     },
     computed: {
         hasSequences() {

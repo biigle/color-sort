@@ -5,7 +5,7 @@
                 <form v-on:submit.prevent="requestNewColor">
                     <loader v-if="computingSequence" :active="computingSequence"></loader>
                     <input type="color" class="btn btn-default btn-xs color-picker" id="color-sort-color" v-model="newColor" title="Choose a new color">
-                    <button :disabled="!canRequestNewColor" type="submit" class="btn btn-default btn-xs" title="Request a new color sort sequence for the chosen color"><span class="fa fa-plus" aria-hidden="true"></span></button>
+                    <button :disabled="!canRequestNewColor || null" type="submit" class="btn btn-default btn-xs" title="Request a new color sort sequence for the chosen color"><span class="fa fa-plus" aria-hidden="true"></span></button>
                 </form>
             </span>
             Color
@@ -23,16 +23,17 @@
 </template>
 
 <script>
-import ColorSortApi from './api/colorSortSequence';
-import {Events} from './import';
-import {handleErrorResponse} from './import';
-import {LoaderComponent} from './import';
-import {SortComponent} from './import';
+import ColorSortApi from './api/colorSortSequence.js';
+import {Events} from './import.js';
+import {handleErrorResponse} from './import.js';
+import {LoaderComponent} from './import.js';
+import {SortComponent} from './import.js';
 
 /**
  * Sorter for the color sorting.
  */
 export default {
+    emits: ['select'],
     mixins: [SortComponent],
     components: {
         loader: LoaderComponent,
@@ -71,7 +72,7 @@ export default {
             let color = this.activeColor;
 
             if (this.cache.hasOwnProperty(color)) {
-                return new Vue.Promise((resolve) => {
+                return new Promise((resolve) => {
                     resolve(this.cache[color]);
                 });
             }
@@ -109,7 +110,7 @@ export default {
         pollNewSequence(response) {
             let color = response.body.color;
 
-            return new Vue.Promise((resolve, reject) => {
+            return new Promise((resolve, reject) => {
                 let interval = window.setInterval(() => {
                     ColorSortApi.get({volume_id: this.volumeId, color: color})
                         .then(function (response) {
@@ -146,7 +147,7 @@ export default {
         this.canEdit = biigle.$require('volumes.canEdit');
     },
     mounted() {
-        Events.$once('sidebar.open.sorting', this.fetchColors);
+        Events.once('sidebar.open.sorting', this.fetchColors);
 
         if (this.active) {
             this.activeColor = this.activeSorter.substr(
