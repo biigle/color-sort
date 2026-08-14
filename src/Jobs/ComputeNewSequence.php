@@ -6,9 +6,11 @@ use Biigle\Jobs\Job;
 use Biigle\Modules\ColorSort\Sequence;
 use Biigle\Modules\ColorSort\Support\Sort;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\Attributes\DeleteWhenMissingModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
+#[DeleteWhenMissingModels]
 class ComputeNewSequence extends Job implements ShouldQueue
 {
     use InteractsWithQueue, SerializesModels;
@@ -19,13 +21,6 @@ class ComputeNewSequence extends Job implements ShouldQueue
      * @var Sequence
      */
     private $sequence;
-
-    /**
-     * Ignore this job if the annotation does not exist any more.
-     *
-     * @var bool
-     */
-    protected $deleteWhenMissingModels = true;
 
     /**
      * The number of times the job may be attempted.
