@@ -35,7 +35,7 @@ class VolumeColorSortSequenceControllerTest extends ApiTestCase
 
     public function testIndexVideoVolume()
     {
-        $volume = $this->volume(['media_type_id' => MediaType::videoId()]);
+        $volume = $this->volume(['media_type' => MediaType::VIDEO]);
         $id = $volume->id;
 
         $this->beGuest();
@@ -131,7 +131,7 @@ class VolumeColorSortSequenceControllerTest extends ApiTestCase
 
     public function testStoreVideoVolume()
     {
-        $volume = $this->volume(['media_type_id' => MediaType::videoId()]);
+        $volume = $this->volume(['media_type' => MediaType::VIDEO]);
         $id = $volume->id;
 
         $this->beEditor();
