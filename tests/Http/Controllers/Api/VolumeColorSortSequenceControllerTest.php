@@ -3,7 +3,7 @@
 namespace Biigle\Tests\Modules\ColorSort\Http\Controllers\Api;
 
 use ApiTestCase;
-use Biigle\MediaType;
+use Biigle\Enums\MediaType;
 use Biigle\Modules\ColorSort\Jobs\ComputeNewSequence;
 use Biigle\Modules\ColorSort\Sequence;
 use Biigle\Tests\Modules\ColorSort\SequenceTest;
