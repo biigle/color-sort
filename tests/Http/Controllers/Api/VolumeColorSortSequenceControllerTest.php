@@ -3,7 +3,7 @@
 namespace Biigle\Tests\Modules\ColorSort\Http\Controllers\Api;
 
 use ApiTestCase;
-use Biigle\MediaType;
+use Biigle\Enums\MediaType;
 use Biigle\Modules\ColorSort\Jobs\ComputeNewSequence;
 use Biigle\Modules\ColorSort\Sequence;
 use Biigle\Tests\Modules\ColorSort\SequenceTest;
@@ -35,7 +35,7 @@ class VolumeColorSortSequenceControllerTest extends ApiTestCase
 
     public function testIndexVideoVolume()
     {
-        $volume = $this->volume(['media_type_id' => MediaType::videoId()]);
+        $volume = $this->volume(['media_type' => MediaType::VIDEO]);
         $id = $volume->id;
 
         $this->beGuest();
@@ -131,7 +131,7 @@ class VolumeColorSortSequenceControllerTest extends ApiTestCase
 
     public function testStoreVideoVolume()
     {
-        $volume = $this->volume(['media_type_id' => MediaType::videoId()]);
+        $volume = $this->volume(['media_type' => MediaType::VIDEO]);
         $id = $volume->id;
 
         $this->beEditor();
