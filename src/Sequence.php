@@ -2,11 +2,13 @@
 
 namespace Biigle\Modules\ColorSort;
 
+use Illuminate\Database\Eloquent\Attributes\WithoutTimestamps;
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * This model represents a sequence of volume images sorted by a specific color.
  */
+#[WithoutTimestamps]
 class Sequence extends Model
 {
     /**
@@ -15,13 +17,6 @@ class Sequence extends Model
      * @var string
      */
     protected $table = 'color_sort_sequences';
-
-    /**
-     * Don't maintain timestamps for this model.
-     *
-     * @var bool
-     */
-    public $timestamps = false;
 
     /**
      * The attributes included in the model's JSON form. All other are hidden.
